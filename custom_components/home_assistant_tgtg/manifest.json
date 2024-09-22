@@ -3,8 +3,9 @@
   "name": "中国老黄历",
   "version": "2024.9.21",
   "config_flow": true,
-  "documentation": "https://github.com/custom-components/",
-  "requirements": ["cnlunar==0.0.7"],
+  "documentation": "https://github.com/knoop7/ha_laohuangli",
+  "issue_tracker": "https://github.com/knoop7/ha_laohuangli/issues"  
+  "requirements": ["cnlunar"],
   "dependencies": [],
   "codeowners": ["@knoop"],
   "iot_class": "local_polling"
