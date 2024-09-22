@@ -7,6 +7,6 @@
   "issue_tracker": "https://github.com/knoop7/ha_laohuangli/issues",
   "requirements": ["cnlunar"],
   "dependencies": [],
-  "codeowners": ["@knoop"],
+  "codeowners": ["@knoop7"],
   "iot_class": "local_polling"
 }
