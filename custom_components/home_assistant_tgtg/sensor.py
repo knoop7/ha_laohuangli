@@ -145,7 +145,7 @@ class ChineseAlmanacSensor(SensorEntity):
             
             dic = {
                 '日期': a.date,
-                '农历': f"{a.lunarYearCn}{a.year8Char}{a.chineseYearZodiac}年{a.lunarMonthCn}{a.lunarDayCn}",
+                '农历': f"{a.lunarYearCn} {a.year8Char}{a.chineseYearZodiac}年 {a.lunarMonthCn}{a.lunarDayCn}",
                 '星期': a.weekDayCn,
                 '今日节日': self._clean_text(''.join(a.get_legalHolidays() + a.get_otherHolidays() + a.get_otherLunarHolidays())) or "暂无节日",
                 '八字': ' '.join([a.year8Char, a.month8Char, a.day8Char, a.twohour8Char]),
