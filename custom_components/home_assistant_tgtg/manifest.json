@@ -4,7 +4,7 @@
   "version": "2024.9.21",
   "config_flow": true,
   "documentation": "https://github.com/knoop7/ha_laohuangli",
-  "issue_tracker": "https://github.com/knoop7/ha_laohuangli/issues"  
+  "issue_tracker": "https://github.com/knoop7/ha_laohuangli/issues",
   "requirements": ["cnlunar"],
   "dependencies": [],
   "codeowners": ["@knoop"],
