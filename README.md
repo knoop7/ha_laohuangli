@@ -27,4 +27,4 @@ entities:
 ```
 
 ## 致谢
-本项目使用了[cnlunar](https://github.com/6tail/lunar-python)库来计算农历信息，在此表示感谢。
+本项目使用了 | cnlunar | 库来计算农历信息，在此表示感谢。
