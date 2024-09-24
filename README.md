@@ -1,4 +1,4 @@
-# 中国老黄历 (Chinese Almanac) for Home Assistant
+## 中国老黄历 (Chinese Almanac) for Home Assistant
 
 ![版本](https://img.shields.io/badge/version-1.0.0-blue.svg)
 ![Home Assistant版本](https://img.shields.io/badge/Home%20Assistant-2023.6.0+-yellow.svg)
