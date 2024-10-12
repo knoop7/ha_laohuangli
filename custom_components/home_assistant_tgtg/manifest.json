@@ -1,7 +1,7 @@
 {
   "domain": "tgtg",
   "name": "中国老黄历",
-  "version": "2024.9.21",
+  "version": "2024.10.12",
   "config_flow": true,
   "documentation": "https://github.com/knoop7/ha_laohuangli",
   "issue_tracker": "https://github.com/knoop7/ha_laohuangli/issues",
