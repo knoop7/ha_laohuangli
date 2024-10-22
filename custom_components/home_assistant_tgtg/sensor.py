@@ -46,7 +46,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
             '下一节气', '季节', '时辰凶吉', '生肖冲煞',
             '星座', '星次', '彭祖百忌', '十二神', '廿八宿',
             '今日三合', '今日六合', '纳音', '九宫飞星', '吉神方位',
-            '今日胎神', '今日吉神', '今日凶煞', '宜忌等第', '宜', '忌', '时辰经络'
+            '今日胎神', '今日吉神', '今日凶煞', '宜忌等第', '宜', '忌', '时辰经络', '时辰'
         ]
     ]
     
@@ -54,7 +54,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
 
     async def update_twohour_lucky(now):
         for sensor in sensors:
-            if sensor._type == '时辰凶吉':
+            if sensor._type == '时辰凶吉' or sensor._type == '时辰':
                 await sensor.async_update()
 
     hass.helpers.event.async_track_time_interval(update_twohour_lucky, MIN_TIME_BETWEEN_TWOHOUR_UPDATES)
@@ -136,6 +136,8 @@ class ChineseAlmanacSensor(SensorEntity):
         
         if self._type == '时辰凶吉':
             await self._update_twohour_lucky(now)
+        elif self._type == '时辰':
+            await self._update_double_hour(now)
         else:
             await self._update_general(now)
 
@@ -169,7 +171,8 @@ class ChineseAlmanacSensor(SensorEntity):
                 '宜忌等第': a.todayLevelName,
                 '宜': self._clean_text(' '.join(a.goodThing)),
                 '忌': self._clean_text(' '.join(a.badThing)),
-                '时辰经络': self._clean_text(self._format_dict(a.meridians))
+                '时辰经络': self._clean_text(self._format_dict(a.meridians)),
+                '时辰': self._clean_text(self._format_dict(a.twohour8CharList))
             }
 
             self._state = dic.get(self._type, "")
@@ -178,7 +181,22 @@ class ChineseAlmanacSensor(SensorEntity):
         except Exception as e:
             _LOGGER.error(f"Error updating Chinese Almanac sensor: {e}")
             self._available = False
-
+            
+    @Throttle(MIN_TIME_BETWEEN_TWOHOUR_UPDATES)
+    async def _update_double_hour(self, now):
+        try:
+            hour = now.hour
+            minute = now.minute
+            double_hour = int((hour + 1 + (0.5 if minute >= 30 else 0)) // 2 % 12)
+            shichen = ['子时', '丑时', '寅时', '卯时', '辰时', '巳时', '午时', '未时', '申时', '酉时', '戌时', '亥时']
+            quarter = ['整', '一刻', '二刻', '三刻']
+            self._state = shichen[double_hour] + (quarter[int(minute // 15)] if minute // 15 < len(quarter) else '')
+            self._available = True
+            self._last_update = now
+        except Exception as e:
+            _LOGGER.error(f"Error updating double_hour sensor: {e}")
+            self._available = False
+            
     @Throttle(MIN_TIME_BETWEEN_TWOHOUR_UPDATES)
     async def _update_twohour_lucky(self, now):
         try:
