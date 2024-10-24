@@ -1,0 +1,175 @@
+{
+  "title": "Chinese Almanac",
+  "config": {
+    "abort": {
+      "already_configured": "Device already configured",
+      "single_instance_allowed": "Already configured. Only one instance allowed.",
+      "max_persons_reached": "Maximum number of persons (3) reached",
+      "max_events_reached": "Maximum number of events (10) reached",
+      "person_added": "Person added successfully",
+      "person_updated": "{name} updated successfully",
+      "person_deleted": "{name} deleted successfully",
+      "event_added": "Event added successfully",
+      "event_updated": "{name} updated successfully",
+      "event_deleted": "{name} deleted successfully"
+    },
+    "error": {
+      "invalid_date_format": "Invalid date format, please use YYYY/MM/DD/HH (e.g., 1990/01/01/08)",
+      "invalid_event_date_format": "Invalid date format, please use YYYY/MM/DD (e.g., 2024/12/31)",
+      "name_already_exists": "Duplicate name. If there are persons with the same name, you can add a number at the end for easier identification (e.g., Zhang San1)",
+      "unknown": "Unknown error occurred. If you cannot add or edit, please remove the integration and add again.",
+      "unknown_error": "Unknown error occurred. If you cannot add or edit, please remove the integration and add again.",
+      "unknown_error_occurred": "Unknown error occurred. If you cannot add or edit, please remove the integration and add again.",
+      "need_select_person_for_edit": "Please select a person to edit",
+      "need_select_person_for_delete": "Please select a person to delete",
+      "need_select_event_for_edit": "Please select an event to edit",
+      "need_select_event_for_delete": "Please select an event to delete"
+    },
+    "step": {
+      "user": {
+        "title": "Chinese Almanac",
+        "description": "Welcome to the integration!\nCreated exclusively by [@knoop7](https://github.com/knoop7)\n\nUnauthorized redistribution to platforms like Xiaohongshu, Bilibili, etc. is prohibited.\nCommercial use or derivative modifications are strictly forbidden.\nIf violated, updates and future code maintenance will cease.\n\n\n**Traditional Calendar Features:**\n• Real-time traditional lunar-solar calendar information\n• Accurate forecasts of the 24 solar terms\n• Daily guidance on auspicious/inauspicious events\n\n**Birthday Management:**\n• Manage family members' birthdays\n• Eight characters analysis and birthday reminders\n\n**Event Management:**\n• Investment reminders\n• Work schedule reminders\n• Meeting and dining reminders\n• Anniversary reminders",
+        "data": {
+          "setup_options": "Select the features you want to enable:",
+          "setup_birthday": "Birthday reminder feature",
+          "setup_event": "Event management feature"
+        }
+      },
+      "birthday": {
+        "title": "Birthday Management Configuration",
+        "description": "Please configure birthday information (up to 3 persons)",
+        "data": {
+          "name": "Name",
+          "birthday": "Birthday (format: YYYY/MM/DD/HH)",
+          "add_another": "Add another"
+        }
+      },
+      "event": {
+        "title": "Event Management Configuration",
+        "description": "Please configure event information (up to 10 events)",
+        "data": {
+          "name": "Event Name",
+          "date": "Event Date (format: YYYY/MM/DD)",
+          "description": "Event Description",
+          "add_another": "Add another"
+        }
+      },
+      "name": {
+        "title": "Service Name Configuration",
+        "description": "Please set the name of the Chinese Almanac service",
+        "data": {
+          "name": "Service Name"
+        }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Feature Management",
+        "description": "Select the feature area you want to manage",
+        "data": {
+          "area": "Feature Selection"
+        }
+      },
+      "actions": {
+        "title": "Operation Options",
+        "description": "Please select the action to perform",
+        "data": {
+          "action": "Select Action",
+          "person_index": "Select Person",
+          "event_index": "Select Event",
+          "add": "Add",
+          "edit": "Edit",
+          "delete": "Delete"
+        },
+        "select_description": {
+          "edit_person": "Please select a person to edit",
+          "delete_person": "Please select a person to delete",
+          "edit_event": "Please select an event to edit",
+          "delete_event": "Please select an event to delete"
+        }
+      },
+      "select_person": {
+        "title": "Options",
+        "description": "Please select a person below",
+        "data": {
+          "person_index": "Select Person"
+        }
+      },
+      "select_event": {
+        "title": "Options",
+        "description": "Please select an event below",
+        "data": {
+          "event_index": "Select Event"
+        }
+      },
+      "add_birthday": {
+        "title": "Add Birthday Information",
+        "data": {
+          "name": "Name",
+          "birthday": "Birthday (format: YYYY/MM/DD/HH)"
+        }
+      },
+      "edit_birthday": {
+        "title": "Edit Birthday Information",
+        "data": {
+          "name": "Name",
+          "birthday": "Birthday (format: YYYY/MM/DD/HH)"
+        }
+      },
+      "delete_birthday": {
+        "title": "Delete Birthday Information",
+        "description": "Are you sure you want to delete this birthday information?",
+        "data": {
+          "confirm": "Confirm deletion"
+        }
+      },
+      "add_event": {
+        "title": "Add Event Information",
+        "data": {
+          "name": "Event Name",
+          "date": "Event Date (format: YYYY/MM/DD)",
+          "description": "Event Description"
+        }
+      },
+      "edit_event": {
+        "title": "Edit Event Information",
+        "data": {
+          "name": "Event Name",
+          "date": "Event Date (format: YYYY/MM/DD)",
+          "description": "Event Description"
+        }
+      },
+      "delete_event": {
+        "title": "Delete Event Information",
+        "description": "Are you sure you want to delete this event information?",
+        "data": {
+          "confirm": "Confirm deletion"
+        }
+      }
+    },
+    "error": {
+      "unknown": "Unknown error occurred. If you cannot add or edit, please remove the integration and add again.",
+      "unknown_error": "Unknown error occurred. If you cannot add or edit, please remove the integration and add again.",
+      "unknown_error_occurred": "Unknown error occurred. If you cannot add or edit, please remove the integration and add again.",
+      "need_select_person_for_edit": "Please select a person to edit",
+      "need_select_person_for_delete": "Please select a person to delete",
+      "need_select_event_for_edit": "Please select an event to edit",
+      "need_select_event_for_delete": "Please select an event to delete",
+      "name_already_exists": "Duplicate name. If there are persons with the same name, you can add a number at the end for easier identification (e.g., Zhang San1)",
+      "invalid_date_format": "Invalid date format, please use YYYY/MM/DD/HH (e.g., 1990/01/01/08)",
+      "invalid_event_date_format": "Invalid date format, please use YYYY/MM/DD (e.g., 2024/12/31)"
+    },
+    "abort": {
+      "max_persons_reached": "Maximum number of persons (3) reached",
+      "max_events_reached": "Maximum number of events (10) reached",
+      "person_added": "Person added successfully",
+      "person_updated": "{name} updated successfully",
+      "person_deleted": "{name} deleted successfully",
+      "event_added": "Event added successfully",
+      "event_updated": "{name} updated successfully",
+      "event_deleted": "{name} deleted successfully"
+    }
+  }
+}
