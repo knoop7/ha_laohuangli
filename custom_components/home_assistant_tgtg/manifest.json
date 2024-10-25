@@ -1,0 +1,12 @@
+{
+  "domain": "tgtg",
+  "name": "中国老黄历",
+  "version": "2024.10.26",
+  "config_flow": true,
+  "documentation": "https://github.com/knoop7/ha_laohuangli",
+  "issue_tracker": "https://github.com/knoop7/ha_laohuangli/issues",
+  "requirements": ["cnlunar"],
+  "dependencies": [],
+  "codeowners": ["@knoop7"],
+  "iot_class": "local_polling"
+}
