@@ -1,0 +1,208 @@
+{
+  "title": "中國老黃歷",
+  "config": {
+    "abort": {
+      "already_configured": "是器已成，毋庸重設",
+      "single_instance_allowed": "天下之器，止一而已，毋得再設",
+      "max_persons_reached": "人數已至五位，不可複增，蓋五行之數盡矣",
+      "max_events_reached": "事項已三十有餘，不可復增，蓋​​一月之數盡矣",
+      "person_added": "其人已入黃籍，永錄太清",
+      "person_updated": "已為{name}改易生辰八字，重訂天命",
+      "person_deleted": "{name}已除名黃籍，退出太清",
+      "event_added": "玉曆已錄是事，永誌不忘",
+      "event_updated": "{name}之事已改，重定吉時",
+      "event_deleted": "{name}之事已除，玉曆不復載",
+      "event_not_found": "玉曆無載是事，或已消逝於天地之間"
+    },
+    "error": {
+      "invalid_date_format": "生辰八字不合天時，須依年月日時之製（譬如：一九九零年歲庚午，正月初一，辰時三刻）",
+      "invalid_event_date_format": "日期不合曆法，須依太陽曆法年月日之製（譬如：二零二四年十二月三十日）",
+      "invalid_time_format": "時刻不合更漏，須依十二時辰刻數（譬如：辰時三刻）",
+      "name_already_exists": "黃籍重名，宜加別號以區之（譬如：張三其壹、張三其貳）",
+      "duplicate_event_name": "玉曆重事，恐致混淆，請另擇新名",
+      "unknown": "天機有變，不測之事已生，宜重新設定，以正乾坤",
+      "unknown_error": "太清有異，星辰錯亂，宜重新設定，以正天時",
+      "unknown_error_occurred": "乾坤失序，不詳之事已生，宜重新設定，以正天機"
+    },
+    "step": {
+      "user": {
+        "title": "黃歷開冊",
+        "description": "恭迎！\n由[@knoop7](https://github.com/knoop7)欽定製作\n\n天機不可洩露，切記\n商賈不得私用，改動有禁\n倘有違者，天降災殃\n\n\n**太清曆法：**\n• 陰陽二氣，晝夜更替，即時推演\n• 二十四節氣，七十二候，精準推算\n• 每日吉兇，趨吉避兇，趨時定事\n\n**生辰八字：**\n• 眷族生辰，五行相生\n• 八字命理，五行生剋\n• 流年運勢，趨吉避兇\n\n**事務規劃：**\n• 經商理財，趨利避害\n• 公務政事，擇時而行\n• 宴會慶典，合八字者宜\n• 良辰吉日，擇日而行\n\n**觀音靈簽：**\n• 每日一簽，天意昭示\n• 靈簽解意，趨吉避兇",
+        "data": {
+          "setup_options": "擇其功用，合乎天時：",
+          "setup_birthday": "生辰八字推算",
+          "setup_event": "玉曆事務規劃",
+          "setup_guanyin": "觀音靈簽問卜"
+        }
+      },
+      "birthday": {
+        "title": "生辰八字管理",
+        "description": "錄入生辰八字（限五人，應五行之數）",
+        "data": {
+          "name": "姓名號碼",
+          "birthday": "生辰八字（年月日時，需合八字五行）",
+          "add_another": "續錄一人，慎擇八字"
+        }
+      },
+      "event": {
+        "title": "玉曆事務管理",
+        "description": "輸入玉曆事務（限三十事，應一月之數）",
+        "data": {
+          "name": "事務名目",
+          "date": "擇定日期（宜擇吉日良辰）",
+          "description": "事由詳述",
+          "add_another": "續錄一事，擇吉而行"
+        }
+      },
+      "name": {
+        "title": "更易冊名",
+        "description": "可更易太清黃曆之名",
+        "data": {
+          "name": "黃歷冊名"
+        }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "太清功用管理",
+        "description": "擇其功用，以合天時",
+        "data": {
+          "area": "擇定功用",
+          "area_birthday": "生辰八字推算",
+          "area_event": "玉曆事務規劃"
+        }
+      },
+      "actions": {
+        "title": "玉曆操作",
+        "description": "請擇一行，以正天時",
+        "data": {
+          "action": "擇定操作",
+          "person_index": "擇定其人",
+          "event_index": "擇定其事",
+          "add": "增錄其事",
+          "edit": "改易其事",
+          "delete": "除去其事"
+        },
+        "select_description": {
+          "edit_person": "擇定其人以改易生辰八字",
+          "delete_person": "擇定其人以除去黃籍",
+          "edit_event": "擇定其事以改易玉曆",
+          "delete_event": "擇定其事以除去玉曆"
+        }
+      },
+      "select_person": {
+        "title": "擇人之法",
+        "description": "請於黃籍擇定其人",
+        "data": {
+          "person_index": "擇定何人"
+        }
+      },
+      "select_event": {
+        "title": "擇事之法",
+        "description": "請於玉曆中擇定其事",
+        "data": {
+          "event_index": "擇定何事"
+        }
+      },
+      "add_birthday": {
+        "title": "增錄生辰八字",
+        "data": {
+          "name": "姓名號碼",
+          "birthday": "生辰八字（需合五行生剋之理）",
+          "notification_enabled": "開啟天機提示"
+        }
+      },
+      "edit_birthday": {
+        "title": "改易生辰八字",
+        "data": {
+          "name": "姓名號碼",
+          "birthday": "生辰八字（需合五行生剋之理）",
+          "notification_enabled": "開啟天機提示"
+        }
+      },
+      "delete_birthday": {
+        "title": "除去生辰八字",
+        "description": "去人於黃籍，其事重大，確欲為之乎？",
+        "data": {
+          "confirm": "確定除去"
+        }
+      },
+      "birthday_notification_edit": {
+        "title": "天機提示設定",
+        "data": {
+          "notification_service": "擇定提示方式",
+          "notification_message": "天機提示文字"
+        }
+      },
+      "event_notification_edit": {
+        "title": "玉曆提示設定",
+        "data": {
+          "notification_service": "擇定提示方式",
+          "notification_message": "玉曆提示文字"
+        }
+      },
+      "add_event": {
+        "title": "增錄玉曆事務",
+        "data": {
+          "name": "事務名目",
+          "date": "擇定吉日（需合節氣運勢）",
+          "description": "事由詳述",
+          "auto_remove": "事畢自除",
+          "full_countdown": "開啟時辰推算",
+          "notification_enabled": "開啟玉曆提示"
+        }
+      },
+      "edit_event": {
+        "title": "改易玉曆事務",
+        "data": {
+          "name": "事務名目",
+          "date": "擇定吉日（需合節氣運勢）",
+          "description": "事由詳述",
+          "auto_remove": "事畢自除",
+          "full_countdown": "開啟時辰推算",
+          "notification_enabled": "開啟玉曆提示"
+        }
+      },
+      "edit_event_time": {
+        "title": "定時推算",
+        "description": "為{name}定下時辰，需合太陽曆法",
+        "data": {
+          "time": "時辰刻數（子時初刻至亥時末刻）"
+        }
+      },
+      "delete_event": {
+        "title": "除去玉曆事務",
+        "description": "去事於玉曆，其事重大，確欲為之乎？",
+        "data": {
+          "confirm": "確定除去"
+        }
+      }
+    },
+    "error": {
+      "unknown": "天機有變，乾坤失序，宜重新設定，以正五行",
+      "unknown_error": "太清有異，星象紊亂，宜重新設定，以正天時",
+      "unknown_error_occurred": "天地反常，六氣不調，宜重新設定，以正陰陽",
+      "need_select_person_for_edit": "請先擇定其人，方可改易生辰八字",
+      "need_select_person_for_delete": "請先擇定其人，方可除去黃籍",
+      "need_select_event_for_edit": "請先擇定其事，方可改易玉曆",
+      "need_select_event_for_delete": "請先擇定其事，方可除去玉曆",
+      "name_already_exists": "黃籍重名，宜加別號以區之（譬如：張三其壹、張三其貳）",
+      "invalid_date_format": "生辰八字不合天時，須依年月日時之製（譬如：一九九零年歲庚午，正月初一，辰時三刻）",
+      "invalid_event_date_format": "日期不合曆法，須依太陽曆法年月日之製（譬如：二零二四年十二月三十日）",
+      "invalid_time_format": "時刻不合更漏，須依十二時辰刻數（譬如：辰時三刻）"
+    },
+    "abort": {
+      "max_persons_reached": "黃籍已錄五人，應五行之數，不可複增",
+      "max_events_reached": "玉曆已載三十事，應一月之數，不可再增",
+      "person_added": "其人已入黃籍，永錄太清",
+      "person_updated": "{name}生辰八字已改，重訂天命",
+      "person_deleted": "{name}已除名黃籍，退出太清",
+      "event_added": "玉曆已錄是事，永誌不忘",
+      "event_updated": "{name}之事已改，重定吉時",
+      "event_deleted": "{name}之事已除，玉曆不復載",
+      "event_not_found": "玉曆無載是事，或已消逝於天地之間"
+    }
+  }
+}
