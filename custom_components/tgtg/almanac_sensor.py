@@ -176,12 +176,13 @@ class AlmanacSensor(SensorEntity):
         return 'mdi:calendar-text'
 
     def _should_update(self, now) -> bool:
-        if not self._last_update:
+        if self._type in ['时辰']:
             return True
             
-        if self._type in ['时辰凶吉', '时辰']:
+        if not self._last_update:
+            return True
+        if self._type in ['时辰凶吉']:
             return (now - self._last_update).total_seconds() >= 900
-            
         return (now - self._last_update).total_seconds() >= 3600
 
     async def _do_update(self):
@@ -467,6 +468,11 @@ async def setup_almanac_sensors(hass: HomeAssistant, entry_id: str, config_data:
                     sensor.async_write_ha_state()
         except Exception:
             pass
+
+    async def quarter_hourly_update(now: datetime):
+        for sensor in shichen_sensors:
+            await sensor._update_double_hour(now)
+            sensor.async_write_ha_state()
 
     async def midnight_update(now: datetime):
         await update_sensors_batch(sensors)
