@@ -1,11 +1,7 @@
-
-# https://github.com/home-assistant/core/blob/dev/homeassistant/components/moon/sensor.py 
-
 from __future__ import annotations
 from astral import moon
 import cnlunar 
 import re
-import logging
 from datetime import datetime, timedelta
 from homeassistant.components.sensor import SensorDeviceClass, SensorEntity
 from homeassistant.core import HomeAssistant
@@ -15,14 +11,7 @@ from homeassistant.util import dt
 from homeassistant.helpers.event import async_track_time_interval
 from homeassistant.helpers.entity import DeviceInfo, EntityCategory
 
-from .const import (
-    DOMAIN,
-    MIN_TIME_BETWEEN_UPDATES,
-    MIN_TIME_BETWEEN_TWOHOUR_UPDATES,
-    MAIN_SENSORS,
-)
-
-_LOGGER = logging.getLogger(__name__)
+from .const import DOMAIN
 
 class AlmanacMoonSensor(SensorEntity):
     _attr_has_entity_name = True
@@ -37,6 +26,7 @@ class AlmanacMoonSensor(SensorEntity):
         self._is_main_sensor = is_main_sensor
         self._last_update = None
         self._attr_has_entity_name = True
+        self._last_state = None
         self._moon_icons = {
             '朔月': 'mdi:moon-new',
             '峨眉月': 'mdi:moon-waxing-crescent',
@@ -47,6 +37,17 @@ class AlmanacMoonSensor(SensorEntity):
             '下弦月': 'mdi:moon-last-quarter',
             '残月': 'mdi:moon-waning-crescent'
         }
+        self._phase_thresholds = [
+            (0.5, '朔月'),
+            (6.5, '峨眉月'),
+            (7.5, '上弦月'),
+            (13.5, '渐盈凸月'),
+            (14.5, '满月'),
+            (20.5, '渐亏凸月'),
+            (21.5, '下弦月'),
+            (27.5, '残月'),
+            (float('inf'), '朔月')
+        ]
 
     @property
     def name(self):
@@ -83,36 +84,55 @@ class AlmanacMoonSensor(SensorEntity):
         return 'mdi:calendar-text'
 
     def _get_moon_phase_wuxing(self, lunar_day):
-        try:
-            day = int(lunar_day)
-            if day <= 6:
-                return '水'
-            elif day <= 11:
-                return '木'
-            elif day <= 16:
-                return '火'
-            elif day <= 22:
-                return '金'
-            else:
-                return '土'
-        except (ValueError, TypeError):
-            return '未知'
+        wuxing_ranges = [
+            (6, '水'),
+            (11, '木'),
+            (16, '火'),
+            (22, '金'),
+            (float('inf'), '土')
+        ]
+        day = int(lunar_day)
+        for threshold, element in wuxing_ranges:
+            if day <= threshold:
+                return element
+        return '土'
 
     def _get_moon_phase_luck(self, lunar_day):
-        try:
-            day = int(lunar_day)
-            if day in [1, 8, 15, 23]:
-                return '大吉'
-            elif day in [3, 7, 13, 18, 22, 27]:
-                return '吉'
-            elif day in [5, 10, 20, 25]:
-                return '平'
-            elif day in [4, 12, 19, 26]:
-                return '凶'
-            else:
-                return '平吉'
-        except (ValueError, TypeError):
-            return '未知'
+        day = int(lunar_day)
+        luck_mappings = {
+            '大吉': [1, 8, 15, 23],
+            '吉': [3, 7, 13, 18, 22, 27],
+            '平': [5, 10, 20, 25],
+            '凶': [4, 12, 19, 26]
+        }
+        for luck, days in luck_mappings.items():
+            if day in days:
+                return luck
+        return '平吉'
+
+    def _get_night_moon_name(self, lunar_day):
+        night_moon_names = {
+            15: '望月',
+            16: '既望月',
+            17: '立待月',
+            18: '居待月',
+            19: '寝待月'
+        }
+        if lunar_day == 30:
+            return '晦月'
+        if lunar_day in night_moon_names:
+            return night_moon_names[lunar_day]
+        return f"{self._cn_number(lunar_day)}夜月"
+
+    def _cn_number(self, num):
+        if 1 <= num <= 10:
+            return ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十'][num - 1]
+        elif 11 <= num <= 19:
+            return f"十{self._cn_number(num - 10)}"
+        elif num == 20:
+            return '二十'
+        else:
+            return f"二十{self._cn_number(num - 20)}"
 
     def _get_moon_phase_description(self, phase):
         descriptions = {
@@ -125,68 +145,62 @@ class AlmanacMoonSensor(SensorEntity):
             '下弦月': '月亮内侧发亮，呈现半圆形。月球位于黄道上，与太阳相差270度，为农历二十二、二十三日前后。道教视其为阴气上升之象，与人体经脉运行相应',
             '残月': '月亮呈细弧形，清晨西方可见。此为月相将尽之象，道教认为此时天地之气归藏，适合收功打坐，为新月蓄势'
         }
-        return descriptions.get(phase, '未知月相')
+        return descriptions.get(phase, '')
 
     def _get_lunar_day(self, lunar):
-        try:
-            match = re.search(r'\d+', lunar.lunarDayCn)
-            if match:
-                return int(match.group())
-            return 1
-        except (AttributeError, ValueError):
-            _LOGGER.error("无法解析农历日期")
-            return 1
+        lunar_day_cn = lunar.lunarDayCn
+        cn_day_map = {}
+        for i in range(1, 31):
+            if i <= 10:
+                cn_day_map[f"初{self._cn_number(i)}"] = i
+            elif i < 20:
+                cn_day_map[f"十{self._cn_number(i-10)}"] = i
+            elif i == 20:
+                cn_day_map['二十'] = i
+            else:
+                cn_day_map[f"廿{self._cn_number(i-20)}"] = i
+        cn_day_map['三十'] = 30
+        return cn_day_map.get(lunar_day_cn, 1)
+
+    def _calculate_phase_change_interval(self, current_phase, state):
+        for threshold, phase in self._phase_thresholds:
+            if state < threshold:
+                time_to_threshold = (threshold - state) * 24 * 60  
+                return timedelta(minutes=min(time_to_threshold, 5))
+        return timedelta(minutes=5)
 
     async def async_update(self) -> None:
-        try:
-            now = dt.now().replace(tzinfo=None)
-            if (self._last_update is not None and 
-                now - self._last_update < MIN_TIME_BETWEEN_UPDATES):
-                return
+        now = dt.now().replace(tzinfo=None)
+        state = moon.phase(now.date())
+        
+        lunar = cnlunar.Lunar(now, godType='8char')
+        lunar_day = self._get_lunar_day(lunar)
 
-            state = moon.phase(now.date())
-            
-            try:
-                lunar = cnlunar.Lunar(now, godType='8char')
-                lunar_day = self._get_lunar_day(lunar)
-            except Exception as e:
-                _LOGGER.error(f"获取农历信息失败: {e}")
-                lunar_day = 1
+        current_phase = None
+        for threshold, phase in self._phase_thresholds:
+            if state < threshold:
+                current_phase = phase
+                break
 
-            if state < 0.5 or state > 27.5:
-                phase = '朔月'
-            elif state < 6.5:
-                phase = '峨眉月'
-            elif state < 7.5:
-                phase = '上弦月'
-            elif state < 13.5:
-                phase = '渐盈凸月'
-            elif state < 14.5:
-                phase = '满月'
-            elif state < 20.5:
-                phase = '渐亏凸月'
-            elif state < 21.5:
-                phase = '下弦月'
-            else:
-                phase = '残月'
-
-            self._state = phase
-            percentage = (state / 29.53) * 100 
+        if current_phase != self._last_state:
+            self._state = current_phase
+            percentage = (state / 29.53) * 100
+            night_moon = self._get_night_moon_name(lunar_day)
 
             self._attributes = {
                 '月龄': lunar_day,
+                '夜月': night_moon,
                 '月相百分比': f"{percentage:.1f}%",
-                '月相说明': self._get_moon_phase_description(phase),
+                '月相说明': self._get_moon_phase_description(current_phase),
                 '阴阳': '阴' if lunar_day > 15 else '阳',
                 '五行': self._get_moon_phase_wuxing(lunar_day),
                 '吉凶': self._get_moon_phase_luck(lunar_day)
             }
             self._available = True
-            self._last_update = now
+            self._last_state = current_phase
 
-        except Exception as e:
-            _LOGGER.error(f"更新月相传感器时出错: {e}")
-            self._available = False
+        self._last_update = now
+        return self._calculate_phase_change_interval(current_phase, state)
 
 class AlmanacDevice:
     def __init__(self, entry_id: str, name: str):
@@ -212,7 +226,11 @@ async def setup_almanac_moon_sensor(
     almanac_device = AlmanacDevice(entry_id, name)
     moon_sensor = AlmanacMoonSensor(almanac_device, name, "月相", True)
     entities.append(moon_sensor)
+
     async def update_moon_phase(now):
-        await moon_sensor.async_update()
-    async_track_time_interval(hass, update_moon_phase, timedelta(hours=1))
+        interval = await moon_sensor.async_update()
+        if interval:
+            async_track_time_interval(hass, update_moon_phase, interval)
+
+    await update_moon_phase(None)
     return entities

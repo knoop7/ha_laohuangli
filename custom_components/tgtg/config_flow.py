@@ -6,6 +6,7 @@ from homeassistant.core import callback
 from homeassistant import config_entries
 from homeassistant.const import CONF_NAME
 from homeassistant.helpers import selector
+from homeassistant.helpers import entity_registry
 from homeassistant.data_entry_flow import FlowResult
 from .const import (
     DOMAIN,
@@ -550,11 +551,21 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
         if user_input is not None and user_input.get("confirm"):
             new_data = dict(self.data)
             deleted_name = self.person_name
+            
             for idx in range(1, MAX_BIRTHDAYS + 1):
                 if (f"person{idx}_name" in new_data and 
                     new_data[f"person{idx}_name"] == self.person_name):
+                    registry = entity_registry.async_get(self.hass)
+                    entity_id = f"sensor.birthday_{self.person_name.lower()}"
+                    if entity_entry := registry.async_get(entity_id):
+                        registry.async_remove(entity_entry.entity_id)
+                        
                     new_data.pop(f"person{idx}_name")
                     new_data.pop(f"person{idx}_birthday")
+                    if f"person{idx}_notification_service" in new_data:
+                        new_data.pop(f"person{idx}_notification_service")
+                    if f"person{idx}_notification_message" in new_data:
+                        new_data.pop(f"person{idx}_notification_message")
                     break
             
             temp_data = {
@@ -564,16 +575,25 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
             }
             
             new_idx = 1
+            has_persons = False
             for i in range(1, MAX_BIRTHDAYS + 1):
                 if f"person{i}_name" in new_data:
+                    has_persons = True
                     temp_data[f"person{new_idx}_name"] = new_data[f"person{i}_name"]
                     temp_data[f"person{new_idx}_birthday"] = new_data[f"person{i}_birthday"]
+                    if f"person{i}_notification_service" in new_data:
+                        temp_data[f"person{new_idx}_notification_service"] = new_data[f"person{i}_notification_service"]
+                    if f"person{i}_notification_message" in new_data:
+                        temp_data[f"person{new_idx}_notification_message"] = new_data[f"person{i}_notification_message"]
                     new_idx += 1
+            
+            if not has_persons:
+                temp_data[CONF_BIRTHDAY_ENABLED] = False
             
             for key in new_data:
                 if key.startswith("event"):
                     temp_data[key] = new_data[key]
-            
+
             self._save_config(temp_data)
             return self.async_abort(
                 reason="person_deleted",
@@ -912,6 +932,10 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
             for idx in range(1, MAX_EVENTS + 1):
                 if (f"event{idx}_name" in new_data and 
                     new_data[f"event{idx}_name"] == self.event_name):
+                    registry = entity_registry.async_get(self.hass)
+                    entity_id = f"sensor.event_{self.event_name.lower()}"
+                    if entity_entry := registry.async_get(entity_id):
+                        registry.async_remove(entity_entry.entity_id)
                     deleted_idx = idx
                     break
             
@@ -924,12 +948,16 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                     new_data.pop(f"event{deleted_idx}_auto_remove")
                 if f"event{deleted_idx}_full_countdown" in new_data:
                     new_data.pop(f"event{deleted_idx}_full_countdown")
+                if f"event{deleted_idx}_notification_service" in new_data:
+                    new_data.pop(f"event{deleted_idx}_notification_service")
+                if f"event{deleted_idx}_notification_message" in new_data:
+                    new_data.pop(f"event{deleted_idx}_notification_message")
 
-                has_events = any(key.endswith("_name") for key in new_data if key.startswith("event"))
+                has_events = False
                 
                 temp_data = {
                     CONF_BIRTHDAY_ENABLED: new_data.get(CONF_BIRTHDAY_ENABLED, False),
-                    CONF_EVENT_ENABLED: has_events,  
+                    CONF_EVENT_ENABLED: True,  
                     CONF_NAME: new_data[CONF_NAME]
                 }
                 
@@ -939,18 +967,25 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                 
                 new_idx = 1
                 for idx in range(1, MAX_EVENTS + 1):
-                    if f"event{idx}_name" in new_data:
-                        if idx != deleted_idx:
-                            temp_data[f"event{new_idx}_name"] = new_data[f"event{idx}_name"]
-                            temp_data[f"event{new_idx}_date"] = new_data[f"event{idx}_date"]
-                            if f"event{idx}_desc" in new_data:
-                                temp_data[f"event{new_idx}_desc"] = new_data[f"event{idx}_desc"]
-                            if f"event{idx}_auto_remove" in new_data:
-                                temp_data[f"event{new_idx}_auto_remove"] = new_data[f"event{idx}_auto_remove"]
-                            if f"event{idx}_full_countdown" in new_data:
-                                temp_data[f"event{new_idx}_full_countdown"] = new_data[f"event{idx}_full_countdown"]
-                            new_idx += 1
-                
+                    if f"event{idx}_name" in new_data and idx != deleted_idx:
+                        has_events = True
+                        temp_data[f"event{new_idx}_name"] = new_data[f"event{idx}_name"]
+                        temp_data[f"event{new_idx}_date"] = new_data[f"event{idx}_date"]
+                        if f"event{idx}_desc" in new_data:
+                            temp_data[f"event{new_idx}_desc"] = new_data[f"event{idx}_desc"]
+                        if f"event{idx}_auto_remove" in new_data:
+                            temp_data[f"event{new_idx}_auto_remove"] = new_data[f"event{idx}_auto_remove"]
+                        if f"event{idx}_full_countdown" in new_data:
+                            temp_data[f"event{new_idx}_full_countdown"] = new_data[f"event{idx}_full_countdown"]
+                        if f"event{idx}_notification_service" in new_data:
+                            temp_data[f"event{new_idx}_notification_service"] = new_data[f"event{idx}_notification_service"]
+                        if f"event{idx}_notification_message" in new_data:
+                            temp_data[f"event{new_idx}_notification_message"] = new_data[f"event{idx}_notification_message"]
+                        new_idx += 1
+
+                if not has_events:
+                    temp_data[CONF_EVENT_ENABLED] = False
+
                 self._save_config(temp_data)
                 return self.async_abort(
                     reason="event_deleted",
@@ -963,3 +998,4 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                 vol.Required("confirm", default=False): bool,
             })
         )
+        

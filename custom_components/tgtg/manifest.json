@@ -1,7 +1,7 @@
 {
   "domain": "tgtg",
   "name": "\u4e2d\u570b\u8001\u9ec3\u66c6",
-  "version": "2024.10.31",
+  "version": "2024.11.20",
   "config_flow": true,
   "documentation": "https://github.com/knoop7/ha_laohuangli",
   "issue_tracker": "https://github.com/knoop7/ha_laohuangli/issues",

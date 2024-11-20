@@ -213,42 +213,46 @@ class BirthdaySensor(SensorEntity):
 
             elif self._type == "生日提醒_农":
                 today = dt.now().replace(tzinfo=None)
-                
                 birth_lunar = cnlunar.Lunar(self._birthday, godType='8char')
                 birth_lunar_month = birth_lunar.lunarMonth
                 birth_lunar_day = birth_lunar.lunarDay
                 birth_is_leap = birth_lunar.isLunarLeapMonth
-                
                 today_lunar = cnlunar.Lunar(today, godType='8char')
                 today_year = today_lunar.lunarYear
                 this_year_birthday = None
                 next_year_birthday = None
+                found_birthday = False
                 
-                for year in [today_year, today_year + 1]:
-                    for month in range(1, 13):  
-                        test_date = datetime(year, month, 1) 
-                        while test_date.year == year:
+                for year in [today_year - 1, today_year, today_year + 1]:
+                    if found_birthday: break
+                    for month in range(1, 13):
+                        if found_birthday: break
+                        next_month = datetime(year + 1, 1, 1) if month == 12 else datetime(year, month + 1, 1)
+                        days_in_month = (next_month - datetime(year, month, 1)).days
+                        for day in range(days_in_month):
+                            test_date = datetime(year, month, 1) + timedelta(days=day)
                             lunar_test = cnlunar.Lunar(test_date, godType='8char')
                             if (lunar_test.lunarMonth == birth_lunar_month and 
                                 lunar_test.lunarDay == birth_lunar_day and 
                                 lunar_test.isLunarLeapMonth == birth_is_leap):
-                                if year == today_year:
-                                    this_year_birthday = test_date
+                                if test_date.date() < today.date():
+                                    if year == today_year - 1: continue
+                                    if year == today_year: this_year_birthday = test_date
                                 else:
-                                    next_year_birthday = test_date
+                                    if year == today_year:
+                                        this_year_birthday = test_date
+                                        found_birthday = True
+                                    else:
+                                        next_year_birthday = test_date
+                                        found_birthday = True
                                 break
-                            test_date = test_date + timedelta(days=1)
-                        if (year == today_year and this_year_birthday) or (year == today_year + 1 and next_year_birthday):
-                            break
                 
-                if this_year_birthday and this_year_birthday.date() >= today.date():
-                    next_birthday = this_year_birthday
-                else:
-                    next_birthday = next_year_birthday
+                next_birthday = (this_year_birthday if this_year_birthday and 
+                                this_year_birthday.date() >= today.date() else next_year_birthday)
                 
                 if next_birthday:
                     days_until = (next_birthday.date() - today.date()).days
-                    
+                    next_lunar = cnlunar.Lunar(next_birthday, godType='8char')
                     if days_until == 0:
                         self._state = "今天是生日"
                         if (self._notification_service and 
@@ -257,18 +261,14 @@ class BirthdaySensor(SensorEntity):
                             await self.hass.services.async_call(
                                 "notify",
                                 self._notification_service.replace("notify.", ""),
-                                {
-                                    "title": "中国老黄历 · Home Assistant",
-                                    "message": self._notification_message
-                                }
+                                {"title": "中国老黄历 · Home Assistant",
+                                "message": self._notification_message}
                             )
                             self._last_notification_date = today.date()
                     else:
                         self._state = f"农历生日还有{days_until}天"
-                    
-                    self._attributes.update({
-                        "下个生日": next_birthday.strftime("%Y-%m-%d")
-                    })
+                    self._attributes.update({"下个生日": f"阳历：{next_birthday.strftime('%Y-%m-%d')}"})
+
 
             elif self._type == "生日提醒_阳":
                 today = dt.now().replace(tzinfo=None)

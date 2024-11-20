@@ -50,6 +50,8 @@ class EventSensor(SensorEntity):
         self._unsub_update = None
         self._hass = hass
         self._notification_sent = False
+        self._last_update = None  
+
 
     @property
     def name(self):
@@ -98,8 +100,33 @@ class EventSensor(SensorEntity):
     def should_remove(self):
         return self._should_remove
 
+
+    def should_update(self) -> bool:
+        now = dt.now().replace(tzinfo=None)
+        if not self._next_update or now >= self._next_update:
+            return True
+        return False
+    async def async_added_to_hass(self):
+        await self.async_update()
+        
+        @callback
+        async def _scheduled_update(now):
+            await self.async_update()
+
+        if self._full_countdown:
+            update_interval = timedelta(milliseconds=100)  
+        else:
+            update_interval = self._calculate_update_interval()
+
+        self._unsub_update = async_track_time_interval(
+            self.hass,
+            _scheduled_update,
+            update_interval
+        )
+
     def _calculate_update_interval(self):
-        delta = self._event_date - dt.now().replace(tzinfo=None)
+        now = dt.now().replace(tzinfo=None)
+        delta = self._event_date - now
         
         if not self._full_countdown:
             return timedelta(hours=1)
@@ -116,67 +143,45 @@ class EventSensor(SensorEntity):
     def _format_countdown(self, delta):
         if not self._full_countdown:
             return f"还有{delta.days}天"
-            
-        days = delta.days
-        hours = delta.seconds // 3600
-        minutes = (delta.seconds % 3600) // 60
-        seconds = delta.seconds % 60
+                
+        total_seconds = int(delta.total_seconds())
+        days = total_seconds // (24 * 3600)
+        remaining_seconds = total_seconds % (24 * 3600)
+        hours = remaining_seconds // 3600
+        remaining_seconds %= 3600
+        minutes = remaining_seconds // 60
+        seconds = remaining_seconds % 60
 
-        if days == 0:
-            parts = []
-            if hours > 0:
-                parts.append(f"{hours}时")
-            if minutes > 0:
-                parts.append(f"{minutes}分")
-            if seconds > 0:
-                parts.append(f"{seconds}秒")
-            return "".join(parts) if parts else "0秒"
-        else:
-            return f"{days}天{hours}时{minutes}分{seconds}秒"
-
-    def should_update(self) -> bool:
-        now = dt.now().replace(tzinfo=None)
-        if not self._next_update or now >= self._next_update:
-            return True
-        return False
-
-    async def async_added_to_hass(self):
-        await self.async_update()
+        if days > 0:
+            return f"还有{days}天"
         
-        @callback
-        async def _scheduled_update(now):
-            await self.async_update()
-            self._update_interval = self._calculate_update_interval()
-            if self._update_interval:
-                self._next_update = dt.now().replace(tzinfo=None) + self._update_interval
-
-        if self._full_countdown:
-            self._update_interval = self._calculate_update_interval()
-            self._unsub_update = async_track_time_interval(
-                self.hass,
-                _scheduled_update,
-                self._update_interval
-            )
-
-    async def async_will_remove_from_hass(self):
-        if self._unsub_update:
-            self._unsub_update()
+        parts = []
+        if hours > 0:
+            parts.append(f"{hours}时")
+        if minutes > 0:
+            parts.append(f"{minutes}分")
+        if seconds > 0 or not parts:  
+            parts.append(f"{seconds}秒")
+        
+        return "".join(parts)
 
     async def async_update(self):
         try:
-            if not self.should_update():
-                return
-
             now = dt.now().replace(tzinfo=None)
+            
+            if self._last_update and (now - self._last_update).total_seconds() < 0.8:
+                return
+                
+            self._last_update = now
+
             if not self._event_date:
                 self._available = False
                 return
 
             delta = self._event_date - now
-            days_until = delta.days
-            seconds_until = delta.total_seconds()
+            total_seconds = delta.total_seconds()
 
-            if self._auto_remove and days_until < -1:
+            if self._auto_remove and delta.days < -1:
                 self._should_remove = True
                 if self._registry and self._entity_id:
                     try:
@@ -186,29 +191,27 @@ class EventSensor(SensorEntity):
                 self._available = False
                 return
 
-            if days_until < -1 or (days_until == -1 and seconds_until <= -3600):
+            if total_seconds <= -86400:  
                 self._state = "已过期"
             elif self._full_countdown:
-                if -3600 < seconds_until <= 0:
+                if -3600 < total_seconds <= 0:
                     self._state = "已到时间"
                     await self._handle_notification()
-                elif seconds_until > 0:
+                elif total_seconds > 0:
                     self._state = self._format_countdown(delta)
                     self._notification_sent = False
                 else:
                     self._state = "已过期"
             else:
-                if days_until == 0:
+                if delta.days == 0:
                     self._state = "今天"
                     await self._handle_notification()
-                elif seconds_until <= 0:
+                elif total_seconds <= 0:
                     self._state = "已过期"
                 else:
-                    self._state = f"还有{days_until}天"
+                    self._state = f"还有{delta.days}天"
                     self._notification_sent = False
 
-            self._update_interval = self._calculate_update_interval()
-            self._next_update = now + self._update_interval
             self._available = True
 
         except Exception as e:
