@@ -15,8 +15,8 @@
 **为您的智能家居注入传统中国历法的智慧与魅力**
 <br>
 
-![版本](https://img.shields.io/badge/version-2024.10.26-blue.svg)
-![Home Assistant版本](https://img.shields.io/badge/Hoe%20Assistant-2023.6.0+-yellow.svg)
+![版本](https://img.shields.io/badge/version-2024.11.20-blue.svg)
+![Home Assistant版本](https://img.shields.io/badge/Hoe%20Assistant-2024.8.0+-yellow.svg)
 ![维护状态](https://img.shields.io/badge/维护-活跃-green.svg)
 ![许可](https://img.shields.io/badge/许可-MIT-brightgreen.svg)
 ![Python版本](https://img.shields.io/badge/Python-3.9+-blue.svg)
