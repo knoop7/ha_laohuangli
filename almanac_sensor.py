@@ -200,9 +200,9 @@ class AlmanacTextProcessor:
 
 class TimeHelper:
     SHICHEN = ['子时', '丑时', '寅时', '卯时', '辰时', '巳时',
-             '午时', '未时', '申时', '酉时', '戌时', '亥时']
+               '午时', '未时', '申时', '酉时', '戌时', '亥时']
     
-    MARKS = ["初", "二", "三", "四", "五", "六", "七", "八"]
+    MARKS = ["初", "一", "二", "三", "四", "五", "六", "七"]
     
     TIME_RANGES = [
         "23:00-01:00", "01:00-03:00", "03:00-05:00", "05:00-07:00",
@@ -211,19 +211,31 @@ class TimeHelper:
     ]
     
     @classmethod
+    def get_shichen_start_hour(cls, hour: int) -> int:
+        if hour == 23:
+            return 23
+        return (hour + 1) // 2 * 2 - 1
+
+    @classmethod
     def get_current_shichen(cls, hour: int, minute: int) -> str:
-        double_hour = (hour + 1) // 2 % 12
-        is_first_hour = hour % 2 == 0
-        ke = (minute // 15) + (1 if is_first_hour else 5)
-        mark = cls.MARKS[ke - 1]
-        return (f"{cls.SHICHEN[double_hour]}{mark}刻" 
-                if mark != "初" else f"{cls.SHICHEN[double_hour]}初")
+        if hour == 23:
+            shichen_index = 0 
+        else:
+            shichen_index = ((hour + 1) // 2) % 12
+        shichen_start = cls.get_shichen_start_hour(hour)
+        total_minutes = (hour - shichen_start) * 60 + minute        
+        ke = total_minutes // 15
+        ke = max(0, min(7, ke))
+        if ke == 0:
+            return f"{cls.SHICHEN[shichen_index]}初"
+        else:
+            return f"{cls.SHICHEN[shichen_index]}{cls.MARKS[ke]}刻"
     
     @classmethod
     def get_current_twohour(cls, hour: int) -> int:
-        if hour == 23 or hour < 1:
-            return 0
-        return ((hour - 1) // 2 + 1) % 12
+        if hour == 23:
+            return 0  
+        return ((hour + 1) // 2) % 12
         
     @staticmethod
     def get_nine_palace_positions():
