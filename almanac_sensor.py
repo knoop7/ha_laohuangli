@@ -493,7 +493,7 @@ class SensorUpdateManager:
                 for sensor in sensors_to_update:
                     if not getattr(sensor, '_updating', False):
                         sensor._updating = True
-                        update_tasks.append(sensor._do_update())
+                        update_tasks.append(sensor.async_update())
                 if update_tasks:
                     await asyncio.gather(*update_tasks)
                 for sensor in sensors_to_update:
@@ -508,42 +508,31 @@ class SensorUpdateManager:
                 
     def _handle_update(self, now, sensors_to_update):
         task = asyncio.run_coroutine_threadsafe(
-            self.update_sensors_batch(sensors_to_update),
+            self.update_sensors_batch(sensors_to_update), 
             self._hass.loop
         )
         self._tasks.add(task)
 
     def setup_update_schedules(self):
-        def midnight_update(now):
-            self._handle_update(now, self._sensors)
-
-        def quarter_hourly_update(now):
-            shichen_sensors = [s for s in self._sensors if s._type == '时辰']
-            self._handle_update(now, shichen_sensors)
-
-        def two_hourly_update(now):
-            lucky_sensors = [s for s in self._sensors if s._type == '时辰凶吉']
-            self._handle_update(now, lucky_sensors)
-
-        def hourly_update(now):
-            date_sensors = ['日期', '农历', '八字', '今日节日']
-            hourly_sensors = [s for s in self._sensors if s._type in date_sensors or 
-                            s._type not in ['时辰凶吉', '时辰'] + date_sensors]
-            self._handle_update(now, hourly_sensors)
-
-        def init_update(_):
-            self._handle_update(dt.utcnow(), self._sensors)
-            
-        async_track_time_change(self._hass, midnight_update, hour=0, minute=0, second=0)
-        async_track_time_change(self._hass, quarter_hourly_update, minute=[0, 15, 30, 45], second=0)
-        async_track_time_change(self._hass, two_hourly_update, 
-                              hour=[0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22], 
+        async_track_time_change(self._hass, 
+                              lambda now: self._handle_update(now, self._sensors),
+                              hour=0, minute=0, second=0)
+        async_track_time_change(self._hass,
+                              lambda now: self._handle_update(now, [s for s in self._sensors if s._type == '时辰']),
+                              minute=[0, 15, 30, 45], second=0)
+        async_track_time_change(self._hass,
+                              lambda now: self._handle_update(now, [s for s in self._sensors if s._type == '时辰凶吉']),
+                              hour=[0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22],
                               minute=0, second=0)
-        async_track_time_change(self._hass, hourly_update, minute=0, second=0)
+        async_track_time_change(self._hass,
+                              lambda now: self._handle_update(now, [s for s in self._sensors 
+                                  if s._type in ['日期', '农历', '八字', '今日节日'] or
+                                  s._type not in ['时辰凶吉', '时辰'] + ['日期', '农历', '八字', '今日节日']]),
+                              minute=0, second=0)
 
         self._hass.bus.async_listen_once(
             'homeassistant_started',
-            init_update
+            lambda _: self._handle_update(dt.utcnow(), self._sensors)
         )
         
 async def setup_almanac_sensors(hass: HomeAssistant, entry_id: str, config_data: dict):
