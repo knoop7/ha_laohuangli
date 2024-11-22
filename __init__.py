@@ -5,6 +5,7 @@ from datetime import timedelta
 from pathlib import Path
 from typing import Dict, Set, Optional, List
 from homeassistant.core import HomeAssistant
+from homeassistant.util import yaml
 from homeassistant.helpers import entity_registry
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -152,13 +153,102 @@ async def setup_almanac_card(hass: HomeAssistant) -> bool:
     except Exception:
         return False
 
+def merge_recorder_config(hass: HomeAssistant) -> None:
+    config_path = os.path.join(hass.config.config_dir, "configuration.yaml")
+    backup_path = os.path.join(hass.config.config_dir, "configuration.yaml.backup")
+    try:
+        default_recorder = """recorder:
+  exclude:
+    domains:
+      - almanac
+    entity_globs:
+      - sensor.zhong_guo_lao_huang_li_*
+      - sensor.lao_huang_li_*
+      - sensor.*_huang_li_*"""
+
+        if os.path.exists(config_path):
+            with open(config_path, 'r', encoding='utf-8') as fsrc, open(backup_path, 'w', encoding='utf-8') as fdst:
+                content = fsrc.read()
+                fdst.write(content)
+                
+            if 'recorder:' not in content:
+                with open(config_path, 'a', encoding='utf-8') as f:
+                    if content and not content.endswith('\n'):
+                        f.write('\n')
+                    if content:
+                        f.write('\n')
+                    f.write(default_recorder)
+                    return
+                    
+            lines = content.splitlines()
+            need_save = False
+            recorder_indent = None
+            exclude_indent = None
+            domains_indent = None
+            entity_globs_indent = None
+            
+            for i, line in enumerate(lines):
+                if 'recorder:' in line and line.strip() == 'recorder:':
+                    recorder_indent = len(line) - len(line.lstrip())
+                    if i + 1 >= len(lines) or not lines[i + 1].strip():
+                        lines.insert(i + 1, ' ' * (recorder_indent + 2) + 'exclude:')
+                        lines.insert(i + 2, ' ' * (recorder_indent + 4) + 'domains:')
+                        lines.insert(i + 3, ' ' * (recorder_indent + 6) + '- almanac')
+                        lines.insert(i + 4, ' ' * (recorder_indent + 4) + 'entity_globs:')
+                        for pattern in ["sensor.zhong_guo_lao_huang_li_*", "sensor.lao_huang_li_*", "sensor.*_huang_li_*"]:
+                            lines.insert(i + 5, ' ' * (recorder_indent + 6) + f'- {pattern}')
+                        need_save = True
+                        break
+                elif 'exclude:' in line and recorder_indent is not None:
+                    exclude_indent = len(line) - len(line.lstrip())
+                elif 'domains:' in line and exclude_indent is not None:
+                    domains_indent = len(line) - len(line.lstrip())
+                    if 'almanac' not in content:
+                        for j, next_line in enumerate(lines[i+1:], i+1):
+                            if len(next_line.strip()) == 0 or len(next_line) - len(next_line.lstrip()) <= domains_indent:
+                                lines.insert(j, ' ' * (domains_indent + 2) + '- almanac')
+                                need_save = True
+                                break
+                elif 'entity_globs:' in line and exclude_indent is not None:
+                    entity_globs_indent = len(line) - len(line.lstrip())
+                    patterns = ["sensor.zhong_guo_lao_huang_li_*", "sensor.lao_huang_li_*", "sensor.*_huang_li_*"]
+                    for pattern in patterns:
+                        if pattern not in content:
+                            for j, next_line in enumerate(lines[i+1:], i+1):
+                                if len(next_line.strip()) == 0 or len(next_line) - len(next_line.lstrip()) <= entity_globs_indent:
+                                    lines.insert(j, ' ' * (entity_globs_indent + 2) + f'- {pattern}')
+                                    need_save = True
+                                    break
+            
+            if need_save:
+                with open(config_path, 'w', encoding='utf-8') as f:
+                    f.write('\n'.join(lines))
+        else:
+            with open(config_path, 'w', encoding='utf-8') as f:
+                f.write(default_recorder)
+            
+        if os.path.exists(backup_path):
+            os.remove(backup_path)
+    except Exception as e:
+        if os.path.exists(backup_path):
+            try:
+                with open(backup_path, 'r', encoding='utf-8') as fsrc, open(config_path, 'w', encoding='utf-8') as fdst:
+                    fdst.write(fsrc.read())
+            except: pass
+            try: os.remove(backup_path)
+            except: pass
+        raise RuntimeError(f"配置文件修改失败: {str(e)}") from e
+
+
 async def async_setup(hass: HomeAssistant, config: dict) -> bool:
     hass.data[DOMAIN] = {}
+    await hass.async_add_executor_job(merge_recorder_config, hass)
     if await setup_almanac_card(hass):
         add_extra_js_url(hass, "/local/almanac-card.js")
         await async_setup_date_service(hass)
         return True
     return False
+
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_entities: Optional[AddEntitiesCallback] = None) -> bool:
     try:
