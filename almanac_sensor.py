@@ -292,7 +292,7 @@ class AlmanacSensor(SensorEntity):
     def device_info(self): return self._device.device_info
     @property
     def entity_category(self): 
-        return None if self._is_main_sensor else EntityCategory.DIAGNOSTIC
+        return None if self._is_main_sensor else "diagnostic" 
     @property
     def state(self): return self._state
     @property
@@ -484,42 +484,68 @@ class SensorUpdateManager:
         self._hass = hass
         self._sensors = sensors
         self._update_lock = asyncio.Lock()
+        self._tasks = set()
         
     async def update_sensors_batch(self, sensors_to_update: List[AlmanacSensor]):
-        async with self._update_lock:
-            update_tasks = [sensor._do_update() for sensor in sensors_to_update]
-            await asyncio.gather(*update_tasks)
-            for sensor in sensors_to_update:
-                sensor.async_write_ha_state()
+        try:
+            async with self._update_lock:
+                update_tasks = []
+                for sensor in sensors_to_update:
+                    if not getattr(sensor, '_updating', False):
+                        sensor._updating = True
+                        update_tasks.append(sensor._do_update())
+                if update_tasks:
+                    await asyncio.gather(*update_tasks)
+                for sensor in sensors_to_update:
+                    try:
+                        sensor.async_write_ha_state()
+                    finally:
+                        sensor._updating = False
+        finally:
+            for task in self._tasks.copy():
+                if task.done():
+                    self._tasks.discard(task)
                 
-    async def setup_update_schedules(self):
-        async def midnight_update(now: datetime):
-            await self.update_sensors_batch(self._sensors)
+    def _handle_update(self, now, sensors_to_update):
+        task = asyncio.run_coroutine_threadsafe(
+            self.update_sensors_batch(sensors_to_update),
+            self._hass.loop
+        )
+        self._tasks.add(task)
 
-        async def quarter_hourly_update(now: datetime):
+    def setup_update_schedules(self):
+        def midnight_update(now):
+            self._handle_update(now, self._sensors)
+
+        def quarter_hourly_update(now):
             shichen_sensors = [s for s in self._sensors if s._type == '时辰']
-            await self.update_sensors_batch(shichen_sensors)
+            self._handle_update(now, shichen_sensors)
 
-        async def two_hourly_update(now: datetime):
+        def two_hourly_update(now):
             lucky_sensors = [s for s in self._sensors if s._type == '时辰凶吉']
-            await self.update_sensors_batch(lucky_sensors)
+            self._handle_update(now, lucky_sensors)
 
-        async def hourly_update(now: datetime):
+        def hourly_update(now):
             date_sensors = ['日期', '农历', '八字', '今日节日']
             hourly_sensors = [s for s in self._sensors if s._type in date_sensors or 
                             s._type not in ['时辰凶吉', '时辰'] + date_sensors]
-            await self.update_sensors_batch(hourly_sensors)
+            self._handle_update(now, hourly_sensors)
 
+        def init_update(_):
+            self._handle_update(dt.utcnow(), self._sensors)
+            
         async_track_time_change(self._hass, midnight_update, hour=0, minute=0, second=0)
         async_track_time_change(self._hass, quarter_hourly_update, minute=[0, 15, 30, 45], second=0)
-        async_track_time_change(self._hass, two_hourly_update, hour=[0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22], minute=0, second=0)
+        async_track_time_change(self._hass, two_hourly_update, 
+                              hour=[0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22], 
+                              minute=0, second=0)
         async_track_time_change(self._hass, hourly_update, minute=0, second=0)
 
         self._hass.bus.async_listen_once(
             'homeassistant_started',
-            lambda _: self.update_sensors_batch(self._sensors)
+            init_update
         )
-
+        
 async def setup_almanac_sensors(hass: HomeAssistant, entry_id: str, config_data: dict):
     name = config_data.get("name", "中国老黄历")
     almanac_device = AlmanacDevice(entry_id, name)
@@ -539,7 +565,7 @@ async def setup_almanac_sensors(hass: HomeAssistant, entry_id: str, config_data:
     ]
 
     update_manager = SensorUpdateManager(hass, sensors)
-    await update_manager.setup_update_schedules()
+    update_manager.setup_update_schedules() 
 
     if DOMAIN not in hass.data:
         hass.data[DOMAIN] = {}
