@@ -1,0 +1,207 @@
+{
+  "title": "中国の古い年鑑",
+  "config": {
+    "abort": {
+      "already_configured": "デバイスが設定されました",
+      "single_instance_allowed": "すでに構成されているインスタンスは 1 つだけです。",
+      "max_persons_reached": "定員（5名）に達しました",
+      "max_events_reached": "イベント最大数に達しました (30)",
+      "person_added": "人材が正常に追加されました",
+      "person_updated": "{name} が正常に更新されました",
+      "person_deleted": "{name} は正常に削除されました",
+      "event_added": "イベントが正常に追加されました",
+      "event_updated": "{name} が正常に更新されました",
+      "event_deleted": "{name} は正常に削除されました",
+      "event_not_found": "イベントが見つかりませんでした"
+    },
+    "error": {
+      "invalid_date_format": "日付形式が間違っています。YYYY/MM/DD/HH 形式を使用してください (例: 1990/01/01/08)",
+      "invalid_event_date_format": "日付の形式が間違っています。YYYY/MM/DD 形式を使用してください (例: 2024/12/31)",
+      "invalid_time_format": "時刻の形式が間違っています。HH/MM 形式を使用してください (例: 08/30)",
+      "name_already_exists": "名前が同じ場合は、識別しやすくするために名前の後に番号を追加できます (例: Zhang San 1)。",
+      "duplicate_event_name": "イベント名はすでに存在します",
+      "unknown": "不明なエラーが発生しました。追加または編集できない場合は、統合を削除して再度追加してください。",
+      "unknown_error": "不明なエラーが発生しました。追加または編集できない場合は、統合を削除して、再度追加してください。",
+      "unknown_error_occurred": "不明なエラーが発生しました。追加または編集できない場合は、統合を削除して再度追加してください。"
+    },
+    "step": {
+      "user": {
+        "title": "初めてのセットアップ",
+        "description": "この統合プラグインへようこそ!\n[@knoop7](https://github.com/knoop7) によって独占的に書かれ、制作されました\n\n小紅書、Bilibili等のプラットフォームへの無断転載は禁止します。\nあらゆる種類の商用および二次改変関連の派生物は固く禁止されています\n違反がある場合、更新とその後のコードのメンテナンスは停止されます。\n\n\n**伝統的なカレンダー:**\n• 伝統的な太陰太陽暦情報のリアルタイム表示\n• 24節気の正確な予測\n• 幸運と不運、タブーに関する毎日のガイダンス\n\n**誕生日管理:**\n• 家族の誕生日\n• 関連する星占いと誕生日リマインダー機能\n\n**イベント管理:**\n• 投資および財務管理のリマインダー\n• 仕事スケジュールのリマインダー\n• 会議と夕食のリマインダー\n• 記念日のリマインダー\n\n",
+        "data": {
+          "setup_options": "有効にする機能を選択します:",
+          "setup_birthday": "誕生日のリマインダー",
+          "setup_event": "インシデント管理"
+        }
+      },
+      "birthday": {
+        "title": "誕生日管理設定",
+        "description": "誕生日情報を設定してください（最大5名まで対応）",
+        "data": {
+          "name": "名前",
+          "birthday": "誕生日（形式：YYYY/MM/DD/HH）",
+          "add_another": "追加を続けます"
+        }
+      },
+      "event": {
+        "title": "イベント管理構成",
+        "description": "イベント情報を設定してください(最大30件までサポート)",
+        "data": {
+          "name": "イベント名",
+          "date": "イベント日（形式：YYYY/MM/DD）",
+          "description": "イベントの説明",
+          "add_another": "追加を続けます"
+        }
+      },
+      "name": {
+        "title": "サービス名の設定",
+        "description": "中国年鑑のサービス名を変更できます",
+        "data": {
+          "name": "サービス名"
+        }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "機能管理",
+        "description": "管理する機能領域を選択してください",
+        "data": {
+          "area": "機能選択",
+          "area_birthday": "誕生日管理",
+          "area_event": "インシデント管理"
+        }
+      },
+      "actions": {
+        "title": "操作オプション",
+        "description": "実行するアクションを選択してください",
+        "data": {
+          "action": "アクションの選択",
+          "person_index": "名前を選択してください",
+          "event_index": "イベントを選択",
+          "add": "に追加",
+          "edit": "編集",
+          "delete": "消去"
+        },
+        "select_description": {
+          "edit_person": "編集したい人を選択してください",
+          "delete_person": "削除する人を選択してください",
+          "edit_event": "編集するイベントを選択してください",
+          "delete_event": "削除するイベントを選択してください"
+        }
+      },
+      "select_person": {
+        "title": "オプション",
+        "description": "以下の人たちを選択してください",
+        "data": {
+          "person_index": "名前を選択してください"
+        }
+      },
+      "select_event": {
+        "title": "オプション",
+        "description": "以下のイベントを選択してください",
+        "data": {
+          "event_index": "イベントを選択"
+        }
+      },
+      "add_birthday": {
+        "title": "誕生日情報を追加する",
+        "data": {
+          "name": "名前",
+          "birthday": "誕生日（形式：YYYY/MM/DD/HH）",
+          "notification_enabled": "通知サービスを有効にする"
+        }
+      },
+      "edit_birthday": {
+        "title": "誕生日情報を編集する",
+        "data": {
+          "name": "名前",
+          "birthday": "誕生日（形式：YYYY/MM/DD/HH）",
+          "notification_enabled": "通知サービスを有効にする"
+        }
+      },
+      "delete_birthday": {
+        "title": "誕生日情報を削除する",
+        "description": "この誕生日情報を削除してもよろしいですか?",
+        "data": {
+          "confirm": "削除の確認"
+        }
+      },
+      "birthday_notification_edit": {
+        "title": "通知サービスの構成",
+        "data": {
+          "notification_service": "通知サービスを選択してください",
+          "notification_message": "通知メッセージ"
+        }
+      },
+      "event_notification_edit": {
+        "title": "通知サービスの構成",
+        "data": {
+          "notification_service": "通知サービスを選択してください",
+          "notification_message": "通知メッセージ"
+        }
+      },
+      "add_event": {
+        "title": "イベント情報を追加",
+        "data": {
+          "name": "イベント名",
+          "date": "イベント日（形式：YYYY/MM/DD）",
+          "description": "イベントの説明",
+          "auto_remove": "イベントの自動削除（センサーは1日後に自動的に削除されます）",
+          "full_countdown": "フルカウントダウンを有効にする",
+          "notification_enabled": "通知サービスを有効にする"
+        }
+      },
+      "edit_event": {
+        "title": "イベント情報の編集",
+        "data": {
+          "name": "イベント名",
+          "date": "イベント日（形式：YYYY/MM/DD）",
+          "description": "イベントの説明",
+          "auto_remove": "イベントの自動削除（センサーは1日後に自動的に削除されます）",
+          "full_countdown": "フルカウントダウンを有効にする",
+          "notification_enabled": "通知サービスを有効にする"
+        }
+      },
+      "edit_event_time": {
+        "title": "時間を設定する",
+        "description": "イベント {name} の特定のカウントダウン時間を設定します",
+        "data": {
+          "time": "時刻（形式：HH/MM）"
+        }
+      },
+      "delete_event": {
+        "title": "イベント情報の削除",
+        "description": "このイベント情報を削除してもよろしいですか?",
+        "data": {
+          "confirm": "削除の確認"
+        }
+      }
+    },
+    "error": {
+      "unknown": "不明なエラーが発生しました。追加または編集できない場合は、統合を削除して、再度追加してください。",
+      "unknown_error": "不明なエラーが発生しました。追加または編集できない場合は、統合を削除して再度追加してください。",
+      "unknown_error_occurred": "不明なエラーが発生しました。追加または編集できない場合は、統合を削除して再度追加してください。",
+      "need_select_person_for_edit": "編集したい人を選択してください",
+      "need_select_person_for_delete": "削除する人を選択してください",
+      "need_select_event_for_edit": "編集するイベントを選択してください",
+      "need_select_event_for_delete": "削除するイベントを選択してください",
+      "name_already_exists": "名前が同じ場合は、識別しやすくするために名前の後に番号を追加できます (例: Zhang San 1)。",
+      "invalid_date_format": "日付形式が間違っています。YYYY/MM/DD/HH 形式を使用してください (例: 1990/01/01/08)",
+      "invalid_event_date_format": "日付の形式が間違っています。YYYY/MM/DD 形式を使用してください (例: 2024/12/31)",
+      "invalid_time_format": "時刻の形式が間違っています。HH/MM 形式を使用してください (例: 08/30)"
+    },
+    "abort": {
+      "max_persons_reached": "定員（5名）に達しました",
+      "max_events_reached": "イベント最大数に達しました (30)",
+      "person_added": "人材が正常に追加されました",
+      "person_updated": "{name} が正常に更新されました",
+      "person_deleted": "{name} は正常に削除されました",
+      "event_added": "イベントが正常に追加されました",
+      "event_updated": "{name} が正常に更新されました",
+      "event_deleted": "{name} は正常に削除されました",
+      "event_not_found": "イベントが見つかりませんでした"
+    }
+  }
+}
