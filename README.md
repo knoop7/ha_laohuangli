@@ -127,6 +127,4 @@ prefix: lao_huang_li_
 <img src="https://github.com/user-attachments/assets/444a1a4a-251b-4a6c-8070-7ba4cca642f4" alt="description" width="300" />
 
 
-> **特别声明**：本插件独家授权Home Assistant家庭助手公众号，未经允许禁止转发到其他平台。如有违规使用，将停止更新及修复问题。
-
-
+> **特别声明**：本插件独家授权Home Assistant家庭助手公众号。
