@@ -6,7 +6,7 @@
 
 <br>
 
-<img width="960" alt="截屏2024-09-24 14 06 27" src="https://github.com/user-attachments/assets/2414840b-c860-4d49-b788-b25fbb51b0e5">
+<img width="960" alt="img" src="https://github.com/user-attachments/assets/2414840b-c860-4d49-b788-b25fbb51b0e5">
 
 </div>
 <br>
@@ -15,8 +15,8 @@
 **为您的智能家居注入传统中国历法的智慧与魅力**
 <br>
 
-![版本](https://img.shields.io/badge/version-2024.12.01-blue.svg)
-![Home Assistant版本](https://img.shields.io/badge/Hoe%20Assistant-2024.8.0+-yellow.svg)
+![版本](https://img.shields.io/badge/version-2024.12.05-blue.svg)
+![Home Assistant版本](https://img.shields.io/badge/Hoe%20Assistant-2024.4.0+-yellow.svg)
 ![维护状态](https://img.shields.io/badge/维护-活跃-green.svg)
 ![许可](https://img.shields.io/badge/许可-MIT-brightgreen.svg)
 ![Python版本](https://img.shields.io/badge/Python-3.1.3+-blue.svg)
@@ -60,8 +60,8 @@
 - **基础信息**：日期、农历、星期、今日节日、周数
 - **传统历法**：八字、节气、季节、时辰、时辰凶吉
 - **个人属性**：生肖冲煞、星座、星次、六曜、日禄
-- **传统文化**：彭祖百忌、十二神、廿八宿、今日三合、今日六合
-- **风水五行**：纳音、九宫飞星、吉神方位、今日胎神
+- **传统文化**：彭祖百忌、十二神、廿八宿、今日三合、三世相法、今日六合
+- **风水五行**：纳音、六十四卦、九宫飞星、吉神方位、今日胎神
 - **吉凶指引**：今日吉神、今日凶煞、宜忌等第、宜、忌
 - **健康养生**：时辰经络、时辰刻度
 - **事件提醒**：自定义事件管理，如生日、纪念日等
@@ -76,7 +76,7 @@
 <br>
 中国老黄历卡片为您提供丰富的传统历法信息，界面布局清晰直观：
 
-<img width="400" alt="截屏2024-11-25 16 00 11" src="https://github.com/user-attachments/assets/b8b69c30-d08f-4225-a605-9ea2318961e9">
+<img width="556" alt="img" src="https://github.com/user-attachments/assets/dc0556d4-24f3-4f4d-a1cc-3560ee8bf917">
 
 #### 大数字显示当前日期
 可点击左右箭头切换前一天/后一天，点击日期可打开日期选择器，方便跳转到指定日期
@@ -88,8 +88,8 @@
 
 - **节律太阴**：显示周数、季节、节气、星座、月相等信息
 - **卜筮术数**：包含纳音、星次、飞星、廿八宿、十二神等术数信息
-- **日时禄位**：展示日禄、时辰、经络、吉凶等时刻信息
-- **孔明生肖**：显示六曜、三合、六合、生肖冲煞等信息
+- **日时禄位**：展示日禄、时辰、经络、六十四卦、吉凶等时刻信息
+- **孔明禽相**：显示六曜、三合、六合、禽相、生肖冲煞等信息
 - **胎忌利向**：提供胎神、百忌、方位等趋避信息
 - **神煞吉凶**：展示吉神、凶煞、等第等综合信息
 
