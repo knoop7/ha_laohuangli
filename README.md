@@ -44,8 +44,9 @@
 
 ### 快速安装：
 1. Hacs存储库添加https://github.com/knoop7/ha_laohuangli 安装
-2. 重启您的Home Assistant系统
-3. 在集成页面中搜索"中国老黄历"或者"tgtg"，添加该集成
+2. 或者点击 > http://homeassistant.local:8123/hacs/repository?owner=knoop7&repository=ha_laohuangli
+3. 重启您的Home Assistant系统
+4. 在集成页面中搜索"中国老黄历"或者"tgtg"，添加该集成
 
 ### 复杂安装：
 1. 将 `发行版压缩包` 解压文件夹后，复制到您的Home Assistant配置目录下的 `custom_components` 文件夹
