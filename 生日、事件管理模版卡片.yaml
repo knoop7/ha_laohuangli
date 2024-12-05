@@ -1,0 +1,74 @@
+type: grid
+cards:
+  - type: heading
+    icon: mdi:crosshairs-gps
+    heading_style: title
+    heading: 事 件 管 理
+  - type: markdown
+    content: >2
+        **理财**:{{states('sensor.event_tou_zi_li_cai') }} **房贷**: {{ states('sensor.event_替换成自己的名字') }}
+
+      **车贷**: {{ states('sensor.event_替换成自己的名字') }} **放假**: {{
+      states('sensor.event_替换成自己的名字') }}
+
+
+      **体检**: {{ states('sensor.event_替换成自己的名字') }} **看望父母**: {{
+      states('sensor.event_替换成自己的名字') }} 
+
+
+      **宝宝打针**: {{ states('sensor.event_替换成自己的名字') }}
+  - type: heading
+    icon: mdi:crosshairs-gps
+    heading_style: title
+    heading: "生 日 管 理 "
+  - type: markdown
+    content: >2+
+
+
+
+        **阳历生日**: {{ states('sensor.sheng_ri_guan_li_替换成自己的名字_yang_li_sheng_ri') }}
+
+        **农历生日**: {{ states('sensor.sheng_ri_guan_li_替换成自己的名字_nong_li_sheng_ri') }}
+
+
+        
+         **星座**: {{ states('sensor.sheng_ri_guan_li_替换成自己的名字_xing_zuo') }} ｜  **周岁**: {{ states('sensor.sheng_ri_guan_li_替换成自己的名字_zhou_sui') }}
+
+
+
+        **生日提醒（阳历）**: {{ states('sensor.sheng_ri_guan_li_替换成自己的名字_sheng_ri_ti_xing_yang') }}
+
+        **生日提醒（农历）**: {{ states('sensor.sheng_ri_guan_li_替换成自己的名字_sheng_ri_ti_xing_nong') }}
+
+      ---
+
+        **八字**: {{ states('sensor.sheng_ri_guan_li_替换成自己的名字_ba_zi') }}
+
+      **日元**: {{ state_attr('sensor.sheng_ri_guan_li_替换成自己的名字_jin_ri_yun_shi',
+      '日元') }}  
+
+
+      **喜用神**: {{ states('sensor.sheng_ri_guan_li_替换成自己的名字_xi_yong_shen') }}
+
+
+
+
+      ---
+
+       **今日天干地支**: {{ state_attr('sensor.sheng_ri_guan_li_替换成自己的名字_jin_ri_yun_shi', '今日天干地支') }}
+       
+      **运势等级**: {{ state_attr('sensor.sheng_ri_guan_li_替换成自己的名字_jin_ri_yun_shi',
+      '运势等级') }}
+
+
+      **运势详解**: {{ state_attr('sensor.sheng_ri_guan_li_替换成自己的名字_jin_ri_yun_shi',
+      '运势详解') }}
+
+
+      **行动建议**:  {{ state_attr('sensor.sheng_ri_guan_li_替换成自己的名字_jin_ri_yun_shi',
+      '行动建议') }}
+
+
+      **存活天数**: {{ states('sensor.sheng_ri_guan_li_替换成自己的名字_sheng_cun_tian_shu') }}
+
+column_span: 1
