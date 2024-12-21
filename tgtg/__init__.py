@@ -4,6 +4,7 @@ import shutil
 import logging
 import weakref
 import time
+import json
 from pathlib import Path
 from typing import Dict, Set, Optional, List
 from homeassistant.core import HomeAssistant
@@ -14,6 +15,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.components.lovelace import DOMAIN as LOVELACE_DOMAIN
 from homeassistant.components.frontend import add_extra_js_url
+from homeassistant.components.http import StaticPathConfig
 from .services import async_setup_date_service, SERVICE_DATE_CONTROL
 from .const import (
     DOMAIN, 
@@ -228,24 +230,22 @@ class AlmanacCoordinator:
             _LOGGER.error("关闭协调器时出错: %s", str(e))
 
 async def setup_almanac_card(hass: HomeAssistant) -> bool:
-    try:
-        await hass.async_add_executor_job(lambda: shutil.copy2(
-            Path(__file__).parent / "www" / "almanac-card.js",
-            Path(hass.config.path("www")) / "almanac-card.js"
-        ))
-        return True
-    except Exception:
-        return False
+    version = int(time.time())
+    almanac_card_path = '/almanac_card-local'
+    #new tips
+    #https://developers.home-assistant.io/blog/2024/06/18/async_register_static_paths?_highlight=async_register_static_path
+    await hass.http.async_register_static_paths([
+        StaticPathConfig(almanac_card_path, hass.config.path('custom_components/tgtg/www'), False)
+    ])
+    _LOGGER.debug(f"register_static_path: {almanac_card_path + ':custom_components/tgtg/www'}")
+    add_extra_js_url(hass, almanac_card_path + f"/almanac-card.js?ver={version}")
+    return True
 
 async def async_setup(hass: HomeAssistant, config: dict) -> bool:
     hass.data[DOMAIN] = {}
-    if await setup_almanac_card(hass):
-        version = int(time.time())  
-        add_extra_js_url(hass, f"/local/almanac-card.js?v={version}")  
+    await setup_almanac_card(hass)
     await async_setup_date_service(hass)
     return True
-    return False
-
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_entities: Optional[AddEntitiesCallback] = None) -> bool:
     try:
