@@ -18,12 +18,12 @@ from .services import async_setup_date_service
 _LOGGER = logging.getLogger(__name__)
 
 class TextProcessor:
-    _FILTERS={'上表章','上册','颁诏','修置产室','举正直','选将','宣政事','冠带','上官','临政','竖柱上梁','修仓库','营建','穿井','伐木','畋猎','招贤','酝酿','乘船渡水','解除','缮城郭','筑堤防','修宫室','安碓硙','纳采','针刺','开渠','平治道涂','裁制','修饰垣墙','塞穴','庆赐','破屋坏垣','鼓铸','启攒','开仓','纳畜','牧养','经络','安抚边境','选将','布政事','覃恩','雪冤','出师'}
+    _FILTERS={'上表章','上册','颁诏','修置产室','举正直','选将','宣政事','冠带','上官','临政','竖柱上梁','修仓库','营建','穿井','伐木','畋猎','招贤','酝酿','乘船渡水','解除','缮城郭','筑堤防','修宫室','安碓硙','纳采','针刺','平治道涂','裁制','修饰垣墙','塞穴','庆赐','破屋坏垣','鼓铸','启攒','开仓','纳畜','牧养','经络','安抚边境','选将','布政事','覃恩','雪冤','出师'}
     _TEXT_PATTERN=re.compile(r'\[.*?\]|[,;，；]')
     @staticmethod
     def clean_text(text):
         zodiac_chars={'鼠','牛','虎','兔','龙','蛇','马','羊','猴','鸡','狗','猪','建','除','满','平','定','执','破','危','成','收','开','闭'}
-        blacklist_pattern=re.compile(r'黄道|黑道|日|-|、')
+        blacklist_pattern=re.compile(r'黄道|黑道|日|-|、|(?<!^)开')  
         filtered_text=blacklist_pattern.sub('',text)
         words=[w for w in TextProcessor._TEXT_PATTERN.sub(' ',filtered_text).split() if(len(w)>1 or w in zodiac_chars)and w not in TextProcessor._FILTERS]
         return ' '.join(words[:10]).strip()
@@ -248,6 +248,14 @@ class AlmanacSensor(SensorEntity):
             orig_gua=BASE_GUA[y_idx][m_idx]
             next_gua=BASE_GUA[change_y][change_m]
             iching_result=f"{orig_gua}=>{next_gua}"
+            blind_result='、'.join(x for x,r in ([y for y in [('贵人日',self._time_helper.SHICHEN[TimeHelper.get_current_twohour(now.hour)][0] in {'甲':['丑','未'],'戊':['丑','未'],'乙':['子','申'],'己':['子','申'],'丙':['亥','酉'],'丁':['亥','酉'],'壬':['巳','卯'],'癸':['巳','卯'],'庚':['寄','午'],'辛':['寅','午']}.get(stem,[])),('青龙日',any([
+                lunar_data.lunarMonth in [1,7] and stem in ['甲'], 
+                lunar_data.lunarMonth in [2,8] and stem in ['乙'],  
+                lunar_data.lunarMonth in [3,9] and stem in ['丙'],  
+                lunar_data.lunarMonth in [4,10] and stem in ['丁'], 
+                lunar_data.lunarMonth in [5,11] and stem in ['戊'], 
+                lunar_data.lunarMonth in [6,12] and stem in ['己'] 
+            ])),('五不遇时',self._time_helper.SHICHEN[TimeHelper.get_current_twohour(now.hour)][0]==({'甲':'午','乙':'巳','丙':'辰','丁':'卯','戊':'寅','己':'亥','庚':'子','辛':'酉','壬':'申','癸':'未'}).get(stem))] if y[1]] or [y for y in [('大红沙日',any([lunar_data.lunarMonth in [1,2,3] and branch in ['戌','子'],lunar_data.lunarMonth in [4,5,6] and branch in ['辰','巳'],lunar_data.lunarMonth in [7,8,9] and branch in ['午','未'],lunar_data.lunarMonth in [10,11,12] and branch in ['申','戌']])),('小红沙日',any([lunar_data.lunarMonth in [1,4,7,10] and branch=='巳',lunar_data.lunarMonth in [2,5,8,11] and branch=='酉',lunar_data.lunarMonth in [3,6,9,12] and branch=='丑'])),('天地大重丧',branch in ['巳','亥']),('不利葬',any([lunar_data.lunarMonth in [1,7] and stem in ['庚','甲'],lunar_data.lunarMonth in [2,8] and stem in ['乙','辛'],lunar_data.lunarMonth in [5,11] and stem in ['丁','癸'],lunar_data.lunarMonth in [4,10] and stem in ['丙','壬'],lunar_data.lunarMonth in [3,6,9,12] and stem in ['戊','己']])),('三丧日',{'spring':'辰','summer':'未','autumn':'戌','winter':'丑'}.get(next(iter([k for k,v in {'spring':[1,2,3],'summer':[4,5,6],'autumn':[7,8,9],'winter':[10,11,12]}.items() if lunar_data.lunarMonth in v]),''))==branch)] if y[1]]) if r) or '寻穴日'
             state_map = {
                 '日期': formatted_date,
                 '农历': f"{lunar_data.year8Char}({lunar_data.chineseYearZodiac})年 {lunar_data.lunarMonthCn}{lunar_data.lunarDayCn}",
@@ -278,7 +286,8 @@ class AlmanacSensor(SensorEntity):
                 '六曜': ("大安", "赤口", "先胜", "友引", "先负", "空亡")[six_idx],
                 '日禄': day_fortune,
                 '三十六禽': thirty_six_animal,
-                '六十四卦': iching_result
+                '六十四卦': iching_result,
+                '盲派': blind_result
             }            
             self._state=state_map.get(self._type,'')
             if self._type=='九宫飞星'and nine_palace_attrs:self._attributes=nine_palace_attrs
@@ -309,7 +318,7 @@ async def setup_almanac_sensors(hass,eid,cd):
     d=AlmanacDevice(eid,cd.get("name","中国老黄历"))
     await d.async_setup(hass)
     um=UpdateManager();await um.start()
-    SK=['日期','农历','星期','今日节日','周数','八字','节气','季节','时辰凶吉','生肖冲煞','星座','星次','彭祖百忌','十二神','廿八宿','今日三合','今日六合','纳音','九宫飞星','吉神方位','今日胎神','今日吉神','今日凶煞','宜忌等第','宜','忌','时辰经络','时辰','六曜','日禄','三十六禽','六十四卦']
+    SK=['日期','农历','星期','今日节日','周数','八字','节气','季节','时辰凶吉','生肖冲煞','星座','星次','彭祖百忌','十二神','廿八宿','今日三合','今日六合','纳音','九宫飞星','吉神方位','今日胎神','今日吉神','今日凶煞','宜忌等第','宜','忌','时辰经络','时辰','六曜','日禄','三十六禽','六十四卦','盲派']
     s=[AlmanacSensor(d,cd.get("name","中国老黄历"),k,k in MAIN_SENSORS,hass)for k in SK]
     await setup_sensor_updates(hass,s,um)  
     hass.data[DOMAIN]["almanac_sensors"][eid]=s;return s,s
