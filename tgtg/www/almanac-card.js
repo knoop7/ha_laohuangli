@@ -100,9 +100,9 @@ class AlmanacCard extends HTMLElement {
         title: "神煞吉凶",
         items: [
           ["葬诀", "mang_pai"],
+          ["等第", "yi_ji_deng_di"],
           ["吉神", "jin_ri_ji_shen"],
           ["凶煞", "jin_ri_xiong_sha"],
-          ["等第", "yi_ji_deng_di"],
         ],
       },
     };
@@ -672,9 +672,11 @@ class AlmanacCard extends HTMLElement {
         }
         const isYiJiDengDi = sensor === "yi_ji_deng_di";
         const isJinriJiShen = sensor === "jin_ri_ji_shen";
+        const isJinriXiongsha = sensor === "jin_ri_xiong_sha";
         let valueClass = "info-value";
         if (isYiJiDengDi) valueClass += " yi-ji-deng-di";
         if (isJinriJiShen) valueClass += " jin-ri-ji-shen";
+        if (isJinriXiongsha) valueClass += " jin-ri-xiong-sha";
         return `
               <div class="info-item">
                 <span class="info-label">${label}：</span>
@@ -1291,6 +1293,10 @@ class AlmanacCard extends HTMLElement {
     margin-left: -5px;
   }
 
+  .info-value.jin-ri-xiong-sha {
+    margin-left: -5px;
+    -webkit-line-clamp: 1;
+  }
   .festival-carousel {
     display: inline-block;
     vertical-align: middle;
@@ -1364,6 +1370,7 @@ class AlmanacCard extends HTMLElement {
 
   
   .jin-ri-ji-shen,
+  .jin_ri_xiong_sha,
   .yi-ji-deng-di {
     display: -webkit-box !important;
     -webkit-line-clamp: 1 !important;
@@ -1663,7 +1670,6 @@ class AlmanacCard extends HTMLElement {
   
      .info-value {
       font-size: 10px;
-      padding: 2px 0px 1px 0px;  
       margin-left: -15px;        
       overflow: hidden;          
       margin-bottom: -7px;
