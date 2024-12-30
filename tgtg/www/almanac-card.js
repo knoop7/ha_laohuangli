@@ -99,7 +99,6 @@ class AlmanacCard extends HTMLElement {
         className: "jixiong",
         title: "神煞吉凶",
         items: [
-          ["葬诀", "mang_pai"],
           ["等第", "yi_ji_deng_di"],
           ["吉神", "jin_ri_ji_shen"],
           ["凶煞", "jin_ri_xiong_sha"],
@@ -886,7 +885,6 @@ class AlmanacCard extends HTMLElement {
     color: var(--primary-text-color);
     border-radius: var(--ha-card-border-radius, 12px);
     box-shadow: var(--ha-card-box-shadow, none);
-    padding: 16px;
     transition: all .3s ease-out;
     letter-spacing: 0.1em;
     position: relative;
@@ -923,7 +921,7 @@ class AlmanacCard extends HTMLElement {
   
   .banner {
     border-radius: var(--ha-card-border-radius, 12px);
-    padding: 16px;
+    padding: 30px;
     box-shadow: var(--ha-card-box-shadow, none);
   }
   
