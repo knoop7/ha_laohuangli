@@ -1,4 +1,26 @@
+window.customCards = window.customCards || [];
+window.customCards.push({
+  type: "almanac-card",
+  name: "中国老黄历卡片",
+  description: "一个优雅的中国传统历法展示卡片，包含节气、干支、吉凶等信息，支持动态布局。",
+  preview: true,
+});
+
 class AlmanacCard extends HTMLElement {
+  static getStubConfig() {
+    return {
+      prefix: "zhong_guo_lao_huang_li_",
+      showYiJi: true,
+      modules: {
+        jieqi: true,
+        other: true,
+        shichen: true,
+        shengxiao: true,
+        fangwei: true,
+        jixiong: true
+      }
+    };
+  }
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
@@ -77,6 +99,7 @@ class AlmanacCard extends HTMLElement {
         className: "jixiong",
         title: "神煞吉凶",
         items: [
+          ["葬诀", "mang_pai"],
           ["吉神", "jin_ri_ji_shen"],
           ["凶煞", "jin_ri_xiong_sha"],
           ["等第", "yi_ji_deng_di"],
@@ -852,16 +875,16 @@ class AlmanacCard extends HTMLElement {
     return `
   :host {
     display: block;
-    --card-accent: #ef4444;
+    --card-accent: var(--primary-color);
+
     --transition-bezier: cubic-bezier(0.4, 0, 0.2, 1);
   }
   
   ha-card {
-    background: var(--card-background-color);
     color: var(--primary-text-color);
     border-radius: var(--ha-card-border-radius, 12px);
     box-shadow: var(--ha-card-box-shadow, none);
-    padding: 20px;
+    padding: 16px;
     transition: all .3s ease-out;
     letter-spacing: 0.1em;
     position: relative;
@@ -897,17 +920,16 @@ class AlmanacCard extends HTMLElement {
   }
   
   .banner {
-    background: var(--card-background-color);
     border-radius: var(--ha-card-border-radius, 12px);
     padding: 16px;
     box-shadow: var(--ha-card-box-shadow, none);
   }
   
 .kalendar_top {
-  height: 97px;
-  padding: 0 8px;
+  height: 98px;
+  padding: 0 6px;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -1027,10 +1049,10 @@ class AlmanacCard extends HTMLElement {
   }
   
     .yi-ji-section {
-    margin: 0 0 10px;
+    margin: 0 0 8px;
     display: grid;
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 8px;
     }
 
     .yi-ji-section ~ .info-row:first-of-type {
@@ -1038,13 +1060,12 @@ class AlmanacCard extends HTMLElement {
     }
   
   .yi-ji-item {
-    background: var(--card-background-color);
     border: 1px solid var(--divider-color);
     border-radius: 8px;
     display: flex;
     align-items: flex-start;
     gap: 10px;
-    padding: 9px;
+    padding: 10px;
   }
   
   .yi-ji-item:hover {
@@ -1057,13 +1078,12 @@ class AlmanacCard extends HTMLElement {
     font-size: 13px;
     font-weight: 600;
     white-space: nowrap;
-    margin-top: -0.75px;
+    margin-top: -0.9px;
     color: var(--primary-text-color);
   }
   
   .yi-ji-content {
     font-size: 13px;
-    line-height: 1.6;
     word-break: break-word;
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -1088,8 +1108,8 @@ class AlmanacCard extends HTMLElement {
   .info-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 6px;
-    margin-bottom: 6px;
+    gap: 4px;
+    margin-bottom: 4px;
   }
   
   .info-row:last-child {
@@ -1121,10 +1141,9 @@ class AlmanacCard extends HTMLElement {
   }
   
   .info-group {
-    background: var(--card-background-color);
     border: 1px solid var(--divider-color);
     position: relative;
-    padding: 18px 20px;
+    padding: 14px 16px;
     border-radius: 12px;
     height: 100%;
     box-sizing: border-box;
@@ -1197,7 +1216,7 @@ class AlmanacCard extends HTMLElement {
     color: var(--primary-text-color);
     font-size: 12px;
     line-height: 1.4;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.2em;
     word-spacing: 1px;
     cursor: pointer;
   }
