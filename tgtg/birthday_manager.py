@@ -176,12 +176,12 @@ class BirthdaySensor(SensorEntity):
                 # 18-50岁
                 "detail_adult": "今日贵人相助，诸事顺遂。财运：收入稳中有升，适合投资和理财规划。外出：出行顺利，适合商务或社交活动。人际：贵人相助，人际关系顺畅。感情：感情融洽，适合沟通。家庭：家庭和谐，适合共处时光。",
                 # 50岁之后
-                "detail_elderly": "今日运程平顺，诸事皆宜。健康：气血调和，适宜进补养生。建议进行适度运动，以柔和缓慢为主。财运：可处理重要财务事项，宜投资稳健理财产品。外出：出行平安，适合短途游玩，注意遵医嘱。人际：亲朋相处和睦，可参加家族聚会或老友联谊。家居：居所平安，宜进行居室养护或添置生活用品。",
+                "detail_elderly": "今日运程平顺，诸事皆宜。健康：气血调和，适宜进补养生。建议进行适度运动，以柔和缓慢为主。财运：财务平稳，依循既定计划行事。外出：短途无碍，长途需慎重。人际：与亲朋好友相处如常，可进行日常交往。家居：居家平安，适合进行日常起居活动。",
                 "advice_toddler": "宜：体检、户外、亲子活动\n忌：过度疲劳、剧烈运动",
                 "advice_child": "宜：户外活动、认知学习、同伴交往\n忌：过度劳累、受凉着凉",
                 "advice_youth": "宜：课业学习、体育活动、团队合作\n忌：过度用眼、熬夜",
                 "advice_adult": "把握机会，主动出击",
-                "advice_elderly": "宜：温和运动、养生进补、理财规划\n忌：过分劳累、剧烈运动"
+                "advice_elderly": "宜：居家调养、稳妥处事\n忌：远行冒险、激烈运动"
             },
             "刑": {
                 "level": "刑",
@@ -189,7 +189,7 @@ class BirthdaySensor(SensorEntity):
                 "detail_child": f"今日{self._name}运势较弱。活动时需要特别注意安全，建议减少剧烈运动。提醒家长：1) 情绪可能不稳定，应该耐心倾听和开导；2) 容易出现身体不适，建议清淡饮食；3) 同伴互动中可能遇到小摩擦，需要适时引导。",
                 "detail_youth": f"{self._name}今日运势欠佳。学习较易出现注意力分散，课业需要更多专注。体能状态一般，体育活动应以安全为先。人际交往中宜谨慎，避免卷入是非。提醒注意：1) 保持良好作息；2) 课间运动强度适中；3) 遇到问题及时寻求师长帮助。",
                 "detail_adult": "易有口舌是非，情绪波动较大。财运：理财需谨慎，避免冲动消费。外出：不宜远行，注意安全。人际：易生口舌，需谨言慎行。感情：易生误会，宜保持耐心。家庭：家庭关系需要维护。",
-                "detail_elderly": "今日诸事需谨慎。健康：气血运行不畅，关节、心脑血管方面需留意，建议适当休养。财运：理财宜守不宜进，避免非必要支出。外出：不宜远行，如须外出需备好常用药品，注意保暖。人际：易生口舌，谨防外人打扰清净。家居：居所需注意安全，防范跌倒或意外事故。",
+                "detail_elderly": "今日诸事需谨慎。健康：身体易有不适，需特别关注心脑血管、消化系统。建议及时就医检查。财运：理财需谨慎，防范意外损失。外出：行程多变，不宜远行，建议改期。人际：避免参与琐事纷争，谨防外人相扰。家居：居所需注意安全，防范跌倒或意外事故。",
                 "advice_toddler": "宜：调整作息、清淡饮食、保持安静\n忌：环境变动、强迫进食",
                 "advice_child": "宜：轻度活动、亲子陪伴、早睡\n忌：剧烈运动、情绪激动",
                 "advice_youth": "宜：独立学习、充足休息\n忌：剧烈运动、争执",
@@ -215,8 +215,8 @@ class BirthdaySensor(SensorEntity):
                 "detail_child": f"今日{self._name}运势平稳。各项活动均可正常开展，适合保持日常生活节奏。提醒家长：1) 适合进行常规教育活动；2) 户外活动适可而止；3) 社交活动中以温和态度为主。",
                 "detail_youth": f"{self._name}今日运势平稳。课业学习循序渐进，适合复习和巩固知识。体能表现中规中矩，体育活动量以平时标准为宜。社交活动宜随大流，不必特立独行。注意：1) 保持正常作息；2) 适度运动；3) 按时完成功课。",
                 "detail_adult": "运势平稳，无突出吉凶。财运：财务平稳，按既定计划行事。外出：一般平顺，按需出行。人际：社交如常，保持礼节。感情：感情稳定，适合默契相处。家庭：家庭和睦，各安其位。",
-                "advice_toddler": "宜：常规作息、日常活动\n忌：过度刺激、突变环境",
                 "detail_elderly": "今日运势平稳。健康：身体状况平稳，适合进行日常保健。建议依照往常作息，保持规律运动。财运：财务平稳，依循既定计划行事。外出：短途无碍，长途需慎重。人际：与亲朋好友相处如常，可进行日常交往。家居：居家平安，适合进行日常起居活动。",
+                "advice_toddler": "宜：常规作息、日常活动\n忌：过度刺激、突变环境",
                 "advice_child": "宜：常规活动、正常作息\n忌：过度劳累",
                 "advice_youth": "宜：复习功课、常规运动\n忌：标新立异",
                 "advice_adult": "保持平常心，按部就班",
@@ -277,53 +277,63 @@ class BirthdaySensor(SensorEntity):
                 self._state = f"{lunar.year8Char}年{lunar.month8Char}月{lunar.day8Char}日{lunar.twohour8Char}时"
 
             elif self._type == "生日提醒_农":
-                today = dt.now().replace(tzinfo=None)
-                birth_lunar = cnlunar.Lunar(self._birthday, godType='8char')
-                birth_lunar_month, birth_lunar_day, birth_is_leap = birth_lunar.lunarMonth, birth_lunar.lunarDay, birth_lunar.isLunarLeapMonth
-                today_lunar = cnlunar.Lunar(today, godType='8char')
-                today_year = today_lunar.lunarYear
-                this_year_birthday = next_year_birthday = None
-                found_birthday = False
+                    today = dt.now().replace(tzinfo=None)
+                    birth_lunar = cnlunar.Lunar(self._birthday, godType='8char')
+                    birth_lunar_month, birth_lunar_day, birth_is_leap = birth_lunar.lunarMonth, birth_lunar.lunarDay, birth_lunar.isLunarLeapMonth
+                    today_lunar = cnlunar.Lunar(today, godType='8char')
+                    today_year = today.year
+                    this_year_birthday = next_year_birthday = None
+                    found_birthday = False
 
-                for year in [today_year - 1, today_year, today_year + 1]:
-                    if found_birthday:
-                        break
-                    for month in range(1, 13):
+                    for year in [today_year - 1, today_year, today_year + 1]:
                         if found_birthday:
                             break
-                        next_month = datetime(year + 1, 1, 1) if month == 12 else datetime(year, month + 1, 1)
-                        days_in_month = (next_month - datetime(year, month, 1)).days
-                        for day in range(days_in_month):
-                            test_date = datetime(year, month, 1) + timedelta(days=day)
-                            lunar_test = cnlunar.Lunar(test_date, godType='8char')
-                            if (lunar_test.lunarMonth == birth_lunar_month and lunar_test.lunarDay == birth_lunar_day and lunar_test.isLunarLeapMonth == birth_is_leap):
-                                if test_date.date() < today.date():
-                                    if year == today_year - 1:
-                                        continue
-                                    this_year_birthday = test_date
-                                else:
-                                    if year == today_year:
-                                        this_year_birthday = test_date
-                                        found_birthday = True
-                                    else:
-                                        next_year_birthday = test_date
-                                        found_birthday = True
+                        for month in range(1, 13):
+                            if found_birthday:
                                 break
+                            next_month = datetime(year + 1, 1, 1) if month == 12 else datetime(year, month + 1, 1)
+                            days_in_month = (next_month - datetime(year, month, 1)).days
+                            for day in range(1, days_in_month + 1):
+                                test_date = datetime(year, month, day)
+                                try:
+                                    lunar_test = cnlunar.Lunar(test_date, godType='8char')
+                                    if (lunar_test.lunarMonth == birth_lunar_month and 
+                                        lunar_test.lunarDay == birth_lunar_day and 
+                                        lunar_test.isLunarLeapMonth == birth_is_leap):
+                                        test_date_only = test_date.date()
+                                        today_date = today.date()
+                                        
+                                        if test_date_only < today_date:
+                                            this_year_birthday = test_date if year == today_year else None
+                                        else:
+                                            if year == today_year:
+                                                this_year_birthday = test_date
+                                                found_birthday = True
+                                            elif year == today_year + 1:
+                                                next_year_birthday = test_date
+                                                found_birthday = True
+                                        break
+                                except:
+                                    continue
 
-                next_birthday = this_year_birthday if this_year_birthday and this_year_birthday.date() >= today.date() else next_year_birthday
-                if next_birthday:
-                    days_until = (next_birthday.date() - today.date()).days
-                    next_lunar = cnlunar.Lunar(next_birthday, godType='8char')
-                    if days_until == 0:
-                        self._state = "今天是生日"
+                    next_birthday = this_year_birthday if this_year_birthday and this_year_birthday.date() >= today.date() else next_year_birthday
+                    
+                    if next_birthday:
+                        days_until = (next_birthday.date() - today.date()).days
+                        next_lunar = cnlunar.Lunar(next_birthday, godType='8char')
+                        self._state = "今天是生日" if days_until == 0 else f"农历生日还有{days_until}天"
+                        
+                        if days_until == 0 and self._notification_service and (self._last_notification_date is None or self._last_notification_date != today.date()):
+                            await self.hass.services.async_call("notify", self._notification_service.replace("notify.", ""), 
+                                                            {"title": "中国老黄历 · Home Assistant", 
+                                                            "message": self._notification_message})
+                            self._last_notification_date = today.date()
+                        
+                        self._attributes.update({
+                            "下个生日": f"阳历：{next_birthday.strftime('%Y-%m-%d')}"
+                        })
                     else:
-                        self._state = f"农历生日还有{days_until}天"
-                    if days_until == 0 and self._notification_service and (self._last_notification_date is None or self._last_notification_date != today.date()):
-                        await self.hass.services.async_call("notify", self._notification_service.replace("notify.", ""), {"title": "中国老黄历 · Home Assistant", "message": self._notification_message})
-                        self._last_notification_date = today.date()
-                    self._attributes.update({"下个生日": f"阳历：{next_birthday.strftime('%Y-%m-%d')}"})
-
-
+                        self._state = "无法计算下一个生日日期"
 
             elif self._type == "生日提醒_阳":
                 today = dt.now().replace(tzinfo=None)
@@ -417,4 +427,3 @@ async def setup_birthday_sensors(hass: HomeAssistant, entry_id: str, config_data
                     entities.append(sensor)
     
     return entities
-
