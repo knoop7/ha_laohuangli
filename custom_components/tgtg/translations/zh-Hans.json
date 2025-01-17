@@ -1,0 +1,228 @@
+{
+  "title": "中国老黄历",
+  "config": {
+    "abort": {
+      "already_configured": "设备已经配置过了",
+      "single_instance_allowed": "已经配置过了。只能配置一个实例。",
+      "max_persons_reached": "已达到最大人数限制（5人）",
+      "max_events_reached": "已达到最大事件限制（30个）",
+      "person_added": "人员添加成功",
+      "person_updated": "{name} 更新成功",
+      "person_deleted": "{name} 删除成功",
+      "event_added": "事件添加成功",
+      "event_updated": "{name} 更新成功",
+      "event_deleted": "{name} 删除成功",
+      "event_not_found": "未找到该事件"
+    },
+    "error": {
+      "invalid_date_format": "日期格式错误，请使用YYYY/MM/DD/HH格式（例如：1990/01/01/08）",
+      "invalid_event_date_format": "日期格式错误，请使用YYYY/MM/DD格式（例如：2024/12/31）",
+      "invalid_time_format": "时间格式错误，请使用HH/MM格式（例如：08/30）",
+      "name_already_exists": "姓名相同，如有相同姓名可以后面加数字更好标识（例如：张三1）",
+      "duplicate_event_name": "事件名称已存在",
+      "unknown": "发生未知错误，如无法添加或者编辑请删除集成后重新添加",
+      "unknown_error": "发生未知错误，如无法添加或者编辑请删除集成后重新添加",
+      "unknown_error_occurred": "发生未知错误，如无法添加或者编辑请删除集成后重新添加",
+      "invalid_yaml": "YAML格式无效",
+      "save_error": "保存配置失败",
+      "invalid_date": "日期格式无效",
+      "invalid_birthday_date": "生日日期格式无效",
+      "duplicate_person_name": "人名已存在"
+    },
+    "step": {
+      "user": {
+        "title": "首次设置",
+        "description": "欢迎使用本集成插件！\n由[@knoop7](https://github.com/knoop7)独家编写制作\n\n严禁各类商用、二改相关衍生\n如有违规将停止更新，以及后续维护代码\n\n\n**传统日历：**\n• 实时显示传统阴阳历信息\n• 精准预报二十四节气\n• 每日吉凶、宜忌指引\n• 自定义编辑节假日 \n\n**生日管理：**\n• 家庭成员生日\n• 相关八字、生日提醒功能\n\n**事件管理：**\n• 投资理财提醒\n• 工作安排提醒\n• 会议聚餐提醒\n• 纪念日提醒\n\n",
+        "data": {
+          "setup_options": "选择需要启用的功能:",
+          "setup_birthday": "生日提醒",
+          "setup_event": "事件管理",
+          "area": "选择管理项"
+        }
+      },
+      "birthday": {
+        "title": "生日管理配置",
+        "description": "请配置生日信息（最多支持5人）",
+        "data": {
+          "name": "姓名",
+          "birthday": "生日日期（格式：YYYY/MM/DD/HH）",
+          "add_another": "继续添加"
+        }
+      },
+      "event": {
+        "title": "事件管理配置",
+        "description": "请配置事件信息（最多支持30个）",
+        "data": {
+          "name": "事件名称",
+          "date": "事件日期（格式：YYYY/MM/DD）",
+          "description": "事件描述",
+          "add_another": "继续添加"
+        }
+      },
+      "name": {
+        "title": "服务名称配置",
+        "description": "可修改中国老黄历的服务名称",
+        "data": {
+          "name": "服务名称"
+        }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "功能管理",
+        "description": "选择要管理的功能区域",
+        "data": {
+          "area": "功能选择",
+          "area_birthday": "生日管理",
+          "area_event": "事件管理",
+          "area_holidays": "节假日配置"
+        }
+      },
+      "actions": {
+        "title": "操作选项",
+        "description": "请选择要执行的操作",
+        "data": {
+          "action": "选择操作",
+          "person_index": "选择姓名",
+          "event_index": "选择事件",
+          "add": "添加",
+          "edit": "编辑",
+          "delete": "删除"
+        },
+        "select_description": {
+          "edit_person": "请选择要编辑的人员",
+          "delete_person": "请选择要删除的人员",
+          "edit_event": "请选择要编辑的事件",
+          "delete_event": "请选择要删除的事件"
+        }
+      },
+      "select_person": {
+        "title": "选项",
+        "description": "请选择下列人员",
+        "data": {
+          "person_index": "选择姓名"
+        }
+      },
+      "select_event": {
+        "title": "选项",
+        "description": "请选择下列事件",
+        "data": {
+          "event_index": "选择事件"
+        }
+      },
+      "add_birthday": {
+        "title": "添加生日信息",
+        "data": {
+          "name": "姓名",
+          "birthday": "生日日期（格式：YYYY/MM/DD/HH）",
+          "notification_enabled": "启用通知服务"
+
+        }
+      },
+      "edit_birthday": {
+        "title": "编辑生日信息",
+        "data": {
+          "name": "姓名",
+          "birthday": "生日日期（格式：YYYY/MM/DD/HH）",
+          "notification_enabled": "启用通知服务"
+        }
+      },
+      "delete_birthday": {
+        "title": "删除生日信息",
+        "description": "是否确认删除该生日信息？",
+        "data": {
+          "confirm": "确认删除"
+        }
+      },
+      "birthday_notification_edit": {
+        "title": "通知服务配置",
+        "data": {
+          "notification_service": "请选择通知服务",
+          "notification_message": "通知消息"
+        }
+      },
+      "event_notification_edit": {
+        "title": "通知服务配置",
+        "data": {
+          "notification_service": "请选择通知服务",
+          "notification_message": "通知消息"
+        }
+      },
+      "add_event": {
+        "title": "添加事件信息",
+        "data": {
+          "name": "事件名称",
+          "date": "事件日期（格式：YYYY/MM/DD）",
+          "description": "事件描述",
+          "auto_remove": "自动删除事件（一天后自动删除传感器）",
+          "full_countdown": "启用完整倒计时",
+          "notification_enabled": "启用通知服务"
+        }
+      },
+      "edit_event": {
+        "title": "编辑事件信息",
+        "data": {
+          "name": "事件名称",
+          "date": "事件日期（格式：YYYY/MM/DD）",
+          "description": "事件描述",
+          "auto_remove": "自动删除事件（一天后自动删除传感器）",
+          "full_countdown": "启用完整倒计时",
+          "notification_enabled": "启用通知服务"
+        }
+      },
+      "edit_event_time": {
+        "title": "设置时间",
+        "description": "为事件 {name} 设置具体倒计时时间",
+        "data": {
+          "time": "时间（格式：HH/MM）"
+        }
+      },
+      "delete_event": {
+        "title": "删除事件信息",
+        "description": "是否确认删除该事件信息？",
+        "data": {
+          "confirm": "确认删除"
+        }
+      },
+      "edit_holidays": {
+        "title": "节假日配置",
+        "description": "**使用教程说明：**\n配置文件使用YAML格式，支持设置**customdays**（自定义节假日）**holidays**（节假日）**workdays**（工作日），每个日期格式为**YYYY-MM-DD**，支持可使用注释，注意：防止其他特殊符号进入损坏正常集成运行。\n",
+        "data": {
+          "yaml_content": "YAML 编辑器"
+        }
+      }
+    },
+    "error": {
+      "unknown": "发生未知错误，如无法添加或者编辑请删除集成后重新添加",
+      "unknown_error": "发生未知错误，如无法添加或者编辑请删除集成后重新添加",
+      "unknown_error_occurred": "发生未知错误，如无法添加或者编辑请删除集成后重新添加",
+      "need_select_person_for_edit": "请选择要编辑的人员",
+      "need_select_person_for_delete": "请选择要删除的人员",
+      "need_select_event_for_edit": "请选择要编辑的事件",
+      "need_select_event_for_delete": "请选择要删除的事件",
+      "name_already_exists": "姓名相同，如有相同姓名可以后面加数字更好标识（例如：张三1）",
+      "invalid_date_format": "日期格式错误，请使用YYYY/MM/DD/HH格式（例如：1990/01/01/08）",
+      "invalid_event_date_format": "日期格式错误，请使用YYYY/MM/DD格式（例如：2024/12/31）",
+      "invalid_time_format": "时间格式错误，请使用HH/MM格式（例如：08/30）",
+      "invalid_yaml": "YAML格式错误。确保没有特殊字符，并检查错误定义。",
+      "yaml_must_be_dict": "YAML内容必须是一个字典格式",
+      "key_must_be_dict": "{key}必须是字典格式",
+      "date_format_error": "日期{date}格式错误，必须是YYYY-MM-DD格式",
+      "description_must_be_string": "日期{date}的描述必须是字符串"
+    },
+    "abort": {
+      "max_persons_reached": "已达到最大人数限制（5人）",
+      "max_events_reached": "已达到最大事件限制（30个）",
+      "person_added": "人员添加成功",
+      "person_updated": "{name} 更新成功",
+      "person_deleted": "{name} 删除成功",
+      "event_added": "事件添加成功",
+      "event_updated": "{name} 更新成功",
+      "event_deleted": "{name} 删除成功",
+      "event_not_found": "未找到该事件",
+      "holidays_edited": "节日已更新，重启 **Home Assistant** 生效\n\n"
+    }
+  }
+}
