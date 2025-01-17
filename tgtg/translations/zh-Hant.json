@@ -1,63 +1,69 @@
 {
-  "title": "中國老黃歷",
+  "title": "中國老黃曆",
   "config": {
     "abort": {
-      "already_configured": "是器已成，毋庸重設",
-      "single_instance_allowed": "天下之器，止一而已，毋得再設",
-      "max_persons_reached": "人數已至五位，不可複增，蓋五行之數盡矣",
-      "max_events_reached": "事項已三十有餘，不可復增，蓋​​一月之數盡矣",
-      "person_added": "其人已入黃籍，永錄太清",
-      "person_updated": "已為{name}改易生辰八字，重訂天命",
-      "person_deleted": "{name}已除名黃籍，退出太清",
-      "event_added": "玉曆已錄是事，永誌不忘",
-      "event_updated": "{name}之事已改，重定吉時",
-      "event_deleted": "{name}之事已除，玉曆不復載",
-      "event_not_found": "玉曆無載是事，或已消逝於天地之間"
+      "already_configured": "設備已經配置過了",
+      "single_instance_allowed": "已經配置過了。只能配置一個實例。",
+      "max_persons_reached": "已達最大人數限制（5人）",
+      "max_events_reached": "已達到最大事件限制（30個）",
+      "person_added": "人員添加成功",
+      "person_updated": "{name} 更新成功",
+      "person_deleted": "{name} 刪除成功",
+      "event_added": "事件添加成功",
+      "event_updated": "{name} 更新成功",
+      "event_deleted": "{name} 刪除成功",
+      "event_not_found": "未找到該事件"
     },
     "error": {
-      "invalid_date_format": "生辰八字不合天時，須依年月日時之製（譬如：一九九零年歲庚午，正月初一，辰時三刻）",
-      "invalid_event_date_format": "日期不合曆法，須依太陽曆法年月日之製（譬如：二零二四年十二月三十日）",
-      "invalid_time_format": "時刻不合更漏，須依十二時辰刻數（譬如：辰時三刻）",
-      "name_already_exists": "黃籍重名，宜加別號以區之（譬如：張三其壹、張三其貳）",
-      "duplicate_event_name": "玉曆重事，恐致混淆，請另擇新名",
-      "unknown": "天機有變，不測之事已生，宜重新設定，以正乾坤",
-      "unknown_error": "太清有異，星辰錯亂，宜重新設定，以正天時",
-      "unknown_error_occurred": "乾坤失序，不詳之事已生，宜重新設定，以正天機"
+      "invalid_date_format": "日期格式錯誤，請使用YYYY/MM/DD/HH格式（例如：1990/01/01/08）",
+      "invalid_event_date_format": "日期格式錯誤，請使用YYYY/MM/DD格式（例如：2024/12/31）",
+      "invalid_time_format": "時間格式錯誤，請使用HH/MM格式（例如：08/30）",
+      "name_already_exists": "姓名相同，如有相同姓名可以後面加數字更好標識（例如：張三1）",
+      "duplicate_event_name": "事件名稱已存在",
+      "unknown": "發生未知錯誤，如無法新增或編輯請刪除整合後重新新增",
+      "unknown_error": "發生未知錯誤，如無法新增或編輯請刪除整合後重新新增",
+      "unknown_error_occurred": "發生未知錯誤，如無法新增或編輯請刪除整合後重新新增",
+      "invalid_yaml": "YAML格式無效",
+      "save_error": "儲存配置失敗",
+      "invalid_date": "日期格式無效",
+      "invalid_birthday_date": "生日日期格式無效",
+      "duplicate_person_name": "人名已存在"
     },
     "step": {
       "user": {
-        "title": "黃歷開冊",
-        "description": "恭迎！\n由[@knoop7](https://github.com/knoop7)欽定製作\n\n天機不可洩露，切記\n商賈不得私用，改動有禁\n倘有違者，天降災殃\n\n\n**太清曆法：**\n• 陰陽二氣，晝夜更替，即時推演\n• 二十四節氣，七十二候，精準推算\n• 每日吉兇，趨吉避兇，趨時定事\n\n**生辰八字：**\n• 眷族生辰，五行相生\n• 八字命理，五行生剋\n• 流年運勢，趨吉避兇\n\n**事務規劃：**\n• 經商理財，趨利避害\n• 公務政事，擇時而行\n• 宴會慶典，合八字者宜\n• 良辰吉日，擇日而行\n\n",
+        "title": "首次設定",
+        "description": "歡迎使用本整合插件！\n由[@knoop7](https://github.com/knoop7)獨家編寫製作\n\n嚴禁各類商用、二改相關衍生\n如有違規將停止更新，以及後續維修代碼\n\n\n**傳統日曆：**\n• 即時顯示傳統陰陽曆訊息\n• 精準預報二十四節氣\n• 每日吉兇、宜忌指引\n• 自訂編輯假日\n\n**生日管理：**\n• 家人生日\n• 相關八字、生日提醒功能\n\n**事件管理：**\n• 投資財務提醒\n• 工作安排提醒\n• 會議聚餐提醒\n• 紀念日提醒",
         "data": {
-          "setup_options": "擇其功用，合乎天時：",
-          "setup_birthday": "生辰八字推算",
-          "setup_event": "玉曆事務規劃"
+          "setup_options": "選擇需要啟用的功能:",
+          "setup_birthday": "生日提醒",
+          "setup_event": "事件管理",
+          "area": "選擇管理項"
         }
       },
       "birthday": {
-        "title": "生辰八字管理",
-        "description": "錄入生辰八字（限五人，應五行之數）",
+        "title": "生日管理配置",
+        "description": "請配置生日資訊（最多支援5人）",
         "data": {
-          "name": "姓名號碼",
-          "birthday": "生辰八字（年月日時，需合八字五行）",
-          "add_another": "續錄一人，慎擇八字"
+          "name": "姓名",
+          "birthday": "生日日期（格式：YYYY/MM/DD/HH）",
+          "add_another": "繼續添加"
         }
       },
       "event": {
-        "title": "玉曆事務管理",
-        "description": "輸入玉曆事務（限三十事，應一月之數）",
+        "title": "事件管理配置",
+        "description": "請配置事件資訊（最多支援30個）",
         "data": {
-          "name": "事務名目",
-          "date": "擇定日期（宜擇吉日良辰）",
-          "description": "事由詳述",
-          "add_another": "續錄一事，擇吉而行"
+          "name": "事件名稱",
+          "date": "事件日期（格式：YYYY/MM/DD）",
+          "description": "事件描述",
+          "add_another": "繼續添加"
         }
       },
       "name": {
-        "title": "更易冊名",
-        "description": "可更易太清黃曆之名",
+        "title": "服務名稱配置",
+        "description": "可修改中國老黃曆的服務名稱",
         "data": {
-          "name": "黃歷冊名"
+          "name": "服務名稱"
         }
       }
     }
@@ -65,143 +71,157 @@
   "options": {
     "step": {
       "init": {
-        "title": "太清功用管理",
-        "description": "擇其功用，以合天時",
+        "title": "功能管理",
+        "description": "選擇要管理的功能區域",
         "data": {
-          "area": "擇定功用",
-          "area_birthday": "生辰八字推算",
-          "area_event": "玉曆事務規劃"
+          "area": "功能選擇",
+          "area_birthday": "生日管理",
+          "area_event": "事件管理",
+          "area_holidays": "假日配置"
         }
       },
       "actions": {
-        "title": "玉曆操作",
-        "description": "請擇一行，以正天時",
+        "title": "操作選項",
+        "description": "請選擇要執行的操作",
         "data": {
-          "action": "擇定操作",
-          "person_index": "擇定其人",
-          "event_index": "擇定其事",
-          "add": "增錄其事",
-          "edit": "改易其事",
-          "delete": "除去其事"
+          "action": "選擇操作",
+          "person_index": "選擇姓名",
+          "event_index": "選擇事件",
+          "add": "添加",
+          "edit": "編輯",
+          "delete": "刪除"
         },
         "select_description": {
-          "edit_person": "擇定其人以改易生辰八字",
-          "delete_person": "擇定其人以除去黃籍",
-          "edit_event": "擇定其事以改易玉曆",
-          "delete_event": "擇定其事以除去玉曆"
+          "edit_person": "請選擇要編輯的人員",
+          "delete_person": "請選擇要刪除的人員",
+          "edit_event": "請選擇要編輯的事件",
+          "delete_event": "請選擇要刪除的事件"
         }
       },
       "select_person": {
-        "title": "擇人之法",
-        "description": "請於黃籍擇定其人",
+        "title": "選項",
+        "description": "請選擇下列人員",
         "data": {
-          "person_index": "擇定何人"
+          "person_index": "選擇姓名"
         }
       },
       "select_event": {
-        "title": "擇事之法",
-        "description": "請於玉曆中擇定其事",
+        "title": "選項",
+        "description": "請選擇下列事件",
         "data": {
-          "event_index": "擇定何事"
+          "event_index": "選擇事件"
         }
       },
       "add_birthday": {
-        "title": "增錄生辰八字",
+        "title": "添加生日訊息",
         "data": {
-          "name": "姓名號碼",
-          "birthday": "生辰八字（需合五行生剋之理）",
-          "notification_enabled": "開啟天機提示"
+          "name": "姓名",
+          "birthday": "生日日期（格式：YYYY/MM/DD/HH）",
+          "notification_enabled": "啟用通知服務"
         }
       },
       "edit_birthday": {
-        "title": "改易生辰八字",
+        "title": "編輯生日訊息",
         "data": {
-          "name": "姓名號碼",
-          "birthday": "生辰八字（需合五行生剋之理）",
-          "notification_enabled": "開啟天機提示"
+          "name": "姓名",
+          "birthday": "生日日期（格式：YYYY/MM/DD/HH）",
+          "notification_enabled": "啟用通知服務"
         }
       },
       "delete_birthday": {
-        "title": "除去生辰八字",
-        "description": "去人於黃籍，其事重大，確欲為之乎？",
+        "title": "刪除生日訊息",
+        "description": "是否確認刪除該生日資訊？",
         "data": {
-          "confirm": "確定除去"
+          "confirm": "確認刪除"
         }
       },
       "birthday_notification_edit": {
-        "title": "天機提示設定",
+        "title": "通知服務配置",
         "data": {
-          "notification_service": "擇定提示方式",
-          "notification_message": "天機提示文字"
+          "notification_service": "請選擇通知服務",
+          "notification_message": "通知訊息"
         }
       },
       "event_notification_edit": {
-        "title": "玉曆提示設定",
+        "title": "通知服務配置",
         "data": {
-          "notification_service": "擇定提示方式",
-          "notification_message": "玉曆提示文字"
+          "notification_service": "請選擇通知服務",
+          "notification_message": "通知訊息"
         }
       },
       "add_event": {
-        "title": "增錄玉曆事務",
+        "title": "添加事件訊息",
         "data": {
-          "name": "事務名目",
-          "date": "擇定吉日（需合節氣運勢）",
-          "description": "事由詳述",
-          "auto_remove": "事畢自除",
-          "full_countdown": "開啟時辰推算",
-          "notification_enabled": "開啟玉曆提示"
+          "name": "事件名稱",
+          "date": "事件日期（格式：YYYY/MM/DD）",
+          "description": "事件描述",
+          "auto_remove": "自動刪除事件（一天後自動刪除感應器）",
+          "full_countdown": "啟用完整倒數計時",
+          "notification_enabled": "啟用通知服務"
         }
       },
       "edit_event": {
-        "title": "改易玉曆事務",
+        "title": "編輯事件訊息",
         "data": {
-          "name": "事務名目",
-          "date": "擇定吉日（需合節氣運勢）",
-          "description": "事由詳述",
-          "auto_remove": "事畢自除",
-          "full_countdown": "開啟時辰推算",
-          "notification_enabled": "開啟玉曆提示"
+          "name": "事件名稱",
+          "date": "事件日期（格式：YYYY/MM/DD）",
+          "description": "事件描述",
+          "auto_remove": "自動刪除事件（一天後自動刪除感應器）",
+          "full_countdown": "啟用完整倒數計時",
+          "notification_enabled": "啟用通知服務"
         }
       },
       "edit_event_time": {
-        "title": "定時推算",
-        "description": "為{name}定下時辰，需合太陽曆法",
+        "title": "設定時間",
+        "description": "為事件 {name} 設定具體倒數時間",
         "data": {
-          "time": "時辰刻數（子時初刻至亥時末刻）"
+          "time": "時間（格式：HH/MM）"
         }
       },
       "delete_event": {
-        "title": "除去玉曆事務",
-        "description": "去事於玉曆，其事重大，確欲為之乎？",
+        "title": "刪除事件訊息",
+        "description": "是否確認刪除該事件資訊？",
         "data": {
-          "confirm": "確定除去"
+          "confirm": "確認刪除"
+        }
+      },
+      "edit_holidays": {
+        "title": "假日配置",
+        "description": "**使用教學說明：**\n設定檔使用YAML格式，支援設定**customdays**（自訂假日）**holidays**（假日）**workdays**（工作日），每個日期格式為**YYYY-MM-DD** ，支援可使用註釋，注意：防止其他特殊符號進入損壞正常整合運作。",
+        "data": {
+          "yaml_content": "YAML 編輯器"
         }
       }
     },
     "error": {
-      "unknown": "天機有變，乾坤失序，宜重新設定，以正五行",
-      "unknown_error": "太清有異，星象紊亂，宜重新設定，以正天時",
-      "unknown_error_occurred": "天地反常，六氣不調，宜重新設定，以正陰陽",
-      "need_select_person_for_edit": "請先擇定其人，方可改易生辰八字",
-      "need_select_person_for_delete": "請先擇定其人，方可除去黃籍",
-      "need_select_event_for_edit": "請先擇定其事，方可改易玉曆",
-      "need_select_event_for_delete": "請先擇定其事，方可除去玉曆",
-      "name_already_exists": "黃籍重名，宜加別號以區之（譬如：張三其壹、張三其貳）",
-      "invalid_date_format": "生辰八字不合天時，須依年月日時之製（譬如：一九九零年歲庚午，正月初一，辰時三刻）",
-      "invalid_event_date_format": "日期不合曆法，須依太陽曆法年月日之製（譬如：二零二四年十二月三十日）",
-      "invalid_time_format": "時刻不合更漏，須依十二時辰刻數（譬如：辰時三刻）"
+      "unknown": "發生未知錯誤，如無法新增或編輯請刪除整合後重新新增",
+      "unknown_error": "發生未知錯誤，如無法新增或編輯請刪除整合後重新新增",
+      "unknown_error_occurred": "發生未知錯誤，如無法新增或編輯請刪除整合後重新新增",
+      "need_select_person_for_edit": "請選擇要編輯的人員",
+      "need_select_person_for_delete": "請選擇要刪除的人員",
+      "need_select_event_for_edit": "請選擇要編輯的事件",
+      "need_select_event_for_delete": "請選擇要刪除的事件",
+      "name_already_exists": "姓名相同，如有相同姓名可以後面加數字更好標識（例如：張三1）",
+      "invalid_date_format": "日期格式錯誤，請使用YYYY/MM/DD/HH格式（例如：1990/01/01/08）",
+      "invalid_event_date_format": "日期格式錯誤，請使用YYYY/MM/DD格式（例如：2024/12/31）",
+      "invalid_time_format": "時間格式錯誤，請使用HH/MM格式（例如：08/30）",
+      "invalid_yaml": "YAML格式錯誤。確保沒有特殊字符，並檢查錯誤定義。",
+      "yaml_must_be_dict": "YAML內容必須是字典格式",
+      "key_must_be_dict": "{key}必須是字典格式",
+      "date_format_error": "日期{date}格式錯誤，必須是YYYY-MM-DD格式",
+      "description_must_be_string": "日期{date}的描述必須是字串"
     },
     "abort": {
-      "max_persons_reached": "黃籍已錄五人，應五行之數，不可複增",
-      "max_events_reached": "玉曆已載三十事，應一月之數，不可再增",
-      "person_added": "其人已入黃籍，永錄太清",
-      "person_updated": "{name}生辰八字已改，重訂天命",
-      "person_deleted": "{name}已除名黃籍，退出太清",
-      "event_added": "玉曆已錄是事，永誌不忘",
-      "event_updated": "{name}之事已改，重定吉時",
-      "event_deleted": "{name}之事已除，玉曆不復載",
-      "event_not_found": "玉曆無載是事，或已消逝於天地之間"
+      "max_persons_reached": "已達最大人數限制（5人）",
+      "max_events_reached": "已達到最大事件限制（30個）",
+      "person_added": "人員添加成功",
+      "person_updated": "{name} 更新成功",
+      "person_deleted": "{name} 刪除成功",
+      "event_added": "事件添加成功",
+      "event_updated": "{name} 更新成功",
+      "event_deleted": "{name} 刪除成功",
+      "event_not_found": "未找到該事件",
+      "holidays_edited": "節慶已更新，重啟 **Home Assistant** 生效"
     }
   }
 }

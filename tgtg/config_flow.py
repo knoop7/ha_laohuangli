@@ -1,6 +1,10 @@
 from typing import Any, Dict, Optional
 import voluptuous as vol
+import os
 import re
+import yaml
+import aiofiles
+import logging
 from datetime import datetime
 from homeassistant.core import callback
 from homeassistant import config_entries
@@ -8,6 +12,9 @@ from homeassistant.const import CONF_NAME
 from homeassistant.helpers import selector
 from homeassistant.helpers import entity_registry
 from homeassistant.data_entry_flow import FlowResult
+from homeassistant.helpers.selector import (
+    TemplateSelector,
+)
 from .const import (
     DOMAIN,
     DATA_FORMAT,
@@ -20,6 +27,8 @@ from .const import (
     CONF_NOTIFICATION_SERVICE, 
     CONF_NOTIFICATION_MESSAGE,
 )
+
+LOGGER = logging.getLogger(__name__)
 
 def validate_date(date_str: str, is_event: bool = False) -> str:
     try:
@@ -192,16 +201,19 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
     async def async_step_init(self, user_input: Optional[Dict[str, Any]] = None) -> FlowResult:
         if user_input is not None:
             self.selected_area = user_input["area"]
+            if self.selected_area == "holidays":
+                return await self.async_step_edit_holidays()
             return await self.async_step_actions()
 
         return self.async_show_form(
             step_id="init",
             data_schema=vol.Schema({
-                vol.Required("area"): selector.SelectSelector(
+                vol.Required("area", default="birthday"): selector.SelectSelector(
                     selector.SelectSelectorConfig(
                         options=[
                             selector.SelectOptionDict(value="birthday", label="生日管理"),
                             selector.SelectOptionDict(value="event", label="事件管理"),
+                            selector.SelectOptionDict(value="holidays", label="节假日管理"),
                         ],
                         mode="dropdown"
                     )
@@ -392,18 +404,25 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                 new_data[f"event{event_count}_name"] = user_input["name"]
                 new_data[f"event{event_count}_date"] = user_input["date"]
                 new_data[f"event{event_count}_desc"] = user_input.get("description", "")
+                new_data[f"event{event_count}_auto_remove"] = user_input.get("auto_remove", False)
+                new_data[f"event{event_count}_full_countdown"] = user_input.get("full_countdown", False)
                 new_data[CONF_EVENT_ENABLED] = True
                 self._save_config(new_data)
-                
+
                 self._edit_event_data = {
                     "name": user_input["name"],
                     "date": user_input["date"],
                     "description": user_input.get("description", ""),
+                    "auto_remove": user_input.get("auto_remove", False),
+                    "full_countdown": user_input.get("full_countdown", False),
                     "notification_enabled": user_input.get(CONF_NOTIFICATION_ENABLED, False),
                     "current_idx": event_count
                 }
                 
-                if user_input.get(CONF_NOTIFICATION_ENABLED):
+                if user_input.get("full_countdown"):
+                    self.event_name = user_input["name"]
+                    return await self.async_step_edit_event_time()
+                elif user_input.get(CONF_NOTIFICATION_ENABLED):
                     self.event_name = user_input["name"]
                     return await self.async_step_event_notification_edit()
                 
@@ -418,6 +437,8 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                 vol.Required("name"): str,
                 vol.Required("date"): str,
                 vol.Optional("description", default=""): str,
+                vol.Optional("auto_remove", default=False): bool,
+                vol.Optional("full_countdown", default=False): bool,
                 vol.Optional(CONF_NOTIFICATION_ENABLED, default=False): bool,
             }),
             errors=errors
@@ -907,7 +928,6 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
             )
         
         except Exception as e:
-            _LOGGER.error("更新事件通知配置失败: %s", e)
             return self.async_show_form(
                 step_id="event_notification_edit",
                 data_schema=vol.Schema({
@@ -998,3 +1018,74 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
             })
         )
         
+    async def async_step_edit_holidays(self, user_input: Optional[Dict[str, Any]] = None) -> FlowResult:
+        errors = {}
+        yaml_file = os.path.join(os.path.dirname(__file__), "hworkdays.yaml")
+        
+        if user_input is not None:
+            try:
+                yaml_content = user_input["yaml_content"]
+                
+                def parse_yaml():
+                    parsed = yaml.safe_load(yaml_content)
+                    if not isinstance(parsed, dict):
+                        raise vol.Invalid("yaml_must_be_dict")
+                    
+                    for key in ["customdays", "holidays", "workdays"]:
+                        if key in parsed:
+                            if not isinstance(parsed[key], dict):
+                                raise vol.Invalid(f"key_must_be_dict", {"key": key})
+                            for date, description in parsed[key].items():
+                                try:
+                                    datetime.strptime(date, "%Y-%m-%d")
+                                except ValueError:
+                                    raise vol.Invalid(f"date_format_error", {"date": date})
+                                if not isinstance(description, str):
+                                    raise vol.Invalid(f"description_must_be_string", {"date": date})
+                    
+                    return parsed
+
+                try:
+                    parsed_yaml = await self.hass.async_add_executor_job(parse_yaml)
+                except (yaml.YAMLError, vol.Invalid) as e:
+                    errors["yaml_content"] = "invalid_yaml"
+                    raise
+                
+                async with aiofiles.open(yaml_file, 'w', encoding='utf-8') as f:
+                    await f.write(yaml_content)
+                
+                try:
+                    await self.hass.services.async_call(
+                        "tgtg", 
+                        "reload_holidays", 
+                        {}, 
+                        blocking=True
+                    )
+                except Exception as e:
+                    pass
+                
+                return self.async_abort(reason="holidays_edited")
+                
+            except Exception as e:
+                if "yaml_content" not in errors:
+                    errors["base"] = "save_error"
+
+        try:
+            async with aiofiles.open(yaml_file, 'r', encoding='utf-8') as f:
+                yaml_content = await f.read()
+        except Exception as e:
+            yaml_content = ""
+
+        schema = {
+            vol.Required(
+                "yaml_content", 
+                default=yaml_content
+            ): TemplateSelector()
+        }
+
+        return self.async_show_form(
+            step_id="edit_holidays",
+            data_schema=vol.Schema(schema),
+            errors=errors,
+            last_step=True
+        )

@@ -2,7 +2,8 @@ window.customCards = window.customCards || [];
 window.customCards.push({
   type: "almanac-card",
   name: "中国老黄历卡片",
-  description: "一个优雅的中国传统历法展示卡片，包含节气、干支、吉凶等信息，支持动态布局。",
+  description:
+    "一个优雅的中国传统历法展示卡片，包含节气、干支、吉凶等信息，支持动态布局。",
   preview: true,
 });
 
@@ -17,8 +18,8 @@ class AlmanacCard extends HTMLElement {
         shichen: true,
         shengxiao: true,
         fangwei: true,
-        jixiong: true
-      }
+        jixiong: true,
+      },
     };
   }
   constructor() {
@@ -481,6 +482,7 @@ class AlmanacCard extends HTMLElement {
     resetButton.addEventListener("click", () => {
       this._layout = this._defaultLayout;
       this._isLocked = true;
+      this._showYiJi = true; 
       Object.values(this._moduleConfigs).forEach((config) => {
         config.enabled = true;
       });
