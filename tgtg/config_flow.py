@@ -165,6 +165,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     async def async_step_name(self, user_input: Optional[Dict[str, Any]] = None) -> FlowResult:
         if user_input is not None:
             self.data[CONF_NAME] = user_input[CONF_NAME]
+            self.data["language"] = user_input.get("language", "auto")
             if not self.data.get(CONF_EVENT_ENABLED):
                 self.data[CONF_EVENT_ENABLED] = False
             return self.async_create_entry(title=user_input[CONF_NAME], data=self.data)
@@ -173,6 +174,10 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             step_id="name",
             data_schema=vol.Schema({
                 vol.Required(CONF_NAME, default="中国老黄历"): str,
+                vol.Required("language", default="auto"): vol.In({
+                    "auto": "简体中文",
+                    "zh-Hant": "繁体中文"
+                }),
             })
         )
 
@@ -626,62 +631,6 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
             })
         )
 
-
-    async def async_step_add_event(self, user_input: Optional[Dict[str, Any]] = None) -> FlowResult:
-        errors = {}
-        event_count = sum(1 for key in self.data if key.startswith("event") and key.endswith("_name"))
-
-        if event_count >= MAX_EVENTS:
-            return self.async_abort(reason="max_events_reached")
-
-        if user_input is not None:
-            try:
-                validate_date(user_input["date"], is_event=True)
-                
-                new_data = dict(self.data)
-                event_count += 1
-                new_data[f"event{event_count}_name"] = user_input["name"]
-                new_data[f"event{event_count}_date"] = user_input["date"]
-                new_data[f"event{event_count}_desc"] = user_input.get("description", "")
-                new_data[f"event{event_count}_auto_remove"] = user_input.get("auto_remove", False)
-                new_data[f"event{event_count}_full_countdown"] = user_input.get("full_countdown", False)
-                new_data[CONF_EVENT_ENABLED] = True
-                self._save_config(new_data)
-
-                self._edit_event_data = {
-                    "name": user_input["name"],
-                    "date": user_input["date"],
-                    "description": user_input.get("description", ""),
-                    "auto_remove": user_input.get("auto_remove", False),
-                    "full_countdown": user_input.get("full_countdown", False),
-                    "notification_enabled": user_input.get(CONF_NOTIFICATION_ENABLED, False),
-                    "current_idx": event_count
-                }
-                
-                if user_input.get("full_countdown"):
-                    self.event_name = user_input["name"]
-                    return await self.async_step_edit_event_time()
-                elif user_input.get(CONF_NOTIFICATION_ENABLED):
-                    self.event_name = user_input["name"]
-                    return await self.async_step_event_notification_edit()
-                
-                return self.async_abort(reason="event_added")
-                
-            except vol.Invalid:
-                errors["date"] = "invalid_event_date_format"
-
-        return self.async_show_form(
-            step_id="add_event",
-            data_schema=vol.Schema({
-                vol.Required("name"): str,
-                vol.Required("date"): str,
-                vol.Optional("description", default=""): str,
-                vol.Optional("auto_remove", default=False): bool,
-                vol.Optional("full_countdown", default=False): bool,
-                vol.Optional(CONF_NOTIFICATION_ENABLED, default=False): bool,
-            }),
-            errors=errors
-        )
 
     async def async_step_edit_event(self, user_input: Optional[Dict[str, Any]] = None) -> FlowResult:
         errors = {}
