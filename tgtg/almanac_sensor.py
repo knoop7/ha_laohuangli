@@ -4,6 +4,7 @@ from functools import lru_cache
 from typing import Any,Dict,Optional,List
 from collections import defaultdict
 import cnlunar
+import zhconv
 from weakref import WeakValueDictionary
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant,callback
@@ -12,7 +13,7 @@ from homeassistant.helpers.event import async_track_time_change
 from homeassistant.util import dt
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.helpers.entity import DeviceInfo,EntityCategory
-from .const import DOMAIN,MAIN_SENSORS
+from .const import DOMAIN,MAIN_SENSORS,TRANSLATIONS
 from .services import async_setup_date_service
 
 _LOGGER = logging.getLogger(__name__)
@@ -40,10 +41,15 @@ class TimeHelper:
     @staticmethod
     def get_current_twohour(h):return 11 if h==23 else((h+1)//2)%12
     @staticmethod
-    def format_twohour_lucky(l,t): i=TimeHelper.get_current_twohour(t.hour);return{'state':f"{TimeHelper.TIME_RANGES[i]} {l[i]}",'attributes':dict(zip(TimeHelper.TIME_RANGES,l))}
+    def format_twohour_lucky(l, t):
+        i = TimeHelper.get_current_twohour(t.hour)
+        return {
+            'state': f"{TimeHelper.TIME_RANGES[i]} {l[i]}",
+            'attributes': dict(zip(TimeHelper.TIME_RANGES, l))
+        }
 class AlmanacDevice:
-    def __init__(self,entry_id,name):
-        self._entry_id,self._name=entry_id,name
+    def __init__(self,entry_id,name,language="auto"):
+        self._entry_id,self._name,self._language=entry_id,name,language
         self._holiday_cache={}
         self._workday_cache={}
         self._custom_cache={}   
@@ -133,7 +139,15 @@ class AlmanacSensor(SensorEntity):
             except Exception as e:_LOGGER.error(f"计算数据时出错: {e}");return None
 
     @property
-    def name(self): return self._type
+    def name(self):
+        language = self._device._language
+        if language == "auto":
+            language = self._hass.config.language
+        
+        if language == "zh-Hant" and self._type in TRANSLATIONS["zh-Hant"]:
+            return TRANSLATIONS["zh-Hant"][self._type]
+        
+        return self._type
     @property 
     def unique_id(self): return f"{self._device._entry_id}_{self._type}"
     @property 
@@ -141,9 +155,28 @@ class AlmanacSensor(SensorEntity):
     @property 
     def entity_category(self): return None if self._is_main_sensor else EntityCategory.DIAGNOSTIC
     @property 
-    def state(self): return self._state
+    def state(self):
+        return self._convert_text(self._state)
     @property 
-    def extra_state_attributes(self): return self._attributes if self._type in['时辰凶吉','时辰','节气','九宫飞星','十二神']else{}
+    def extra_state_attributes(self):
+        if self._type not in ['时辰凶吉', '时辰', '节气', '九宫飞星', '十二神']:
+            return {}
+            
+        converted_attrs = {}
+        for key, value in self._attributes.items():
+            if isinstance(value, str):
+                converted_attrs[key] = self._convert_text(value)
+            elif isinstance(value, dict):
+                converted_dict = {}
+                for k, v in value.items():
+                    if isinstance(v, str):
+                        converted_dict[k] = self._convert_text(v)
+                    else:
+                        converted_dict[k] = v
+                converted_attrs[key] = converted_dict
+            else:
+                converted_attrs[key] = value
+        return converted_attrs
     @property 
     def available(self): return self._available
     @property 
@@ -177,18 +210,29 @@ class AlmanacSensor(SensorEntity):
         except Exception as e:
             _LOGGER.error(f"清理时出错: {e}")
 
-    async def _update_double_hour(self,now):
-        try: self._state=self._time_helper.get_current_shichen(now.hour,now.minute);self._available=True;return self._state
-        except: self._available=False;return None
-
-    async def _update_twohour_lucky(self,now):
+    async def _update_double_hour(self, now):
         try:
-            lunar_data=await self._get_lunar_data(now)
+            self._state = self._time_helper.get_current_shichen(now.hour, now.minute)
+            self._available = True
+            return self._state  
+        except:
+            self._available = False
+            return None
+
+    async def _update_twohour_lucky(self, now):
+        try:
+            lunar_data = await self._get_lunar_data(now)
             if lunar_data:
-                lucky_data=self._time_helper.format_twohour_lucky(lunar_data.get_twohourLuckyList(),now)
-                self._state,self._attributes,self._available=lucky_data['state'],lucky_data['attributes'],True;return self._state
-            self._available=False;return None
-        except: self._available=False;return None
+                lucky_data = self._time_helper.format_twohour_lucky(lunar_data.get_twohourLuckyList(), now)
+                self._state = lucky_data['state']
+                self._attributes = lucky_data['attributes']
+                self._available = True
+                return self._state  
+            self._available = False
+            return None
+        except:
+            self._available = False
+            return None
 
     async def _process_solar_terms(self,solar_terms_dict,current_month,current_day):
         terms=sorted(solar_terms_dict.items(),key=lambda x:(x[1][0],x[1][1]))
@@ -289,15 +333,33 @@ class AlmanacSensor(SensorEntity):
                 '六十四卦': iching_result,
                 '盲派': blind_result
             }            
-            self._state=state_map.get(self._type,'')
-            if self._type=='九宫飞星'and nine_palace_attrs:self._attributes=nine_palace_attrs
-            elif self._type=='节气'and next_term and next_date:self._attributes={"下一节气":f"{next_term} ({next_date})"}
-            self._available=True
+            self._state = state_map.get(self._type, '')
+            if self._type == '九宫飞星' and nine_palace_attrs:
+                self._attributes = nine_palace_attrs
+            elif self._type == '节气' and next_term and next_date:
+                self._attributes = {"下一节气": f"{next_term} ({next_date})"}
+            self._available = True
             return self._state
         except Exception as e:
             _LOGGER.error(f"更新传感器时出错 {self._type}: {e}")
-            self._available=False
+            self._available = False
             return None
+
+    def _convert_text(self, text):
+        if not text or not isinstance(text, str):
+            return text
+            
+        language = self._device._language
+        if language == "auto":
+            language = self._hass.config.language
+        
+        if language == "zh-Hant":
+            try:
+                return zhconv.convert(text, 'zh-hant')
+            except Exception as e:
+                _LOGGER.error(f"转换文本时出错: {e}")
+                return text
+        return text
 
 async def setup_sensor_updates(hass,sensors,um):
     UK="almanac_unsubs"
@@ -311,17 +373,17 @@ async def setup_sensor_updates(hass,sensors,um):
     update_times={'shichen':{'second':[0],'minute':[0,15,30,45]},'other':{'second':[0],'minute':[0],'hour':'*'}}
     [hass.data[DOMAIN][UK].append(async_track_time_change(hass,time_change_handler,**update_schedule))for group_type,update_schedule in update_times.items()if sensors_groups[group_type]]
     
-async def setup_almanac_sensors(hass,eid,cd):
+async def setup_almanac_sensors(hass, eid, cd):
     if DOMAIN not in hass.data:hass.data[DOMAIN]={}
-    if"almanac_sensors"not in hass.data[DOMAIN]:hass.data[DOMAIN]["almanac_sensors"]={}
-    if eid in hass.data[DOMAIN]["almanac_sensors"]:[await s.cleanup()for s in hass.data[DOMAIN]["almanac_sensors"][eid]];hass.data[DOMAIN]["almanac_sensors"][eid]=[]
-    d=AlmanacDevice(eid,cd.get("name","中国老黄历"))
+    if "almanac_sensors" not in hass.data[DOMAIN]:hass.data[DOMAIN]["almanac_sensors"]={}
+    if eid in hass.data[DOMAIN]["almanac_sensors"]:[await s.cleanup() for s in hass.data[DOMAIN]["almanac_sensors"][eid]];hass.data[DOMAIN]["almanac_sensors"][eid]=[]
+    d = AlmanacDevice(eid, cd.get("name", "中国老黄历"), cd.get("language", "auto"))
     await d.async_setup(hass)
-    um=UpdateManager();await um.start()
-    SK=['日期','农历','星期','今日节日','周数','八字','节气','季节','时辰凶吉','生肖冲煞','星座','星次','彭祖百忌','十二神','廿八宿','今日三合','今日六合','纳音','九宫飞星','吉神方位','今日胎神','今日吉神','今日凶煞','宜忌等第','宜','忌','时辰经络','时辰','六曜','日禄','三十六禽','六十四卦','盲派']
-    s=[AlmanacSensor(d,cd.get("name","中国老黄历"),k,k in MAIN_SENSORS,hass)for k in SK]
-    await setup_sensor_updates(hass,s,um)  
-    hass.data[DOMAIN]["almanac_sensors"][eid]=s;return s,s
+    um = UpdateManager();await um.start()
+    SK = ['日期','农历','星期','今日节日','周数','八字','节气','季节','时辰凶吉','生肖冲煞','星座','星次','彭祖百忌','十二神','廿八宿','今日三合','今日六合','纳音','九宫飞星','吉神方位','今日胎神','今日吉神','今日凶煞','宜忌等第','宜','忌','时辰经络','时辰','六曜','日禄','三十六禽','六十四卦','盲派']
+    s = [AlmanacSensor(d, cd.get("name", "中国老黄历"), k, k in MAIN_SENSORS, hass) for k in SK]
+    await setup_sensor_updates(hass, s, um)  
+    hass.data[DOMAIN]["almanac_sensors"][eid] = s; return s, s
 
 async def async_setup_entry(hass:HomeAssistant,entry:ConfigEntry,aae:AddEntitiesCallback)->bool:
     try:
