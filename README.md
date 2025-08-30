@@ -4,6 +4,8 @@
 
 ## 中国老黄历 (Chinese Almanac) for Home Assistant
 
+
+
 <br>
 
 <img width="960" alt="img" src="https://github.com/user-attachments/assets/2414840b-c860-4d49-b788-b25fbb51b0e5">
@@ -13,7 +15,6 @@
 
 
 **为您的智能家居注入传统中国历法的智慧与魅力**
-<br>
 
 ![版本](https://img.shields.io/badge/version-2025.01.17-blue.svg)
 ![Home Assistant版本](https://img.shields.io/badge/Hoe%20Assistant-2024.4.0+-yellow.svg)
@@ -21,6 +22,7 @@
 ![许可](https://img.shields.io/badge/许可-MIT-brightgreen.svg)
 ![Python版本](https://img.shields.io/badge/Python-3.1.3+-blue.svg)
 ![代码扫描](https://img.shields.io/badge/代码扫描-通过-success)
+
 
 <br>
 
@@ -46,12 +48,12 @@
 1. Hacs存储库添加https://github.com/knoop7/ha_laohuangli 安装
 2. 或者点击 > http://homeassistant.local:8123/hacs/repository?owner=knoop7&repository=ha_laohuangli
 3. 重启您的Home Assistant系统
-4. 在集成页面中搜索"中国老黄历"或者"tgtg"，添加该集成
+4. 在集成页面中搜索"中国老黄历"或者"chinese"，添加该集成
 
 ### 复杂安装：
 1. 将 `发行版压缩包` 解压文件夹后，复制到您的Home Assistant配置目录下的 `custom_components` 文件夹
 2. 重启您的Home Assistant系统
-3. 在集成页面中搜索"中国老黄历"或者"tgtg"，添加该集成
+3. 在集成页面中搜索"中国老黄历"或者"chinese"，添加该集成
 
 
 <br>
@@ -66,7 +68,7 @@
 - **吉凶指引**：今日吉神、今日凶煞、宜忌等第、宜、忌
 - **健康养生**：时辰经络、时辰刻度
 - **事件提醒**：自定义事件管理，如生日、纪念日等
-- **生日管理**：家人生日、八字记录与提醒
+- **生日管理**：家人生日、八字记录与提醒、AI预测
 -  ~~**观音灵签**：已删除可更新回退10.31版本~~
 
 <br>
@@ -121,11 +123,5 @@ prefix: lao_huang_li_
 <br>
 
 
-您的打赏对于我来说是前进的动力和维护的核心！
-
 <br>
-
-<img src="https://github.com/user-attachments/assets/444a1a4a-251b-4a6c-8070-7ba4cca642f4" alt="description" width="300" />
-
-
-> **特别声明**：本插件独家授权Home Assistant家庭助手公众号。
+<br>
