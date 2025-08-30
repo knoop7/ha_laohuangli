@@ -1,26 +1,26 @@
 date_control:
-  name: 日期控制器
-  description: 控制显示的日期，本创建主要为保证卡片使用，日期不会实时返回，如果手动请注意选择今天回退。
+  name: "日期控制器 | Date Controller"
+  description: "控制显示的日期，本创建主要为保证卡片使用，日期不会实时返回，如果手动请注意选择今天回退。 |  Controls the displayed date. This service is mainly for card usage. The date does not update in real-time. If manually controlling, please note to select 'today' to revert."
   fields:
     action:
-      name: 操作
-      description: 选择或填写日期控制操作
+      name: "操作 | Operation"
+      description: "选择或填写日期控制操作 | Select or enter date control operation"
       required: true
       selector:
         select:
           options:
-            - label: "前一天"         
+            - label: "前一天 | Previous Day"
               value: "previous_day"
-            - label: "今天"           
+            - label: "今天 |  Today"
               value: "today"
-            - label: "下一天"         
+            - label: "下一天 | Next Day"
               value: "next_day"
-            - label: "选择日期"       
+            - label: "选择日期 | Select Date"
               value: "select_date"
 
     date:
-      name: 日期
-      description: "仅在选择'选择日期'时勾选并使用此项"
+      name: "日期 | Date"
+      description: "仅在选择'选择日期'时勾选并使用此项  | Only required and used when 'select_date' is chosen"
       required: false
       selector:
         date: {}
