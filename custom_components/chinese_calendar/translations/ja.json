@@ -1,0 +1,251 @@
+{
+  "title": "中国の古い年鑑",
+  "config": {
+    "abort": {
+      "already_configured": "デバイスが設定されました",
+      "single_instance_allowed": "すでに設定されています。設定できるインスタンスは 1 つだけです。",
+      "max_persons_reached": "定員（5名）に達しました",
+      "max_events_reached": "イベント最大数に達しました (30)",
+      "person_added": "人材が正常に追加されました",
+      "person_updated": "{name} が正常に更新されました",
+      "person_deleted": "{name} は正常に削除されました",
+      "event_added": "イベントが正常に追加されました",
+      "event_updated": "{name} が正常に更新されました",
+      "event_deleted": "{name} は正常に削除されました",
+      "event_not_found": "イベントが見つかりませんでした"
+    },
+    "error": {
+      "invalid_date_format": "日付形式が間違っています。YYYY/MM/DD/HH 形式を使用してください (例: 1990/01/01/08)",
+      "invalid_event_date_format": "日付の形式が間違っています。YYYY/MM/DD 形式を使用してください (例: 2024/12/31)",
+      "invalid_time_format": "時刻の形式が間違っています。HH/MM 形式を使用してください (例: 08/30)",
+      "name_already_exists": "名前が同じ場合は、識別しやすくするために名前の後に番号を追加できます (例: Zhang San 1)。",
+      "duplicate_event_name": "イベント名はすでに存在します",
+      "unknown": "不明なエラーが発生しました。追加または編集できない場合は、統合を削除して再度追加してください。",
+      "unknown_error": "不明なエラーが発生しました。追加または編集できない場合は、統合を削除して、再度追加してください。",
+      "unknown_error_occurred": "不明なエラーが発生しました。追加または編集できない場合は、統合を削除して再度追加してください。",
+      "invalid_yaml": "無効な YAML 形式です",
+      "save_error": "設定の保存に失敗しました",
+      "invalid_date": "無効な日付形式です",
+      "invalid_birthday_date": "誕生日の日付形式が無効です",
+      "duplicate_person_name": "名前はすでに存在します"
+    },
+    "step": {
+      "user": {
+        "title": "初期設定",
+        "description": "この統合プラグインへようこそ！\n[@knoop7](https://github.com/knoop7)による独占制作\n\n商用利用および二次改変は厳禁です\n違反の場合は更新停止およびメンテナンスコードの提供を終了します\n\n\n**伝統カレンダー：**\n• 伝統的な陰陽暦情報をリアルタイム表示\n• 二十四節気を正確に予報\n• 日々の吉凶・適忌ガイド\n• カスタム祝日編集\n\n**誕生日管理：**\n• 家族の誕生日\n• 八字・誕生日リマインダー機能\n\n**イベント管理：**\n• 投資・財務リマインダー\n• スケジュールリマインダー\n• 会議・食事会リマインダー\n• 記念日リマインダー",
+        "data": {
+          "setup_options": "有効にする機能を選択：",
+          "setup_birthday": "誕生日リマインダー",
+          "setup_event": "イベント管理",
+          "area": "管理項目を選択"
+        }
+      },
+      "name": {
+        "title": "サービス名設定",
+        "description": "伝統カレンダーサービスに名前を設定してください",
+        "data": {
+          "name": "サービス名",
+          "language": "言語選択"
+        }
+      },
+      "birthday": {
+        "title": "誕生日管理設定",
+        "description": "誕生日情報を設定してください（最大5人まで対応）",
+        "data": {
+          "name": "名前",
+          "birthday": "誕生日（形式：YYYY/MM/DD/HH）",
+          "add_another": "追加を続ける"
+        }
+      },
+      "event": {
+        "title": "イベント管理の構成",
+        "description": "イベント情報を設定してください(最大30件までサポート)",
+        "data": {
+          "name": "イベント名",
+          "date": "イベント日（形式：YYYY/MM/DD）",
+          "description": "イベントの説明",
+          "add_another": "追加を続けます"
+        }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "機能管理",
+        "description": "管理する機能領域を選択してください",
+        "data": {
+          "area": "機能選択",
+          "area_birthday": "誕生日管理",
+          "area_event": "イベント管理",
+          "area_holidays": "休日の設定"
+        }
+      },
+      "actions": {
+        "title": "操作オプション",
+        "description": "実行するアクションを選択してください",
+        "data": {
+          "action": "アクションの選択",
+          "person_index": "名前を選択してください",
+          "event_index": "イベントを選択",
+          "add": "に追加",
+          "edit": "編集",
+          "delete": "消去"
+        },
+        "select_description": {
+          "edit_person": "編集したい人を選択してください",
+          "delete_person": "削除する人を選択してください",
+          "edit_event": "編集するイベントを選択してください",
+          "delete_event": "削除するイベントを選択してください"
+        }
+      },
+      "select_person": {
+        "title": "オプション",
+        "description": "以下の人たちを選択してください",
+        "data": {
+          "person_index": "名前を選択してください"
+        }
+      },
+      "select_event": {
+        "title": "オプション",
+        "description": "以下のイベントを選択してください",
+        "data": {
+          "event_index": "イベントを選択"
+        }
+      },
+      "add_birthday": {
+        "title": "誕生日情報を追加する",
+        "data": {
+          "name": "名前",
+          "birthday": "誕生日（形式：YYYY/MM/DD/HH）",
+          "notification_enabled": "通知サービスを有効にする",
+          "ai_enabled": "AI予測を有効にする"
+        }
+      },
+      "edit_birthday": {
+        "title": "誕生日情報を編集する",
+        "data": {
+          "name": "名前",
+          "birthday": "誕生日（形式：YYYY/MM/DD/HH）",
+          "notification_enabled": "通知サービスを有効にする",
+          "ai_enabled": "AI予測を有効にする"
+        }
+      },
+      "delete_birthday": {
+        "title": "誕生日情報を削除する",
+        "description": "この誕生日情報を削除してもよろしいですか?",
+        "data": {
+          "confirm": "削除の確認"
+        }
+      },
+      "birthday_notification_edit": {
+        "title": "通知サービスの構成",
+        "data": {
+          "notification_service": "通知サービスを選択してください",
+          "notification_message": "通知メッセージ"
+        }
+      },
+      "birthday_ai_edit": {
+        "title": "AI誕生日運勢",
+        "description": "無料の公共API：[キーを取得](https://api.chatanywhere.tech/v1/oauth/free/render)\n\n無料枠: gpt-5 / gpt-4o / gpt-4.1 — 1日5回; deepseek-r1 / deepseek-v3 — 1日30回; gpt-4o-mini / gpt-3.5-turbo / gpt-4.1-mini / gpt-4.1-nano / gpt-5-mini / gpt-5-nano — 1日200回。\n\n推奨モデル: deepseek-r1（運勢予測に最適）。",
+        "data": {
+          "ai_api_key": "APIキー",
+          "ai_model": "モデル"
+        }
+      },
+      "event_notification_edit": {
+        "title": "通知サービスの構成",
+        "data": {
+          "notification_service": "通知サービスを選択してください",
+          "notification_message": "通知メッセージ"
+        }
+      },
+      "add_event": {
+        "title": "イベント情報を追加",
+        "data": {
+          "name": "イベント名",
+          "date": "イベント日（形式：YYYY/MM/DD）",
+          "description": "イベントの説明",
+          "auto_remove": "イベントの自動削除（1日後にセンサーを自動的に削除）",
+          "full_countdown": "フルカウントダウンを有効にする",
+          "notification_enabled": "通知サービスを有効にする"
+        }
+      },
+      "edit_event": {
+        "title": "イベント情報の編集",
+        "data": {
+          "name": "イベント名",
+          "date": "イベント日（形式：YYYY/MM/DD）",
+          "description": "イベントの説明",
+          "auto_remove": "イベントの自動削除（1日後にセンサーを自動的に削除）",
+          "full_countdown": "フルカウントダウンを有効にする",
+          "notification_enabled": "通知サービスを有効にする"
+        }
+      },
+      "edit_event_time": {
+        "title": "時間を設定する",
+        "description": "イベント {name} の特定のカウントダウン時間を設定します",
+        "data": {
+          "time": "時刻（形式：HH/MM）"
+        }
+      },
+      "delete_event": {
+        "title": "イベント情報の削除",
+        "description": "このイベント情報を削除してもよろしいですか?",
+        "data": {
+          "confirm": "削除の確認"
+        }
+      },
+      "edit_holidays": {
+        "title": "休日の設定",
+        "description": "**チュートリアルの使用方法:**\n構成ファイルは YAML 形式を使用し、 **customdays** (カスタマイズされた休日) **holidays** (休日) **workdays** (営業日) の設定をサポートします。各日付形式は **YYYY-MM-DD** です。コメントの使用をサポートします。注意: 他の特殊なシンボルが入り込んで通常の統合操作に損害を与えることを防ぎます。",
+        "data": {
+          "yaml_content": "YAMLエディタ"
+        }
+      }
+    },
+    "error": {
+      "unknown": "不明なエラーが発生しました。追加または編集できない場合は、統合を削除して再度追加してください。",
+      "unknown_error": "不明なエラーが発生しました。追加または編集できない場合は、統合を削除して、再度追加してください。",
+      "unknown_error_occurred": "不明なエラーが発生しました。追加または編集できない場合は、統合を削除して再度追加してください。",
+      "need_select_person_for_edit": "編集したい人を選択してください",
+      "need_select_person_for_delete": "削除する人を選択してください",
+      "need_select_event_for_edit": "編集するイベントを選択してください",
+      "need_select_event_for_delete": "削除するイベントを選択してください",
+      "name_already_exists": "名前が同じ場合は、識別しやすくするために名前の後に番号を追加できます (例: Zhang San 1)。",
+      "invalid_date_format": "日付形式が間違っています。YYYY/MM/DD/HH 形式を使用してください (例: 1990/01/01/08)",
+      "invalid_event_date_format": "日付の形式が間違っています。YYYY/MM/DD 形式を使用してください (例: 2024/12/31)",
+      "invalid_time_format": "時刻の形式が間違っています。HH/MM 形式を使用してください (例: 08/30)",
+      "invalid_yaml": "YAML形式エラー。特殊文字が含まれていないことを確認し、エラー定義を確認してください。",
+      "yaml_must_be_dict": "YAML コンテンツは辞書形式である必要があります",
+      "key_must_be_dict": "{key} は辞書形式である必要があります",
+      "date_format_error": "日付 {date} の形式が間違っています。YYYY-MM-DD 形式にする必要があります",
+      "description_must_be_string": "日付 {date} の説明は文字列である必要があります"
+    },
+    "abort": {
+      "max_persons_reached": "定員（5名）に達しました",
+      "max_events_reached": "イベント最大数に達しました (30)",
+      "person_added": "人材が正常に追加されました",
+      "person_updated": "{name} が正常に更新されました",
+      "person_deleted": "{name} は正常に削除されました",
+      "event_added": "イベントが正常に追加されました",
+      "event_updated": "{name} が正常に更新されました",
+      "event_deleted": "{name} は正常に削除されました",
+      "event_not_found": "イベントが見つかりませんでした",
+      "holidays_edited": "祝日が更新されました。**ホーム アシスタント**を再起動して有効にします"
+    },
+    "model": {
+      "deepseek-r1": "DeepSeek-R1 (おすすめ、最高の予測、1日30回)",
+      "deepseek-v3.1": "DeepSeek-V3.1 (まあまあ、幻覚が深刻、1日30回)",
+      "gpt-4o-mini": "GPT-4o-mini (普通、漠然とした応答、1日200回)",
+      "gpt-3.5-turbo": "GPT-3.5-turbo (悪い、おおよその回答、1日200回)",
+      "gpt-4.1-mini": "GPT-4.1-mini (良い、やや漠然、1日200回)",
+      "gpt-4.1-nano": "GPT-4.1-nano (良い、やや漠然、1日200回)",
+      "gpt-5-mini": "GPT-5-mini (良い、やや漠然、1日200回)",
+      "gpt-5-nano": "GPT-5-nano (良い、やや漠然、1日200回)",
+      "gpt-4o": "GPT-4o (良い、許容できる予測、1日5回)",
+      "gpt-5": "GPT-5 (非常に良い、正確な予測、1日5回)",
+      "gpt-4.1": "GPT-4.1 (非常に良い、正確な予測、1日5回)"
+    }
+  }
+}
