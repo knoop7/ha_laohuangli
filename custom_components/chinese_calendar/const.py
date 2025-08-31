@@ -16,17 +16,17 @@ CONF_AI_MODEL = "ai_model"
 
 DEFAULT_AI_API_URL = "https://api.chatanywhere.tech"
 AI_MODELS = [
-    {"value": "deepseek-r1", "label": "model.deepseek-r1"},
-    {"value": "deepseek-v3.1", "label": "model.deepseek-v3.1"},
-    {"value": "gpt-4o-mini", "label": "model.gpt-4o-mini"},
-    {"value": "gpt-3.5-turbo", "label": "model.gpt-3.5-turbo"},
-    {"value": "gpt-4.1-mini", "label": "model.gpt-4.1-mini"},
-    {"value": "gpt-4.1-nano", "label": "model.gpt-4.1-nano"},
-    {"value": "gpt-5-mini", "label": "model.gpt-5-mini"},
-    {"value": "gpt-5-nano", "label": "model.gpt-5-nano"},
-    {"value": "gpt-4o", "label": "model.gpt-4o"},
-    {"value": "gpt-5", "label": "model.gpt-5"},
-    {"value": "gpt-4.1", "label": "model.gpt-4.1"}
+    {"value": "deepseek-r1", "label": "deepseek-r1"},
+    {"value": "deepseek-v3.1", "label": "deepseek-v3.1"},
+    {"value": "gpt-4o-mini", "label": "gpt-4o-mini"},
+    {"value": "gpt-3.5-turbo", "label": "gpt-3.5-turbo"},
+    {"value": "gpt-4.1-mini", "label": "gpt-4.1-mini"},
+    {"value": "gpt-4.1-nano", "label": "gpt-4.1-nano"},
+    {"value": "gpt-5-mini", "label": "gpt-5-mini"},
+    {"value": "gpt-5-nano", "label": "gpt-5-nano"},
+    {"value": "gpt-4o", "label": "gpt-4o"},
+    {"value": "gpt-5", "label": "gpt-5"},
+    {"value": "gpt-4.1", "label": "gpt-4.1"}
 ]
 
 

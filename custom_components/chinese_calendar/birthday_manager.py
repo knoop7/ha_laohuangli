@@ -1,5 +1,8 @@
+import warnings
+warnings.filterwarnings("ignore", message="pkg_resources is deprecated", category=UserWarning, module="zhconv")
+
 from datetime import datetime
-import cnlunar
+import cnlunar # pyright: ignore[reportMissingImports]
 import aiohttp
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.core import HomeAssistant
@@ -10,7 +13,7 @@ from .const import (
     DOMAIN,
     DATA_FORMAT
 )
-import zhconv
+import zhconv  # pyright: ignore[reportMissingImports]
 
 class BirthdayDevice:
     def __init__(self, entry_id: str, language="auto"):
@@ -71,7 +74,6 @@ class BirthdaySensor(SensorEntity):
             try:
                 return zhconv.convert(text, 'zh-hant')
             except Exception as e:
-                _LOGGER.error(f"转换文本时出错: {e}")
                 return text
         return text
 
@@ -201,6 +203,12 @@ class BirthdaySensor(SensorEntity):
             "水": "智慧、灵活、适应"
         }
         return f"{element}({attributes[element]})"
+
+    def _calculate_lunar_days_between(self, from_month, from_day, to_month, to_day):
+        try:
+            return to_day - from_day if from_month == to_month else max(0, (to_month - from_month + (12 if to_month < from_month else 0)) * 30 + (to_day - from_day))
+        except Exception:
+            return 30
 
     def _analyze_daily_fortune(self, birth_lunar, today_lunar):
         gan_relations = {
@@ -356,61 +364,30 @@ class BirthdaySensor(SensorEntity):
                     if hasattr(self, '_last_calc_date') and self._last_calc_date == today.date():
                         return
                     self._last_calc_date = today.date()
-                    birth_lunar = cnlunar.Lunar(self._birthday, godType='8char')
-                    birth_lunar_month, birth_lunar_day, birth_is_leap = birth_lunar.lunarMonth, birth_lunar.lunarDay, birth_lunar.isLunarLeapMonth
-                    today_lunar = cnlunar.Lunar(today, godType='8char')
-                    today_year = today.year
-                    this_year_birthday = next_year_birthday = None
-                    found_birthday = False
-
-                    for year in [today_year - 1, today_year, today_year + 1]:
-                        if found_birthday:
-                            break
-                        for month in range(1, 13):
-                            if found_birthday:
-                                break
-                            next_month = datetime(year + 1, 1, 1) if month == 12 else datetime(year, month + 1, 1)
-                            days_in_month = (next_month - datetime(year, month, 1)).days
-                            for day in range(1, days_in_month + 1):
-                                test_date = datetime(year, month, day)
-                                try:
-                                    lunar_test = cnlunar.Lunar(test_date, godType='8char')
-                                    if (lunar_test.lunarMonth == birth_lunar_month and 
-                                        lunar_test.lunarDay == birth_lunar_day and 
-                                        lunar_test.isLunarLeapMonth == birth_is_leap):
-                                        test_date_only = test_date.date()
-                                        today_date = today.date()
-                                        
-                                        if test_date_only < today_date:
-                                            this_year_birthday = test_date if year == today_year else None
-                                        else:
-                                            if year == today_year:
-                                                this_year_birthday = test_date
-                                                found_birthday = True
-                                            elif year == today_year + 1:
-                                                next_year_birthday = test_date
-                                                found_birthday = True
-                                        break
-                                except:
-                                    continue
-
-                    next_birthday = this_year_birthday if this_year_birthday and this_year_birthday.date() >= today.date() else next_year_birthday
                     
-                    if next_birthday:
-                        days_until = (next_birthday.date() - today.date()).days
-                        self._state = "今天是生日" if days_until == 0 else f"农历生日还有{days_until}天"
+                    birth_lunar = cnlunar.Lunar(self._birthday, godType='8char')
+                    birth_lunar_month = birth_lunar.lunarMonth
+                    birth_lunar_day = birth_lunar.lunarDay
+                    
+                    today_lunar = cnlunar.Lunar(today, godType='8char')
+                    today_lunar_month = today_lunar.lunarMonth
+                    today_lunar_day = today_lunar.lunarDay
+                    today_lunar_year = today_lunar.lunarYear
+                    
+                    try:
+                        next_birthday_year = today_lunar_year if (today_lunar_month < birth_lunar_month or (today_lunar_month == birth_lunar_month and today_lunar_day < birth_lunar_day)) else today_lunar_year + 1
+                        days_until = self._calculate_lunar_days_between(today_lunar_month, today_lunar_day, birth_lunar_month, birth_lunar_day)
                         
-                        self._attributes.update({
-                            "下个生日": f"阳历：{next_birthday.strftime('%Y-%m-%d')}"
-                        })
+                        self._state = "今天是生日" if days_until == 0 else f"农历生日还有{days_until}天"
+                        self._attributes.update({"下个生日": f"阳历：{next_birthday_year}-{birth_lunar_month:02d}-{birth_lunar_day:02d}"})
                         
                         if days_until == 0 and self._notification_service and (self._last_notification_date is None or self._last_notification_date != today.date()):
-                            await self.hass.services.async_call("notify", self._notification_service.replace("notify.", ""), 
-                                                            {"title": "中国老黄历 · Home Assistant", 
-                                                            "message": self._notification_message})
+                            await self.hass.services.async_call("notify", self._notification_service.replace("notify.", ""), {"title": "中国老黄历 · Home Assistant", "message": self._notification_message})
                             self._last_notification_date = today.date()
-                    else:
-                        self._state = "无法计算下一个生日日期"
+                    except Exception as e:
+                        self._state = "农历生日计算出错"
+                        return
+
 
             elif self._type == "生日提醒_阳":
                 today = dt.now().replace(tzinfo=None)
@@ -485,6 +462,10 @@ class BirthdaySensor(SensorEntity):
                 if not self._ai_api_url or not self._ai_api_key:
                     self._state = "未配置AI接口"
                     return
+                
+                if not self._ai_model:
+                    self._state = "AI功能未启用"
+                    return
                     
                 today = dt.now().replace(tzinfo=None).date()
                 if hasattr(self, '_last_ai_date') and self._last_ai_date == today:
@@ -543,7 +524,9 @@ async def setup_birthday_sensors(hass: HomeAssistant, entry_id: str, config_data
                     "星座", "喜用神", "今日运势", "生存天数", "周岁"
                 ]
                 
-                if person_data.get("ai_api_key"):
+                if (person_data.get("ai_api_key") and 
+                    person_data.get("ai_model") and 
+                    person_data.get("ai_api_url")):
                     sensor_types.append("AI运势")
                 
                 for sensor_type in sensor_types:

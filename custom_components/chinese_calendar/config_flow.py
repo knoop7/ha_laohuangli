@@ -3,7 +3,7 @@ import voluptuous as vol
 import os
 import re
 import yaml
-import aiofiles
+import aiofiles   # pyright: ignore[reportMissingModuleSource]
 import logging
 from datetime import datetime
 from homeassistant.core import callback
@@ -611,7 +611,9 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                     vol.Required(CONF_AI_MODEL, default=current_model): selector.SelectSelector(
                         selector.SelectSelectorConfig(
                             options=model_options,
-                            mode="dropdown"
+                            mode="dropdown",
+                            translation_key="ai_model_options" 
+                            
                         )
                     ),
                 })
@@ -648,7 +650,8 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                     vol.Required(CONF_AI_MODEL): selector.SelectSelector(
                         selector.SelectSelectorConfig(
                             options=model_options,
-                            mode="dropdown"
+                            mode="dropdown",
+                            translation_key="ai_model_options"
                         )
                     ),
                 }),

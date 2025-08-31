@@ -1,7 +1,7 @@
 import logging,asyncio,re
 from datetime import datetime,timedelta
-import cnlunar
-import zhconv
+import cnlunar # pyright: ignore[reportMissingImports]
+import zhconv # pyright: ignore[reportMissingImports]
 from weakref import WeakValueDictionary
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant,callback

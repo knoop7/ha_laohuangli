@@ -6,7 +6,7 @@ from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.util import dt
 from homeassistant.helpers.event import async_track_time_interval
 from homeassistant.helpers import entity_registry as er
-import zhconv
+import zhconv   # pyright: ignore[reportMissingImports]
 
 from .const import (
     DOMAIN,

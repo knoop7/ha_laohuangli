@@ -1929,14 +1929,6 @@ class AlmanacCard extends HTMLElement {
 
     const newYearDate = "2026-01-01";
     const springFestivalDates = new Set([
-      "2025-01-28",
-      "2025-01-29",
-      "2025-01-30",
-      "2025-01-31",
-      "2025-02-01",
-      "2025-02-02",
-      "2025-02-03",
-      "2025-02-04",
     ]);
 
     if (dateValue === newYearDate) {

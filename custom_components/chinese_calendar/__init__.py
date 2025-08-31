@@ -1,19 +1,15 @@
 import asyncio
-import os
-import shutil
 import logging
 import weakref
 import time
-import json
-from pathlib import Path
 from typing import Dict, Set, Optional, List
 from homeassistant.core import HomeAssistant
-from homeassistant.util import yaml
+from homeassistant.util import yaml   # pyright: ignore[reportUnusedImport]
 from homeassistant.helpers import entity_registry
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.exceptions import ConfigEntryNotReady
-from homeassistant.components.lovelace import DOMAIN as LOVELACE_DOMAIN
+from homeassistant.components.lovelace import DOMAIN
 from homeassistant.components.frontend import add_extra_js_url
 from homeassistant.components.http import StaticPathConfig
 from .services import async_setup_date_service, SERVICE_DATE_CONTROL
@@ -279,7 +275,7 @@ async def _setup_registry_manager(hass: HomeAssistant, entry: ConfigEntry) -> Re
 async def _setup_entities(hass: HomeAssistant, entry: ConfigEntry) -> List:
     entities = []
     
-    if almanac_result := await setup_almanac_sensors(hass, entry.entry_id, entry.data):
+    if almanac_result := await setup_almanac_sensors(hass, entry.entry_id, entry.data):  # pyright: ignore[reportUndefinedVariable]
         entities.extend(almanac_result[0])
         
     setup_functions = [

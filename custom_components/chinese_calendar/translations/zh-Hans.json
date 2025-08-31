@@ -150,21 +150,7 @@
         "description": "免费公益接口：[点击获取密钥](https://api.chatanywhere.tech/v1/oauth/free/render)\n\n免费版支持gpt-5, gpt-4o，gpt-4.1一天5次；支持deepseek-r1, deepseek-v3.1一天30次，支持gpt-4o-mini，gpt-3.5-turbo，gpt-4.1-mini，gpt-4.1-nano, gpt-5-mini，gpt-5-nano一天200次。\n\n推荐使用deepseek-r1模型，对于AI算命预测效果最佳。",
         "data": {
           "ai_api_key": "API密钥",
-          "ai_model": {
-            "options": {
-              "deepseek-r1": "DeepSeek-R1 (推荐，预测最佳，30次/天)",
-              "deepseek-v3.1": "DeepSeek-V3.1 (次推荐，预测幻觉严重，30次/天)",
-              "gpt-4o-mini": "GPT-4o-mini (一般，都是一些笼统，200次/天)",
-              "gpt-3.5-turbo": "GPT-3.5-turbo (比较差，都是一些大概，200次/天)",
-              "gpt-4.1-mini": "GPT-4.1-mini (较好，都是一些笼统，200次/天)",
-              "gpt-4.1-nano": "GPT-4.1-nano (较好，都是一些笼统，200次/天)",
-              "gpt-5-mini": "GPT-5-mini (较好，都是一些笼统，200次/天)",
-              "gpt-5-nano": "GPT-5-nano (较好，都是一些笼统，200次/天)",
-              "gpt-4o": "GPT-4o (次推荐，预测效果可以，5次/天)",
-              "gpt-5": "GPT-5 (次推荐，预测效果较好，5次/天)",
-              "gpt-4.1": "GPT-4.1 (次推荐，预测效果较好，5次/天)"
-            }
-          }
+          "ai_model": "AI模型"
         }
       },
       "event_notification_edit": {
@@ -248,18 +234,23 @@
       "event_not_found": "未找到该事件",
       "holidays_edited": "节日已更新，重启 **Home Assistant** 生效\n\n"
     },
-    "model": {
-      "deepseek-r1": "DeepSeek-R1 (推荐，预测最佳，30次/天)",
-      "deepseek-v3.1": "DeepSeek-V3.1 (次推荐，预测幻觉严重，30次/天)",
-      "gpt-4o-mini": "GPT-4o-mini (一般，都是一些笼统，200次/天)",
-      "gpt-3.5-turbo": "GPT-3.5-turbo (比较差，都是一些大概，200次/天)",
-      "gpt-4.1-mini": "GPT-4.1-mini (较好，都是一些笼统，200次/天)",
-      "gpt-4.1-nano": "GPT-4.1-nano (较好，都是一些笼统，200次/天)",
-      "gpt-5-mini": "GPT-5-mini (较好，都是一些笼统，200次/天)",
-      "gpt-5-nano": "GPT-5-nano (较好，都是一些笼统，200次/天)",
-      "gpt-4o": "GPT-4o (次推荐，预测效果可以，5次/天)",
-      "gpt-5": "GPT-5 (次推荐，预测效果较好，5次/天)",
-      "gpt-4.1": "GPT-4.1 (次推荐，预测效果较好，5次/天)"
+    "model": {}
+  },
+  "selector": {
+    "ai_model_options": {
+      "options": {
+        "deepseek-r1": "DeepSeek-R1 (推荐，预测最佳，30次/天)",
+        "deepseek-v3.1": "DeepSeek-V3.1 (次推荐，预测幻觉严重，30次/天)",
+        "gpt-4o-mini": "GPT-4o-mini (一般，都是一些笼统，200次/天)",
+        "gpt-3.5-turbo": "GPT-3.5-turbo (比较差，都是一些大概，200次/天)",
+        "gpt-4.1-mini": "GPT-4.1-mini (较好，都是一些笼统，200次/天)",
+        "gpt-4.1-nano": "GPT-4.1-nano (较好，都是一些笼统，200次/天)",
+        "gpt-5-mini": "GPT-5-mini (较好，都是一些笼统，200次/天)",
+        "gpt-5-nano": "GPT-5-nano (较好，都是一些笼统，200次/天)",
+        "gpt-4o": "GPT-4o (次推荐，预测效果可以，5次/天)",
+        "gpt-5": "GPT-5 (次推荐，预测效果较好，5次/天)",
+        "gpt-4.1": "GPT-4.1 (次推荐，预测效果较好，5次/天)"
+      }
     }
   }
 }
