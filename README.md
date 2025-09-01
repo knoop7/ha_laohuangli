@@ -19,7 +19,7 @@
 
 
 <br>
-<img src="https://img.shields.io/badge/version-2025.01.17-blue.svg" alt="Version">
+<img src="https://img.shields.io/badge/version-2025.08.30-blue.svg" alt="Version">
 <img src="https://img.shields.io/badge/Home%20Assistant-2024.4.0+-yellow.svg" alt="Home Assistant">
 <img src="https://img.shields.io/badge/Maintenance-Active-green.svg" alt="Maintenance">
 <img src="https://img.shields.io/badge/License-MIT-brightgreen.svg" alt="License">
