@@ -1,127 +1,94 @@
 <div align="center">
-  
-
-
-## 中国老黄历 (Chinese Almanac) for Home Assistant
-
-
-
-<br>
 
 <img width="960" alt="img" src="https://github.com/user-attachments/assets/2414840b-c860-4d49-b788-b25fbb51b0e5">
 
+
+## Chinese Almanac for Home Assistant
+### Infuse your smart home with the wisdom and charm of traditional Chinese calendar culture
+
+
+<br>
+
+<br>
+
+
+
 </div>
-<br>
 
 
-**为您的智能家居注入传统中国历法的智慧与魅力**
-
-![版本](https://img.shields.io/badge/version-2025.01.17-blue.svg)
-![Home Assistant版本](https://img.shields.io/badge/Hoe%20Assistant-2024.4.0+-yellow.svg)
-![维护状态](https://img.shields.io/badge/维护-活跃-green.svg)
-![许可](https://img.shields.io/badge/许可-MIT-brightgreen.svg)
-![Python版本](https://img.shields.io/badge/Python-3.1.3+-blue.svg)
-![代码扫描](https://img.shields.io/badge/代码扫描-通过-success)
 
 
 <br>
+<img src="https://img.shields.io/badge/version-2025.01.17-blue.svg" alt="Version">
+<img src="https://img.shields.io/badge/Home%20Assistant-2024.4.0+-yellow.svg" alt="Home Assistant">
+<img src="https://img.shields.io/badge/Maintenance-Active-green.svg" alt="Maintenance">
+<img src="https://img.shields.io/badge/License-MIT-brightgreen.svg" alt="License">
+<img src="https://img.shields.io/badge/Python-3.11+-blue.svg" alt="Python">
+<img src="https://img.shields.io/badge/Code%20Scan-Passed-success" alt="Code Scan">
+<br>
 
-## ✨ 主要功能
-
-- 📅 实时显示农历日期、阳历对应信息
-- 🌱 精准预测二十四节气，并关联天气变化
-- 🍀 每日吉凶、宜忌指引，月相天文
-- ⏰ 实时更新时辰，指导日常活动安排
-- 🐲 展示生肖、星座等个人属性，结合每日运势分析
-- 🎯 支持自定义事件管理，记录重要日子，如生日、纪念日，并提供吉凶预警
-- 🎂 基于生日生成八字命盘，结合生肖与星座的运势参考
-- 🎉 智能提醒中国传统节日、重要日子
-- 📡 支持自定义更新频率，灵活配置更新间隔
-  
-
+## ✨ Key Features
+- 📅 Real-time display of lunar calendar date and its Gregorian counterpart  
+- 🌱 Accurate 24-solar-term forecasts linked to weather changes  
+- 🍀 Daily auspicious/inauspicious guidance, taboos, and lunar-phase astronomy  
+- ⏰ Live updating of traditional two-hour periods to guide daily scheduling  
+- 🐲 Show personal attributes like Chinese zodiac and Western horoscope, paired with daily fortune insights  
+- 🎯 Custom event management to log birthdays, anniversaries, etc., with luck warnings  
+- 🎂 Generate a BaZi chart from birth data and merge zodiac & horoscope forecasts  
+- 🎉 Smart alerts for traditional Chinese festivals and key dates  
+- 📡 Adjustable refresh frequency for flexible update intervals  
 
 <br>
 
-## 🛠 安装步骤
+## 🛠 Installation
+### Quick Install
+1. Add the HACS repository <code>https://github.com/knoop7/ha_laohuangli</code> and install  
+2. Or click → <a href="http://homeassistant.local:8123/hacs/repository?owner=knoop7&repository=ha_laohuangli">Quick Link</a>  
+3. Restart your Home Assistant instance  
+4. In the Integrations page search for <strong>Chinese Almanac</strong> or <strong>chinese</strong> and add the integration  
 
-### 快速安装：
-1. Hacs存储库添加https://github.com/knoop7/ha_laohuangli 安装
-2. 或者点击 > http://homeassistant.local:8123/hacs/repository?owner=knoop7&repository=ha_laohuangli
-3. 重启您的Home Assistant系统
-4. 在集成页面中搜索"中国老黄历"或者"chinese"，添加该集成
-
-### 复杂安装：
-1. 将 `发行版压缩包` 解压文件夹后，复制到您的Home Assistant配置目录下的 `custom_components` 文件夹
-2. 重启您的Home Assistant系统
-3. 在集成页面中搜索"中国老黄历"或者"chinese"，添加该集成
-
+### Manual Install
+1. Download the release ZIP, extract, and copy the folder into <code>custom_components</code> in your Home Assistant config directory  
+2. Restart your Home Assistant instance  
+3. In the Integrations page search for <strong>Chinese Almanac</strong> or <strong>chinese</strong> and add the integration  
 
 <br>
 
-## 📊 可用传感器
-
-- **基础信息**：日期、农历、星期、今日节日、周数
-- **传统历法**：八字、节气、季节、时辰、时辰凶吉
-- **个人属性**：生肖冲煞、星座、星次、六曜、日禄
-- **传统文化**：彭祖百忌、十二神、廿八宿、今日三合、三世相法、今日六合
-- **风水五行**：纳音、六十四卦、九宫飞星、吉神方位、今日胎神
-- **吉凶指引**：今日吉神、今日凶煞、宜忌等第、宜、忌
-- **健康养生**：时辰经络、时辰刻度
-- **事件提醒**：自定义事件管理，如生日、纪念日等
-- **生日管理**：家人生日、八字记录与提醒、AI预测
--  ~~**观音灵签**：已删除可更新回退10.31版本~~
+## 📊 Available Sensors
+- <strong>Basic Info</strong>: date, lunar date, weekday, today’s festivals, week number  
+- <strong>Traditional Calendar</strong>: BaZi, solar terms, seasons, two-hour periods, period luck  
+- <strong>Personal Attributes</strong>: zodiac clashes, constellation, lunar mansion, Rokuyō, daily fortune direction  
+- <strong>Cultural Lore</strong>: Pengzu taboos, twelve deities, 28 lunar mansions, today’s trines & hexes, three-life physiognomy  
+- <strong>Feng Shui & Elements</strong>: Nayin element, 64 hexagrams, flying stars, auspicious directions, daily fetal spirit  
+- <strong>Luck Guidance</strong>: today’s auspicious spirits, ominous spirits, luck level, suitable & unsuitable activities  
+- <strong>Health & Wellness</strong>: meridian flow by hour, hour scale  
+- <strong>Event Reminders</strong>: custom events such as birthdays and anniversaries  
+- <strong>Birthday Manager</strong>: family birthdays, BaZi records & reminders, AI predictions  
+- <del><strong>Guanyin Oracle Lots</strong>: removed; roll back to v10.31 to restore</del>  
 
 <br>
 
-## 🖥 使用示例
-
-安装并配置后，您可以在Home Assistant的仪表板中灵活运用这些传感器
-<br>
-中国老黄历卡片为您提供丰富的传统历法信息，界面布局清晰直观：
-
+## 🖥 Usage Examples
+After installation and configuration, you can freely use these sensors in your Home Assistant dashboards.  
+The Chinese Almanac card presents rich traditional calendar data in a clear, intuitive layout:<br>
 <img width="556" alt="img" src="https://github.com/user-attachments/assets/dc0556d4-24f3-4f4d-a1cc-3560ee8bf917">
 
-#### 大数字显示当前日期
-可点击左右箭头切换前一天/后一天，点击日期可打开日期选择器，方便跳转到指定日期
-<br>
-显示当前农历日期与八字信息，启用/禁用特定信息模块，通过拖拽调整模块顺序，锁定/解锁布局一键恢复默认设置
+<h4>Large digits show the current date</h4>
+Tap the left/right arrows to move to the previous/next day; tap the date itself to open a date-picker for quick jumps.<br>
+Displays the current lunar date and BaZi info. Enable/disable individual modules, drag to reorder, lock/unlock layout, and reset to default with one click.
 
-#### 信息模块区域
-采用六宫格布局，每个模块包含相关联的信息：
+<h4>Info Module Area</h4>
+Six-grid layout; each module groups related data:
+<ul>
+<li><strong>Rhythm & Lunar</strong>: week number, season, solar term, constellation, moon phase</li>
+<li><strong>Divination</strong>: Nayin, lunar mansion, flying star, 28 mansions, twelve deities</li>
+<li><strong>Hour & Fortune</strong>: daily fortune direction, two-hour period, meridian, 64 hexagrams, luck</li>
+<li><strong>Kongming Bird Signs</strong>: Rokuyō, trines, hexes, bird signs, zodiac clashes</li>
+<li><strong>Taboos & Directions</strong>: fetal spirit, Pengzu taboos, auspicious directions</li>
+<li><strong>Spirits & Luck</strong>: auspicious spirits, ominous spirits, luck level</li>
+</ul>
 
-- **节律太阴**：显示周数、季节、节气、星座、月相等信息
-- **卜筮术数**：包含纳音、星次、飞星、廿八宿、十二神等术数信息
-- **日时禄位**：展示日禄、时辰、经络、六十四卦、吉凶等时刻信息
-- **孔明禽相**：显示六曜、三合、六合、禽相、生肖冲煞等信息
-- **胎忌利向**：提供胎神、百忌、方位等趋避信息
-- **神煞吉凶**：展示吉神、凶煞、等第等综合信息
-
-#### 以下是卡片配置示例：
-
-```yaml
-
-实体卡片界面UI
-删除集成之后不可见！
-
-type: custom:almanac-card
-title: 老黄历
-
-注明：若您修改了老黄历的名称
-可能模版无法识别您的实体名称
-
-所以可以修改前缀名
-type: custom:almanac-card
-title: 老黄历
-prefix: lao_huang_li_  
-
-```
-
-
-
-
-<br>
-<br>
-
-
-<br>
-<br>
+<h4>Sample card configuration</h4>
+<pre><code>type: custom:almanac-card
+title: Chinese Almanac
+prefix: chinese_almanac_</code></pre>
