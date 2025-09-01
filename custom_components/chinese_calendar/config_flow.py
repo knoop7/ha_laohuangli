@@ -388,6 +388,7 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                     self.person_name = user_input["name"]
                     return await self.async_step_birthday_ai_edit()
                 
+                await self.hass.config_entries.async_reload(self.config_entry.entry_id)
                 return self.async_abort(reason="person_added")
                 
             except vol.Invalid:
@@ -442,6 +443,7 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                     self.event_name = user_input["name"]
                     return await self.async_step_event_notification_edit()
                 
+                await self.hass.config_entries.async_reload(self.config_entry.entry_id)
                 return self.async_abort(reason="event_added")
                 
             except vol.Invalid:
@@ -573,6 +575,7 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
             
             self._edit_person_data = None
             self._save_config(new_data)
+            await self.hass.config_entries.async_reload(self.config_entry.entry_id)
             
             return self.async_abort(
                 reason="person_updated",
@@ -632,6 +635,7 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
             
             self._edit_person_data = None
             self._save_config(new_data)
+            await self.hass.config_entries.async_reload(self.config_entry.entry_id)
             
             return self.async_abort(
                 reason="person_updated",
@@ -718,6 +722,7 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                     temp_data[key] = new_data[key]
 
             self._save_config(temp_data)
+            await self.hass.config_entries.async_reload(self.config_entry.entry_id)
             return self.async_abort(
                 reason="person_deleted",
                 description_placeholders={"name": deleted_name}
@@ -836,6 +841,7 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                 
                 self._edit_event_data = None
                 self._save_config(new_data)
+                await self.hass.config_entries.async_reload(self.config_entry.entry_id)
                 
                 return self.async_abort(
                     reason="event_updated",
@@ -969,6 +975,7 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
             
             self._edit_event_data = None
             self._save_config(new_data)
+            await self.hass.config_entries.async_reload(self.config_entry.entry_id)
             
             return self.async_abort(
                 reason="event_updated",
@@ -1054,6 +1061,7 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                     temp_data[CONF_EVENT_ENABLED] = False
 
                 self._save_config(temp_data)
+                await self.hass.config_entries.async_reload(self.config_entry.entry_id)
                 return self.async_abort(
                     reason="event_deleted",
                     description_placeholders={"name": deleted_name}
@@ -1112,6 +1120,7 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                 except Exception as e:
                     pass
                 
+                await self.hass.config_entries.async_reload(self.config_entry.entry_id)
                 return self.async_abort(reason="holidays_edited")
                 
             except Exception as e:
