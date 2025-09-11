@@ -239,17 +239,17 @@
   "selector": {
     "ai_model_options": {
       "options": {
-        "deepseek-r1": "DeepSeek-R1 (推荐，预测最佳，30次/天)",
-        "deepseek-v3.1": "DeepSeek-V3.1 (次推荐，预测幻觉严重，30次/天)",
-        "gpt-4o-mini": "GPT-4o-mini (一般，都是一些笼统，200次/天)",
-        "gpt-3.5-turbo": "GPT-3.5-turbo (比较差，都是一些大概，200次/天)",
-        "gpt-4.1-mini": "GPT-4.1-mini (较好，都是一些笼统，200次/天)",
-        "gpt-4.1-nano": "GPT-4.1-nano (较好，都是一些笼统，200次/天)",
-        "gpt-5-mini": "GPT-5-mini (较好，都是一些笼统，200次/天)",
-        "gpt-5-nano": "GPT-5-nano (较好，都是一些笼统，200次/天)",
-        "gpt-4o": "GPT-4o (次推荐，预测效果可以，5次/天)",
-        "gpt-5": "GPT-5 (次推荐，预测效果较好，5次/天)",
-        "gpt-4.1": "GPT-4.1 (次推荐，预测效果较好，5次/天)"
+        "deepseek_r1": "DeepSeek R1 推荐，最佳预测，30次每天",
+        "deepseek_v3_1": "DeepSeek V3_1 次推荐，预测偏差大，30次每天",
+        "gpt_4o_mini": "GPT 4o mini 通用，部分模糊，200次每天"，
+        "gpt_3_5_turbo": "GPT 3.5 turbo 较差，非常通用，200次每天",
+        "gpt_4_1_mini": "GPT 4.1 mini 表现较好，部分通用，200次每天"，
+        "gpt_4_1_nano": "GPT 4.1 nano 表现较好，部分通用，200次每天"，
+        "gpt_5_mini": "GPT 5 mini 表现较好，部分通用，200次每天",
+        "gpt_5_nano": "GPT 5 nano 表现较好，部分通用，200次每天",
+        "gpt_4o": "GPT 4o 次推荐，预测效果可接受，5次每天",
+        "gpt_5": "GPT 5 次推荐，预测效果好，5次每天",
+        "gpt_4_1": "GPT 4.1 次推荐，预测效果好，5次每天"
       }
     }
   }
