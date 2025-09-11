@@ -11,20 +11,23 @@ from homeassistant.helpers import entity_registry as er
 from homeassistant.util import dt
 from .const import (
     DOMAIN,
-    DATA_FORMAT
+    DATA_FORMAT,
+    BIRTHDAY_SENSOR_TYPES,
+    TRANSLATIONS
 )
 import zhconv  # pyright: ignore[reportMissingImports]
 
 class BirthdayDevice:
-    def __init__(self, entry_id: str, language="auto"):
+    def __init__(self, entry_id: str, person_name: str, language="auto"):
         self._entry_id = entry_id
+        self._person_name = person_name
         self._language = language
 
     @property
     def device_info(self):
         return DeviceInfo(
-            identifiers={(DOMAIN, f"{self._entry_id}_birthday")},
-            name="生日管理",
+            identifiers={(DOMAIN, f"{self._entry_id}_birthday_{self._person_name}")},
+            name=f"{self._person_name}的生日",
             model="Birthday Tracker",
             manufacturer="道教",
         )
@@ -495,20 +498,27 @@ class BirthdaySensor(SensorEntity):
         except Exception:
             self._available = False
 
+def _get_sensor_type_label(sensor_type: str, language: str = "zh-Hans") -> str:
+    """获取传感器类型的本地化标签"""
+    return TRANSLATIONS.get(language, {}).get(sensor_type, sensor_type)
+
 async def setup_birthday_sensors(hass: HomeAssistant, entry_id: str, config_data: dict):
-    
     entities = []
+    
     if config_data.get("birthday_enabled", False):
         language = config_data.get("language", "auto")
-        
-        birthday_device = BirthdayDevice(entry_id, language)
+        if language == "auto":
+            language = "zh-Hans"
         person_count = sum(1 for key in config_data if key.startswith("person") and key.endswith("_name"))
         
         for i in range(1, person_count + 1):
             name = config_data.get(f"person{i}_name")
             birthday = config_data.get(f"person{i}_birthday")
+            enabled_sensors = config_data.get(f"person{i}_enabled_sensors", BIRTHDAY_SENSOR_TYPES.copy())
             
             if name and birthday:
+                birthday_device = BirthdayDevice(entry_id, name, language)
+                
                 person_data = {
                     "name": config_data[f"person{i}_name"],
                     "birthday": config_data[f"person{i}_birthday"],
@@ -519,18 +529,15 @@ async def setup_birthday_sensors(hass: HomeAssistant, entry_id: str, config_data
                     "ai_model": config_data.get(f"person{i}_ai_model")
                 }
                 
-                sensor_types = [
-                    "阳历生日", "农历生日", "八字", "生日提醒_农", "生日提醒_阳",
-                    "星座", "喜用神", "今日运势", "生存天数", "周岁"
-                ]
-                
-                if (person_data.get("ai_api_key") and 
-                    person_data.get("ai_model") and 
-                    person_data.get("ai_api_url")):
-                    sensor_types.append("AI运势")
-                
-                for sensor_type in sensor_types:
-                    sensor = BirthdaySensor(hass, birthday_device, person_data, sensor_type, entry_id)
+                # 只创建启用的传感器
+                for sensor_type in enabled_sensors:
+                    if sensor_type == "ai_fortune" and not (person_data.get("ai_api_key") and 
+                                                           person_data.get("ai_model") and 
+                                                           person_data.get("ai_api_url")):
+                        continue  # 没有AI配置时跳过AI运势
+                    
+                    sensor_label = _get_sensor_type_label(sensor_type, language)
+                    sensor = BirthdaySensor(hass, birthday_device, person_data, sensor_label, entry_id)
                     entities.append(sensor)
     
     return entities

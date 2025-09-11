@@ -4,6 +4,8 @@ import weakref
 import time
 from typing import Dict, Set, Optional, List
 from homeassistant.core import HomeAssistant
+import voluptuous as vol
+from homeassistant.helpers import config_validation as cv
 from homeassistant.util import yaml   # pyright: ignore[reportUnusedImport]
 from homeassistant.helpers import entity_registry
 from homeassistant.config_entries import ConfigEntry
@@ -27,6 +29,8 @@ from .almanac_sensor import AlmanacSensor
 from .moon import setup_almanac_moon_sensor
 
 _LOGGER = logging.getLogger(__name__)
+
+CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
 
 
 class TaskManager:

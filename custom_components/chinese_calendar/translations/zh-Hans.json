@@ -32,7 +32,7 @@
     "step": {
       "user": {
         "title": "首次设置",
-        "description": "欢迎使用本集成插件！\n由[@knoop7](https://github.com/knoop7)独家编写制作\n\n严禁各类商用、二改相关衍生\n如有违规将停止更新，以及后续维护代码\n\n\n**传统日历：**\n• 实时显示传统阴阳历信息\n• 精准预报二十四节气\n• 每日吉凶、宜忌指引\n• 自定义编辑节假日 \n\n**生日管理：**\n• 家庭成员生日\n• 相关八字、生日提醒功能\n\n**事件管理：**\n• 投资理财提醒\n• 工作安排提醒\n• 会议聚餐提醒\n• 纪念日提醒\n\n",
+        "description": "欢迎使用本集成插件！\n由[@knoop7](https://github.com/knoop7)独家编写制作\n\n严禁各类商用、二改相关衍生\n如有违规将停止更新，以及后续维护代码\n\n\n**传统日历：**\n• 实时显示传统阴阳历信息\n• 精准预报二十四节气\n• 每日吉凶、宜忌指引\n• 自定义编辑节假日 \n\n**生日管理：**\n• 家庭成员生日\n• 相关八字、生日提醒功能\n\n**事件管理：**\n• 投资理财提醒\n• 工作安排提醒\n• 会议聚餐提醒\n• 纪念日提醒\n",
         "data": {
           "setup_options": "选择需要启用的功能:",
           "setup_birthday": "生日提醒",
@@ -91,12 +91,6 @@
           "add": "添加",
           "edit": "编辑",
           "delete": "删除"
-        },
-        "select_description": {
-          "edit_person": "请选择要编辑的人员",
-          "delete_person": "请选择要删除的人员",
-          "edit_event": "请选择要编辑的事件",
-          "delete_event": "请选择要删除的事件"
         }
       },
       "select_person": {
@@ -232,24 +226,24 @@
       "event_updated": "{name} 更新成功",
       "event_deleted": "{name} 删除成功",
       "event_not_found": "未找到该事件",
-      "holidays_edited": "节日已更新，重启 **Home Assistant** 生效\n\n"
+      "holidays_edited": "节日已更新，重启 **Home Assistant** 生效"
     },
     "model": {}
   },
   "selector": {
     "ai_model_options": {
       "options": {
-        "deepseek_r1": "DeepSeek R1 推荐，最佳预测，30次每天",
-        "deepseek_v3_1": "DeepSeek V3_1 次推荐，预测偏差大，30次每天",
-        "gpt_4o_mini": "GPT 4o mini 通用，部分模糊，200次每天"，
-        "gpt_3_5_turbo": "GPT 3.5 turbo 较差，非常通用，200次每天",
-        "gpt_4_1_mini": "GPT 4.1 mini 表现较好，部分通用，200次每天"，
-        "gpt_4_1_nano": "GPT 4.1 nano 表现较好，部分通用，200次每天"，
-        "gpt_5_mini": "GPT 5 mini 表现较好，部分通用，200次每天",
-        "gpt_5_nano": "GPT 5 nano 表现较好，部分通用，200次每天",
-        "gpt_4o": "GPT 4o 次推荐，预测效果可接受，5次每天",
-        "gpt_5": "GPT 5 次推荐，预测效果好，5次每天",
-        "gpt_4_1": "GPT 4.1 次推荐，预测效果好，5次每天"
+        "deepseek-r1": "DeepSeek-R1 (推荐，预测最佳，30次/天)",
+        "deepseek-v3_1": "DeepSeek-V3.1 (次推荐，预测幻觉严重，30次/天)",
+        "gpt-4o-mini": "GPT-4o-mini (一般，都是一些笼统，200次/天)",
+        "gpt-3.5-turbo": "GPT-3.5-turbo (比较差，都是一些大概，200次/天)",
+        "gpt-4.1-mini": "GPT-4.1-mini (较好，都是一些笼统，200次/天)",
+        "gpt-4.1-nano": "GPT-4.1-nano (较好，都是一些笼统，200次/天)",
+        "gpt-5-mini": "GPT-5-mini (较好，都是一些笼统，200次/天)",
+        "gpt-5-nano": "GPT-5-nano (较好，都是一些笼统，200次/天)",
+        "gpt-4o": "GPT-4o (次推荐，预测效果可以，5次/天)",
+        "gpt-5": "GPT-5 (次推荐，预测效果较好，5次/天)",
+        "gpt-4.1": "GPT-4.1 (次推荐，预测效果较好，5次/天)"
       }
     }
   }

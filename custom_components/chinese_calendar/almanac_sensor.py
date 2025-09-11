@@ -254,7 +254,6 @@ class AlmanacSensor(SensorEntity):
                     [self._twelve_gods_cache.pop(d,None)for d in[d for d in self._twelve_gods_cache if d!=formatted_date]];self._available=True;return self._state
             lunar_holidays_str=self._text_processor.clean_text(''.join(lunar_data.get_legalHolidays()+lunar_data.get_otherHolidays()+lunar_data.get_otherLunarHolidays()))
             if self._type=='今日节日':self._state=self._device.get_holiday(formatted_date,lunar_holidays_str);self._available=True;return self._state            
-            lunar_holidays_str=self._text_processor.clean_text(''.join(lunar_data.get_legalHolidays()+lunar_data.get_otherHolidays()+lunar_data.get_otherLunarHolidays()))
             nine_numbers=self._text_processor.clean_text(self._text_processor.format_dict(lunar_data.get_the9FlyStar()))
             center_num = nine_numbers[5] if len(nine_numbers) == 9 else '5'  
             gods = {'1':'贪狼星','2':'巨门星','3':'禄存星','4':'文曲星','5':'廉贞星','6':'武曲星','7':'破军星','8':'左辅星','9':'右弼星'} 
@@ -278,7 +277,6 @@ class AlmanacSensor(SensorEntity):
             stems=["甲","乙","丙","丁","戊","己","庚","辛","壬","癸"]
             thirty_six_animal=animals[branch][stems.index(stem)%3]if branch in animals else"未知"
             y,m,d=max(1,abs(now.year)),max(1,min(12,abs(now.month))),max(1,abs(now.day))
-            end_day=((datetime(y,m+1,1) if m<12 else datetime(y+1,1,1))-datetime(y,m,1)).days
             d_idx=((d-1)%6)+1 
             y_idx=(y-1)%8
             m_idx=(m-1)%8

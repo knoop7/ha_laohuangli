@@ -6,7 +6,7 @@
   "documentation": "https://github.com/knoop7/ha_laohuangli",
   "issue_tracker": "https://github.com/knoop7/ha_laohuangli/issues",
   "requirements": ["cnlunar","zhconv"],
-  "dependencies": [],
+  "dependencies": ["http", "lovelace"],
   "codeowners": ["@knoop7"],
   "iot_class": "local_polling"
 }

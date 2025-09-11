@@ -32,7 +32,7 @@
     "step": {
       "user": {
         "title": "Initial Setup",
-        "description": "Welcome to use this integration plugin!\nExclusively written and produced by [@knoop7](https://github.com/knoop7)\n\nStrictly prohibited for commercial use, secondary modifications and related derivatives\nViolations will result in stopping updates and subsequent maintenance code\n\n\n**Traditional Calendar:**\n• Real-time display of traditional lunar calendar information\n• Accurate prediction of 24 solar terms\n• Daily fortune, suitable and unsuitable guidance\n• Custom edit holidays\n\n**Birthday Management:**\n• Family member birthdays\n• Related BaZi, birthday reminder functions\n\n**Event Management:**\n• Investment and financial reminders\n• Work schedule reminders\n• Meeting and dining reminders\n• Anniversary reminders\n\n",
+        "description": "Welcome to use this integration plugin!\nExclusively written and produced by [@knoop7](https://github.com/knoop7)\n\nStrictly prohibited for commercial use, secondary modifications and related derivatives\nViolations will result in stopping updates and subsequent maintenance code\n\n\n**Traditional Calendar:**\n• Real-time display of traditional lunar calendar information\n• Accurate prediction of 24 solar terms\n• Daily fortune, suitable and unsuitable guidance\n• Custom edit holidays\n\n**Birthday Management:**\n• Family member birthdays\n• Related BaZi, birthday reminder functions\n\n**Event Management:**\n• Investment and financial reminders\n• Work schedule reminders\n• Meeting and dining reminders\n• Anniversary reminders\n",
         "data": {
           "setup_options": "Select features to enable:",
           "setup_birthday": "Birthday Reminder",
@@ -91,12 +91,6 @@
           "add": "Add",
           "edit": "Edit",
           "delete": "Delete"
-        },
-        "select_description": {
-          "edit_person": "Please select the person to edit",
-          "delete_person": "Please select the person to delete",
-          "edit_event": "Please select the event to edit",
-          "delete_event": "Please select the event to delete"
         }
       },
       "select_person": {
@@ -198,7 +192,7 @@
       },
       "edit_holidays": {
         "title": "Holiday Configuration",
-        "description": "**Usage Tutorial:**\nConfiguration file uses YAML format, supports setting **customdays** (custom holidays) **holidays** (holidays) **workdays** (workdays), each date format is **YYYY-MM-DD**, supports comments, note: prevent other special characters from entering and damaging normal integration operation.\n",
+        "description": "**Usage Tutorial:**\nConfiguration file uses YAML format, supports setting **customdays** (custom holidays) **holidays** (holidays) **workdays** (workdays), each date format is **YYYY-MM-DD**, supports comments, note: prevent other special characters from entering and damaging normal integration operation.",
         "data": {
           "yaml_content": "YAML Editor"
         }
@@ -232,24 +226,23 @@
       "event_updated": "{name} updated successfully",
       "event_deleted": "{name} deleted successfully",
       "event_not_found": "Event not found",
-      "holidays_edited": "Holidays updated, restart **Home Assistant** to take effect\n\n"
-    },
-    "model": {}
+      "holidays_edited": "Holidays updated, restart **Home Assistant** to take effect"
+    }
   },
   "selector": {
     "ai_model_options": {
       "options": {
-        "deepseek_r1": "DeepSeek R1 Recommended, best prediction, 30 times per day",
-        "deepseek_v3_1": "DeepSeek V3_1 Secondary recommendation, large prediction deviation, 30 times per day",
-        "gpt_4o_mini": "GPT 4o mini General, somewhat vague, 200 times per day",
-        "gpt_3_5_turbo": "GPT 3.5 turbo Poor, very general, 200 times per day",
-        "gpt_4_1_mini": "GPT 4.1 mini Good performance, somewhat general, 200 times per day",
-        "gpt_4_1_nano": "GPT 4.1 nano Good performance, somewhat general, 200 times per day",
-        "gpt_5_mini": "GPT 5 mini Good performance, somewhat general, 200 times per day",
-        "gpt_5_nano": "GPT 5 nano Good performance, somewhat general, 200 times per day",
-        "gpt_4o": "GPT 4o Secondary recommendation, acceptable prediction effect, 5 times per day",
-        "gpt_5": "GPT 5 Secondary recommendation, good prediction effect, 5 times per day",
-        "gpt_4_1": "GPT 4.1 Secondary recommendation, good prediction effect, 5 times per day"
+        "deepseek-r1": "DeepSeek-R1 (Recommended, best prediction, 30 times/day)",
+        "deepseek-v3_1": "DeepSeek-V3.1 (Secondary recommendation, severe prediction hallucination, 30 times/day)",
+        "gpt-4o-mini": "GPT-4o-mini (General, somewhat vague, 200 times/day)",
+        "gpt-3.5-turbo": "GPT-3.5-turbo (Poor, very general, 200 times/day)",
+        "gpt-4.1-mini": "GPT-4.1-mini (Good, somewhat general, 200 times/day)",
+        "gpt-4.1-nano": "GPT-4.1-nano (Good, somewhat general, 200 times/day)",
+        "gpt-5-mini": "GPT-5-mini (Good, somewhat general, 200 times/day)",
+        "gpt-5-nano": "GPT-5-nano (Good, somewhat general, 200 times/day)",
+        "gpt-4o": "GPT-4o (Secondary recommendation, prediction effect acceptable, 5 times/day)",
+        "gpt-5": "GPT-5 (Secondary recommendation, prediction effect good, 5 times/day)",
+        "gpt-4.1": "GPT-4.1 (Secondary recommendation, prediction effect good, 5 times/day)"
       }
     }
   }
