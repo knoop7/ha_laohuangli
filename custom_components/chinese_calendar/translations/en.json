@@ -242,7 +242,7 @@
         "gpt-5-nano": "GPT-5-nano (Good, somewhat general, 200 times/day)",
         "gpt-4o": "GPT-4o (Secondary recommendation, prediction effect acceptable, 5 times/day)",
         "gpt-5": "GPT-5 (Secondary recommendation, prediction effect good, 5 times/day)",
-        "gpt-4.1": "GPT-4.1 (Secondary recommendation, prediction effect good, 5 times/day)"
+        "gpt-4_1": "GPT-4.1 (Secondary recommendation, prediction effect good, 5 times/day)"
       }
     }
   }
