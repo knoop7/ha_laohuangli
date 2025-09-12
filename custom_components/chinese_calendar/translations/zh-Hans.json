@@ -227,7 +227,7 @@
       "event_deleted": "{name} 删除成功",
       "event_not_found": "未找到该事件",
       "holidays_edited": "节日已更新，重启 **Home Assistant** 生效"
-    },
+    }
   },
   "selector": {
     "ai_model_options": {
