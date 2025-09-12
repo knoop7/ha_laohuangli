@@ -1,6 +1,6 @@
 {
   "domain": "chinese_calendar",
-  "name": "\u4e2d\u570b\u8001\u9ec3\u66c6",
+  "name": "中国老黄历",
   "version": "2025.08.30",
   "codeowners": ["@knoop7"],
   "config_flow": true,
