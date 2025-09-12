@@ -8,5 +8,5 @@
   "documentation": "https://github.com/knoop7/ha_laohuangli",
   "iot_class": "local_polling",
   "issue_tracker": "https://github.com/knoop7/ha_laohuangli/issues",
-  "requirements": ["cnlunar", "zhconv"],
+  "requirements": ["cnlunar", "zhconv"]
 }
