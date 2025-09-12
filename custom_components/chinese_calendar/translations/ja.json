@@ -227,7 +227,7 @@
       "event_deleted": "{name} の削除に成功しました",
       "event_not_found": "イベントが見つかりません",
       "holidays_edited": "祝日が更新されました。**Home Assistant**を再起動して有効にしてください"
-    },
+    }
   },
   "selector": {
     "ai_model_options": {
