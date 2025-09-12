@@ -233,17 +233,17 @@
   "selector": {
     "ai_model_options": {
       "options": {
-        "deepseek-r1": "DeepSeek-R1 (recommended, best prediction, 30 times/day)",
-        "deepseek-v3_1": "DeepSeek-V3.1 (recommended, predicting severe hallucination, 30 times/day)",
-        "gpt-4o-mini": "GPT-4o-mini (Generally, it's some generalities, 200 times per day)",
-        "gpt-3.5-turbo": "GPT-3.5-turbo (It's relatively poor, it's about 200 times per day)",
-        "gpt-4.1-mini": "GPT-4.1-mini (good, they are all general, 200 times per day)",
-        "gpt-4.1-nano": "GPT-4.1-nano (Better, they are all general, 200 times per day)",
-        "gpt-5-mini": "GPT-5-mini (good, all are general, 200 times per day)",
-        "gpt-5-nano": "GPT-5-nano (good, all are general, 200 times per day)",
-        "gpt-4o": "GPT-4o (recommended times, predicted effect is OK, 5 times/day)",
-        "gpt-5": "GPT-5 (recommended times, better prediction effect, 5 times/day)",
-        "gpt-4_1": "GPT-4.1 (recommended times, better prediction effect, 5 times/day)"
+        "deepseek_r1": "DeepSeek-R1 (recommended, best prediction, 30 times/day)",
+        "deepseek_v3_1": "DeepSeek-V3.1 (recommended, predicting severe hallucination, 30 times/day)",
+        "gpt_4o_mini": "GPT-4o-mini (Generally, it's some generalities, 200 times per day)",
+        "gpt_3_5_turbo": "GPT-3.5-turbo (It's relatively poor, it's about 200 times per day)",
+        "gpt_4_1_mini": "GPT-4.1-mini (good, they are all general, 200 times per day)",
+        "gpt_4_1_nano": "GPT-4.1-nano (Better, they are all general, 200 times per day)",
+        "gpt_5_mini": "GPT-5-mini (good, all are general, 200 times per day)",
+        "gpt_5_nano": "GPT-5-nano (good, all are general, 200 times per day)",
+        "gpt_4o": "GPT-4o (recommended times, predicted effect is OK, 5 times/day)",
+        "gpt_5": "GPT-5 (recommended times, better prediction effect, 5 times/day)",
+        "gpt_4_1": "GPT-4.1 (recommended times, better prediction effect, 5 times/day)"
       }
     }
   }
