@@ -228,7 +228,6 @@
       "event_not_found": "The event was not found",
       "holidays_edited": "The festival has been updated, restart **Home Assistant** takes effect"
     },
-    "model": {}
   },
   "selector": {
     "ai_model_options": {
