@@ -1,7 +1,7 @@
 {
   "domain": "chinese_calendar",
-  "name": "\u4e2d\u570b\u8001\u9ec3\u66c6",
   "codeowners": ["@knoop7"],
+  "name": "\u4e2d\u570b\u8001\u9ec3\u66c6",
   "config_flow": true,
   "dependencies": ["http", "lovelace"],
   "documentation": "https://github.com/knoop7/ha_laohuangli",
