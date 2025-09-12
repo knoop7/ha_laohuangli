@@ -228,7 +228,6 @@
       "event_not_found": "イベントが見つかりません",
       "holidays_edited": "祝日が更新されました。**Home Assistant**を再起動して有効にしてください"
     },
-    "model": {}
   },
   "selector": {
     "ai_model_options": {
