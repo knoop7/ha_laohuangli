@@ -9,5 +9,4 @@
   "iot_class": "local_polling",
   "issue_tracker": "https://github.com/knoop7/ha_laohuangli/issues",
   "requirements": ["cnlunar", "zhconv"],
-  "version": "2025.08.30"
 }
