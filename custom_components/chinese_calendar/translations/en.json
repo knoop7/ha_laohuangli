@@ -1,70 +1,70 @@
 {
-  "title": "Chinese Traditional Calendar",
+  "title": "Chinese Old Huang Calendar",
   "config": {
     "abort": {
-      "already_configured": "Device already configured",
-      "single_instance_allowed": "Already configured. Only one instance allowed.",
-      "max_persons_reached": "Maximum number of persons reached (5 persons)",
-      "max_events_reached": "Maximum number of events reached (30 events)",
-      "person_added": "Person added successfully",
-      "person_updated": "{name} updated successfully",
-      "person_deleted": "{name} deleted successfully",
+      "already_configured": "The device has been configured",
+      "single_instance_allowed": "Has been configured. Only one instance can be configured.",
+      "max_persons_reached": "Maximum number of people has been reached (5 people)",
+      "max_events_reached": "Maximum event limit has been reached (30)",
+      "person_added": "Personnel addition was successful",
+      "person_updated": "{name} Update successfully",
+      "person_deleted": "{name} Delete successfully",
       "event_added": "Event added successfully",
-      "event_updated": "{name} updated successfully",
-      "event_deleted": "{name} deleted successfully",
-      "event_not_found": "Event not found"
+      "event_updated": "{name} Update successfully",
+      "event_deleted": "{name} Delete successfully",
+      "event_not_found": "The event was not found"
     },
     "error": {
-      "invalid_date_format": "Invalid date format, please use YYYY/MM/DD/HH format (e.g., 1990/01/01/08)",
-      "invalid_event_date_format": "Invalid date format, please use YYYY/MM/DD format (e.g., 2024/12/31)",
-      "invalid_time_format": "Invalid time format, please use HH/MM format (e.g., 08/30)",
-      "name_already_exists": "Name already exists, if you have the same name, you can add a number after it for better identification (e.g., Zhang San1)",
-      "duplicate_event_name": "Event name already exists",
-      "unknown": "Unknown error occurred, if you cannot add or edit, please delete the integration and re-add it",
-      "unknown_error": "Unknown error occurred, if you cannot add or edit, please delete the integration and re-add it",
-      "unknown_error_occurred": "Unknown error occurred, if you cannot add or edit, please delete the integration and re-add it",
+      "invalid_date_format": "Date format is wrong, please use YYYY/MM/DD/HH format (for example: 1990/01/01/08)",
+      "invalid_event_date_format": "Date format is wrong, please use YYYY/MM/DD format (for example: 2024/12/31)",
+      "invalid_time_format": "Time format is wrong, please use HH/MM format (for example: 08/30)",
+      "name_already_exists": "The names are the same. If there is the same name, you can add a number to the following to better identify it (for example: Zhang San1)",
+      "duplicate_event_name": "The event name already exists",
+      "unknown": "An unknown error occurred. If it cannot be added or edited, please delete the integration and add it again.",
+      "unknown_error": "An unknown error occurred. If it cannot be added or edited, please delete the integration and add it again.",
+      "unknown_error_occurred": "An unknown error occurred. If it cannot be added or edited, please delete the integration and add it again.",
       "invalid_yaml": "Invalid YAML format",
       "save_error": "Failed to save configuration",
       "invalid_date": "Invalid date format",
       "invalid_birthday_date": "Invalid birthday date format",
-      "duplicate_person_name": "Person name already exists"
+      "duplicate_person_name": "The name already exists"
     },
     "step": {
       "user": {
-        "title": "Initial Setup",
-        "description": "Welcome to use this integration plugin!\nExclusively written and produced by [@knoop7](https://github.com/knoop7)\n\nStrictly prohibited for commercial use, secondary modifications and related derivatives\nViolations will result in stopping updates and subsequent maintenance code\n\n\n**Traditional Calendar:**\n• Real-time display of traditional lunar calendar information\n• Accurate prediction of 24 solar terms\n• Daily fortune, suitable and unsuitable guidance\n• Custom edit holidays\n\n**Birthday Management:**\n• Family member birthdays\n• Related BaZi, birthday reminder functions\n\n**Event Management:**\n• Investment and financial reminders\n• Work schedule reminders\n• Meeting and dining reminders\n• Anniversary reminders\n",
+        "title": "First time setting",
+        "description": "Welcome to this integrated plug-in!\nExclusively written and produced by [@knoop7](https://github.com/knoop7)\n\nAll types of commercial use and secondary modification related derivatives are strictly prohibited\nIf there is any violation, the update will be stopped and the subsequent maintenance of the code will be stopped.\n\n\n**Traditional calendar: **\n• Display traditional Yin-Yang Gregorian information in real time\n• Accurate forecast of twenty-four solar terms\n• Daily good and bad luck, good and taboo guidance\n• Custom editing holidays\n\n**Birthday Management: **\n• Family members’ birthdays\n• Related Eight Characters and Birthday Reminder Functions\n\n**Incident Management: **\n• Investment and financial management reminder\n• Work arrangement reminder\n• Reminder for meetings and dinners\n• Anniversary reminder",
         "data": {
-          "setup_options": "Select features to enable:",
-          "setup_birthday": "Birthday Reminder",
+          "setup_options": "Select the features that need to be enabled:",
+          "setup_birthday": "Birthday reminder",
           "setup_event": "Event Management",
-          "area": "Select management item"
+          "area": "Select the management item"
         }
       },
       "name": {
-        "title": "Service Name Setup",
-        "description": "Please set a name for your traditional calendar service",
+        "title": "Service name settings",
+        "description": "Please set a name for your old almanac service",
         "data": {
-          "name": "Service Name",
-          "language": "Language Selection"
+          "name": "Service name",
+          "language": "Language selection"
         }
       },
       "birthday": {
-        "title": "Birthday Management Configuration",
-        "description": "Please configure birthday information (supports up to 5 persons)",
+        "title": "Birthday management configuration",
+        "description": "Please configure birthday information (up to 5 people)",
         "data": {
           "name": "Name",
-          "birthday": "Birthday Date (format: YYYY/MM/DD/HH)",
-          "add_another": "Continue Adding"
+          "birthday": "Birthday Date (Format: YYYY/MM/DD/HH)",
+          "add_another": "Continue to add"
         }
       },
       "event": {
         "title": "Event Management Configuration",
-        "description": "Please configure event information (supports up to 30 events)",
+        "description": "Please configure event information (up to 30)",
         "data": {
-          "name": "Event Name",
-          "date": "Event Date (format: YYYY/MM/DD)",
-          "description": "Event Description",
-          "add_another": "Continue Adding"
+          "name": "Event name",
+          "date": "Event Date (Format: YYYY/MM/DD)",
+          "description": "Event description",
+          "add_another": "Continue to add"
         }
       }
     }
@@ -72,76 +72,76 @@
   "options": {
     "step": {
       "init": {
-        "title": "Feature Management",
+        "title": "Functional Management",
         "description": "Select the functional area to manage",
         "data": {
-          "area": "Feature Selection",
-          "area_birthday": "Birthday Management",
+          "area": "Function selection",
+          "area_birthday": "Birthday management",
           "area_event": "Event Management",
-          "area_holidays": "Holiday Configuration"
+          "area_holidays": "Holiday configuration"
         }
       },
       "actions": {
-        "title": "Operation Options",
-        "description": "Please select the operation to perform",
+        "title": "Operation options",
+        "description": "Please select the action to perform",
         "data": {
-          "action": "Select Operation",
-          "person_index": "Select Name",
+          "action": "Select an action",
+          "person_index": "Select a name",
           "event_index": "Select Event",
-          "add": "Add",
-          "edit": "Edit",
-          "delete": "Delete"
+          "add": "Add to",
+          "edit": "edit",
+          "delete": "delete"
         }
       },
       "select_person": {
         "title": "Options",
-        "description": "Please select from the following persons",
+        "description": "Please select the following person",
         "data": {
-          "person_index": "Select Name"
+          "person_index": "Select a name"
         }
       },
       "select_event": {
         "title": "Options",
-        "description": "Please select from the following events",
+        "description": "Please select the following events",
         "data": {
           "event_index": "Select Event"
         }
       },
       "add_birthday": {
-        "title": "Add Birthday Information",
+        "title": "Add birthday information",
         "data": {
           "name": "Name",
-          "birthday": "Birthday Date (format: YYYY/MM/DD/HH)",
+          "birthday": "Birthday Date (Format: YYYY/MM/DD/HH)",
           "notification_enabled": "Enable Notification Service",
-          "ai_enabled": "Enable AI Prediction"
+          "ai_enabled": "Enable AI prediction"
         }
       },
       "edit_birthday": {
-        "title": "Edit Birthday Information",
+        "title": "Edit birthday information",
         "data": {
           "name": "Name",
-          "birthday": "Birthday Date (format: YYYY/MM/DD/HH)",
+          "birthday": "Birthday Date (Format: YYYY/MM/DD/HH)",
           "notification_enabled": "Enable Notification Service",
-          "ai_enabled": "Enable AI Prediction"
+          "ai_enabled": "Enable AI prediction"
         }
       },
       "delete_birthday": {
-        "title": "Delete Birthday Information",
-        "description": "Are you sure you want to delete this birthday information?",
+        "title": "Delete birthday information",
+        "description": "Are you sure to delete the birthday information?",
         "data": {
-          "confirm": "Confirm Delete"
+          "confirm": "Confirm deletion"
         }
       },
       "birthday_notification_edit": {
         "title": "Notification Service Configuration",
         "data": {
-          "notification_service": "Please select notification service",
-          "notification_message": "Notification Message"
+          "notification_service": "Please select Notification Service",
+          "notification_message": "Notification message"
         }
       },
       "birthday_ai_edit": {
-        "title": "AI Birthday Fortune Configuration",
-        "description": "Free public welfare interface: [Click to get API key](https://api.chatanywhere.tech/v1/oauth/free/render)\n\nFree version supports gpt-5, gpt-4o, gpt-4.1 5 times/day; supports deepseek-r1, deepseek-v3.1 30 times/day; supports gpt-4o-mini, gpt-3.5-turbo, gpt-4.1-mini, gpt-4.1-nano, gpt-5-mini, gpt-5-nano 200 times/day.\n\nRecommended to use deepseek-r1 model, best for AI fortune telling predictions.",
+        "title": "AI birthday fortune configuration",
+        "description": "Free charity interface: [Click to get the key](https://api.chatanywhere.tech/v1/oauth/free/render)\n\nThe free version supports gpt-5, gpt-4o, gpt-4.1 5 times a day; supports deepseek-r1, deepseek-v3.1 30 times a day, and supports gpt-4o-mini, gpt-3.5-turbo, gpt-4.1-mini, gpt-4.1-nano, gpt-5-mini, gpt-5-nano 200 times a day.\n\nIt is recommended to use the deepseek-r1 model, which is the best effect for AI fortune-telling prediction.",
         "data": {
           "ai_api_key": "API Key",
           "ai_model": "AI Model"
@@ -150,99 +150,100 @@
       "event_notification_edit": {
         "title": "Notification Service Configuration",
         "data": {
-          "notification_service": "Please select notification service",
-          "notification_message": "Notification Message"
+          "notification_service": "Please select Notification Service",
+          "notification_message": "Notification message"
         }
       },
       "add_event": {
-        "title": "Add Event Information",
+        "title": "Add event information",
         "data": {
-          "name": "Event Name",
-          "date": "Event Date (format: YYYY/MM/DD)",
-          "description": "Event Description",
-          "auto_remove": "Auto-remove Event (automatically delete sensor after one day)",
-          "full_countdown": "Enable Full Countdown",
+          "name": "Event name",
+          "date": "Event Date (Format: YYYY/MM/DD)",
+          "description": "Event description",
+          "auto_remove": "Automatically delete events (automatically delete sensors after one day)",
+          "full_countdown": "Enable full countdown",
           "notification_enabled": "Enable Notification Service"
         }
       },
       "edit_event": {
-        "title": "Edit Event Information",
+        "title": "Edit event information",
         "data": {
-          "name": "Event Name",
-          "date": "Event Date (format: YYYY/MM/DD)",
-          "description": "Event Description",
-          "auto_remove": "Auto-remove Event (automatically delete sensor after one day)",
-          "full_countdown": "Enable Full Countdown",
+          "name": "Event name",
+          "date": "Event Date (Format: YYYY/MM/DD)",
+          "description": "Event description",
+          "auto_remove": "Automatically delete events (automatically delete sensors after one day)",
+          "full_countdown": "Enable full countdown",
           "notification_enabled": "Enable Notification Service"
         }
       },
       "edit_event_time": {
-        "title": "Set Time",
-        "description": "Set specific countdown time for event {name}",
+        "title": "Set time",
+        "description": "Set a specific countdown time for event {name}",
         "data": {
-          "time": "Time (format: HH/MM)"
+          "time": "Time (Format: HH/MM)"
         }
       },
       "delete_event": {
-        "title": "Delete Event Information",
-        "description": "Are you sure you want to delete this event information?",
+        "title": "Delete event information",
+        "description": "Are you sure to delete the event information?",
         "data": {
-          "confirm": "Confirm Delete"
+          "confirm": "Confirm deletion"
         }
       },
       "edit_holidays": {
-        "title": "Holiday Configuration",
-        "description": "**Usage Tutorial:**\nConfiguration file uses YAML format, supports setting **customdays** (custom holidays) **holidays** (holidays) **workdays** (workdays), each date format is **YYYY-MM-DD**, supports comments, note: prevent other special characters from entering and damaging normal integration operation.",
+        "title": "Holiday configuration",
+        "description": "**User tutorial description: **\nThe configuration file uses YAML format, supports setting **customdays** (custom holidays) **holidays** (holidays) **workdays** (working days). Each date format is **YYY-MM-DD**, and comments can be used. Note: prevent other special symbols from entering the normal integration operation.",
         "data": {
           "yaml_content": "YAML Editor"
         }
       }
     },
     "error": {
-      "unknown": "Unknown error occurred, if you cannot add or edit, please delete the integration and re-add it",
-      "unknown_error": "Unknown error occurred, if you cannot add or edit, please delete the integration and re-add it",
-      "unknown_error_occurred": "Unknown error occurred, if you cannot add or edit, please delete the integration and re-add it",
+      "unknown": "An unknown error occurred. If it cannot be added or edited, please delete the integration and add it again.",
+      "unknown_error": "An unknown error occurred. If it cannot be added or edited, please delete the integration and add it again.",
+      "unknown_error_occurred": "An unknown error occurred. If it cannot be added or edited, please delete the integration and add it again.",
       "need_select_person_for_edit": "Please select the person to edit",
-      "need_select_person_for_delete": "Please select the person to delete",
+      "need_select_person_for_delete": "Please select the person you want to delete",
       "need_select_event_for_edit": "Please select the event to edit",
       "need_select_event_for_delete": "Please select the event to delete",
-      "name_already_exists": "Name already exists, if you have the same name, you can add a number after it for better identification (e.g., Zhang San1)",
-      "invalid_date_format": "Invalid date format, please use YYYY/MM/DD/HH format (e.g., 1990/01/01/08)",
-      "invalid_event_date_format": "Invalid date format, please use YYYY/MM/DD format (e.g., 2024/12/31)",
-      "invalid_time_format": "Invalid time format, please use HH/MM format (e.g., 08/30)",
-      "invalid_yaml": "YAML format error. Ensure no special characters and check error definitions.",
-      "yaml_must_be_dict": "YAML content must be a dictionary format",
-      "key_must_be_dict": "{key} must be a dictionary format",
-      "date_format_error": "Date {date} format error, must be YYYY-MM-DD format",
-      "description_must_be_string": "Description for date {date} must be a string"
+      "name_already_exists": "The names are the same. If there is the same name, you can add a number to the following to better identify it (for example: Zhang San1)",
+      "invalid_date_format": "Date format is wrong, please use YYYY/MM/DD/HH format (for example: 1990/01/01/08)",
+      "invalid_event_date_format": "Date format is wrong, please use YYYY/MM/DD format (for example: 2024/12/31)",
+      "invalid_time_format": "Time format is wrong, please use HH/MM format (for example: 08/30)",
+      "invalid_yaml": "YAML format error. Make sure there are no special characters and check for error definitions.",
+      "yaml_must_be_dict": "YAML content must be in a dictionary format",
+      "key_must_be_dict": "{key} must be in dictionary format",
+      "date_format_error": "Date {date} is incorrect in format, must be in YYYY-MM-DD format",
+      "description_must_be_string": "The description of date {date} must be a string"
     },
     "abort": {
-      "max_persons_reached": "Maximum number of persons reached (5 persons)",
-      "max_events_reached": "Maximum number of events reached (30 events)",
-      "person_added": "Person added successfully",
-      "person_updated": "{name} updated successfully",
-      "person_deleted": "{name} deleted successfully",
+      "max_persons_reached": "Maximum number of people has been reached (5 people)",
+      "max_events_reached": "Maximum event limit has been reached (30)",
+      "person_added": "Personnel addition was successful",
+      "person_updated": "{name} Update successfully",
+      "person_deleted": "{name} Delete successfully",
       "event_added": "Event added successfully",
-      "event_updated": "{name} updated successfully",
-      "event_deleted": "{name} deleted successfully",
-      "event_not_found": "Event not found",
-      "holidays_edited": "Holidays updated, restart **Home Assistant** to take effect"
-    }
+      "event_updated": "{name} Update successfully",
+      "event_deleted": "{name} Delete successfully",
+      "event_not_found": "The event was not found",
+      "holidays_edited": "The festival has been updated, restart **Home Assistant** takes effect"
+    },
+    "model": {}
   },
   "selector": {
     "ai_model_options": {
       "options": {
-        "deepseek-r1": "DeepSeek-R1 (Recommended, best prediction, 30 times/day)",
-        "deepseek-v3_1": "DeepSeek-V3.1 (Secondary recommendation, severe prediction hallucination, 30 times/day)",
-        "gpt-4o-mini": "GPT-4o-mini (General, somewhat vague, 200 times/day)",
-        "gpt-3.5-turbo": "GPT-3.5-turbo (Poor, very general, 200 times/day)",
-        "gpt-4.1-mini": "GPT-4.1-mini (Good, somewhat general, 200 times/day)",
-        "gpt-4.1-nano": "GPT-4.1-nano (Good, somewhat general, 200 times/day)",
-        "gpt-5-mini": "GPT-5-mini (Good, somewhat general, 200 times/day)",
-        "gpt-5-nano": "GPT-5-nano (Good, somewhat general, 200 times/day)",
-        "gpt-4o": "GPT-4o (Secondary recommendation, prediction effect acceptable, 5 times/day)",
-        "gpt-5": "GPT-5 (Secondary recommendation, prediction effect good, 5 times/day)",
-        "gpt-4_1": "GPT-4.1 (Secondary recommendation, prediction effect good, 5 times/day)"
+        "deepseek-r1": "DeepSeek-R1 (recommended, best prediction, 30 times/day)",
+        "deepseek-v3_1": "DeepSeek-V3.1 (recommended, predicting severe hallucination, 30 times/day)",
+        "gpt-4o-mini": "GPT-4o-mini (Generally, it's some generalities, 200 times per day)",
+        "gpt-3.5-turbo": "GPT-3.5-turbo (It's relatively poor, it's about 200 times per day)",
+        "gpt-4.1-mini": "GPT-4.1-mini (good, they are all general, 200 times per day)",
+        "gpt-4.1-nano": "GPT-4.1-nano (Better, they are all general, 200 times per day)",
+        "gpt-5-mini": "GPT-5-mini (good, all are general, 200 times per day)",
+        "gpt-5-nano": "GPT-5-nano (good, all are general, 200 times per day)",
+        "gpt-4o": "GPT-4o (recommended times, predicted effect is OK, 5 times/day)",
+        "gpt-5": "GPT-5 (recommended times, better prediction effect, 5 times/day)",
+        "gpt-4_1": "GPT-4.1 (recommended times, better prediction effect, 5 times/day)"
       }
     }
   }
