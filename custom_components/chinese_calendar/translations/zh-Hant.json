@@ -219,7 +219,6 @@
       "event_not_found": "未找到該事件",
       "holidays_edited": "節慶已更新，重啟 **Home Assistant** 生效"
     },
-    "model": {}
   },
   "selector": {
     "ai_model_options": {
