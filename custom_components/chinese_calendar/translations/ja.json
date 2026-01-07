@@ -91,6 +91,12 @@
           "add": "追加",
           "edit": "編集",
           "delete": "削除"
+        },
+        "select_description": {
+          "edit_person": "編集する人物を選択してください",
+          "delete_person": "削除する人物を選択してください",
+          "edit_event": "編集するイベントを選択してください",
+          "delete_event": "削除するイベントを選択してください"
         }
       },
       "select_person": {
@@ -226,14 +232,15 @@
       "event_updated": "{name} の更新に成功しました",
       "event_deleted": "{name} の削除に成功しました",
       "event_not_found": "イベントが見つかりません",
-      "holidays_edited": "祝日が更新されました。**Home Assistant**を再起動して有効にしてください"
-    }
+      "holidays_edited": "祝日が更新されました。**Home Assistant**を再起動して有効にしてください\n\n"
+    },
+    "model": {}
   },
   "selector": {
     "ai_model_options": {
       "options": {
         "deepseek-r1": "DeepSeek-R1 (推奨、予測最高、1日30回)",
-        "deepseek-v3_1": "DeepSeek-V3.1 (次点推奨、予測幻覚深刻、1日30回)",
+        "deepseek-v3.1": "DeepSeek-V3.1 (次点推奨、予測幻覚深刻、1日30回)",
         "gpt-4o-mini": "GPT-4o-mini (一般、やや曖昧、1日200回)",
         "gpt-3.5-turbo": "GPT-3.5-turbo (悪い、非常に一般的、1日200回)",
         "gpt-4.1-mini": "GPT-4.1-mini (良い、やや一般的、1日200回)",
@@ -242,7 +249,7 @@
         "gpt-5-nano": "GPT-5-nano (良い、やや一般的、1日200回)",
         "gpt-4o": "GPT-4o (次点推奨、予測効果良好、1日5回)",
         "gpt-5": "GPT-5 (次点推奨、予測効果良好、1日5回)",
-        "gpt-4_1": "GPT-4.1 (次点推奨、予測効果良好、1日5回)"
+        "gpt-4.1": "GPT-4.1 (次点推奨、予測効果良好、1日5回)"
       }
     }
   }

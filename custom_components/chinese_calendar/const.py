@@ -17,7 +17,7 @@ CONF_AI_MODEL = "ai_model"
 DEFAULT_AI_API_URL = "https://api.chatanywhere.tech"
 AI_MODELS = [
     {"value": "deepseek-r1", "label": "deepseek-r1"},
-    {"value": "deepseek-v3_1", "label": "deepseek-v3.1"},
+    {"value": "deepseek-v3.1", "label": "deepseek-v3.1"},
     {"value": "gpt-4o-mini", "label": "gpt-4o-mini"},
     {"value": "gpt-3.5-turbo", "label": "gpt-3.5-turbo"},
     {"value": "gpt-4.1-mini", "label": "gpt-4.1-mini"},
@@ -41,20 +41,6 @@ DATA_FORMAT = "%Y/%m/%d/%H"
 EVENT_DATE_FORMAT = "%Y/%m/%d"
 MAX_BIRTHDAYS = 5
 MAX_EVENTS = 30
-
-BIRTHDAY_SENSOR_TYPES = [
-    "solar_birthday",
-    "lunar_birthday", 
-    "bazi",
-    "lunar_birthday_reminder",
-    "solar_birthday_reminder",
-    "zodiac_sign",
-    "lucky_element",
-    "daily_fortune",
-    "days_lived",
-    "age",
-    "ai_fortune"
-]
 
 TRANSLATIONS = {
     "zh-Hans": {
@@ -90,19 +76,7 @@ TRANSLATIONS = {
         "日禄": "日禄",
         "三十六禽": "三十六禽",
         "六十四卦": "六十四卦",
-        "盲派": "盲派",
-        # 生日传感器类型翻译
-        "solar_birthday": "阳历生日",
-        "lunar_birthday": "农历生日",
-        "bazi": "八字",
-        "lunar_birthday_reminder": "生日提醒_农",
-        "solar_birthday_reminder": "生日提醒_阳",
-        "zodiac_sign": "星座",
-        "lucky_element": "喜用神",
-        "daily_fortune": "今日运势",
-        "days_lived": "生存天数",
-        "age": "周岁",
-        "ai_fortune": "AI运势"
+        "盲派": "盲派"
     },
     "zh-Hant": {
         "日期": "日期",
@@ -137,18 +111,6 @@ TRANSLATIONS = {
         "日禄": "日祿",
         "三十六禽": "三十六禽",
         "六十四卦": "六十四卦",
-        "盲派": "盲派",
-        # 生日传感器类型翻译
-        "solar_birthday": "陽曆生日",
-        "lunar_birthday": "農曆生日",
-        "bazi": "八字",
-        "lunar_birthday_reminder": "生日提醒_農",
-        "solar_birthday_reminder": "生日提醒_陽",
-        "zodiac_sign": "星座",
-        "lucky_element": "喜用神",
-        "daily_fortune": "今日運勢",
-        "days_lived": "生存天數",
-        "age": "週歲",
-        "ai_fortune": "AI運勢"
+        "盲派": "盲派"
     }
 }

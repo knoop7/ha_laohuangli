@@ -82,6 +82,12 @@
           "add": "添加",
           "edit": "編輯",
           "delete": "刪除"
+        },
+        "select_description": {
+          "edit_person": "請選擇要編輯的人員",
+          "delete_person": "請選擇要刪除的人員",
+          "edit_event": "請選擇要編輯的事件",
+          "delete_event": "請選擇要刪除的事件"
         }
       },
       "select_person": {
@@ -218,13 +224,14 @@
       "event_deleted": "{name} 刪除成功",
       "event_not_found": "未找到該事件",
       "holidays_edited": "節慶已更新，重啟 **Home Assistant** 生效"
-    }
+    },
+    "model": {}
   },
   "selector": {
     "ai_model_options": {
       "options": {
         "deepseek-r1": "DeepSeek-R1 (推薦，預測最佳，30次/天)",
-        "deepseek-v3_1": "DeepSeek-V3.1 (次推薦，預測幻覺嚴重，30次/天)",
+        "deepseek-v3.1": "DeepSeek-V3.1 (次推薦，預測幻覺嚴重，30次/天)",
         "gpt-4o-mini": "GPT-4o-mini (一般，都是一些籠統，200次/天)",
         "gpt-3.5-turbo": "GPT-3.5-turbo (比較差，都是一些大概，200次/天)",
         "gpt-4.1-mini": "GPT-4.1-mini (較好，都是一些籠統，200次/天)",

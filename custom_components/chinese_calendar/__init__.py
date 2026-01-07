@@ -3,9 +3,8 @@ import logging
 import weakref
 import time
 from typing import Dict, Set, Optional, List
+from datetime import datetime
 from homeassistant.core import HomeAssistant
-import voluptuous as vol
-from homeassistant.helpers import config_validation as cv
 from homeassistant.util import yaml   # pyright: ignore[reportUnusedImport]
 from homeassistant.helpers import entity_registry
 from homeassistant.config_entries import ConfigEntry
@@ -13,7 +12,8 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.components.lovelace import DOMAIN
 from homeassistant.components.frontend import add_extra_js_url
-from homeassistant.components.http import StaticPathConfig
+from homeassistant.components.http import StaticPathConfig,HomeAssistantView
+from aiohttp import web
 from .services import async_setup_date_service, SERVICE_DATE_CONTROL
 from .const import (
     DOMAIN, 
@@ -29,8 +29,6 @@ from .almanac_sensor import AlmanacSensor
 from .moon import setup_almanac_moon_sensor
 
 _LOGGER = logging.getLogger(__name__)
-
-CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
 
 
 class TaskManager:
@@ -245,6 +243,7 @@ async def async_setup(hass: HomeAssistant, config: dict) -> bool:
     hass.data[DOMAIN] = {}
     await setup_almanac_card(hass)
     await async_setup_date_service(hass)
+    hass.http.register_view(AlmanacAPIView())
     return True
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_entities: Optional[AddEntitiesCallback] = None) -> bool:
@@ -353,3 +352,31 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             hass.data.pop(DOMAIN, None)
             
     return unload_ok
+
+async def export_almanac_data(hass:HomeAssistant,entry_id:str=None)->dict:
+    if DOMAIN not in hass.data or"almanac_sensors"not in hass.data[DOMAIN]:return{"error":"未找到老黄历数据"}
+    sensors=hass.data[DOMAIN]["almanac_sensors"]
+    if entry_id:
+        if entry_id not in sensors:return{"error":"未找到指定配置"}
+        sensor_list=sensors[entry_id]
+    else:
+        all_sensors=[]
+        for s_list in sensors.values():all_sensors.extend(s_list)
+        sensor_list=all_sensors
+    result={"timestamp":datetime.now().isoformat(),"data":{}}
+    for sensor in sensor_list:
+        if sensor._cleanup_called or not sensor._available:continue
+        key=sensor._type
+        value={"state":sensor._state,"attributes":sensor._attributes if sensor._attributes else{}}
+        if key not in result["data"]:result["data"][key]=value
+    return result
+
+class AlmanacAPIView(HomeAssistantView):
+    url="/api/chinese_calendar/data"
+    name="api:chinese_calendar:data"
+    requires_auth=False
+    async def get(self,request):
+        hass=request.app["hass"]
+        entry_id=request.query.get("entry_id")
+        data=await export_almanac_data(hass,entry_id)
+        return web.json_response(data)

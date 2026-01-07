@@ -9,7 +9,8 @@ from datetime import datetime
 from homeassistant.core import callback
 from homeassistant import config_entries
 from homeassistant.const import CONF_NAME
-from homeassistant.helpers import selector, entity_registry
+from homeassistant.helpers import selector
+from homeassistant.helpers import entity_registry
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers.selector import (
     TemplateSelector,
@@ -30,8 +31,6 @@ from .const import (
     CONF_AI_MODEL,
     DEFAULT_AI_API_URL,
     AI_MODELS,
-    BIRTHDAY_SENSOR_TYPES,
-    TRANSLATIONS,
 )
 
 LOGGER = logging.getLogger(__name__)
@@ -389,7 +388,6 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                     self.person_name = user_input["name"]
                     return await self.async_step_birthday_ai_edit()
                 
-                await self.hass.config_entries.async_reload(self.config_entry.entry_id)
                 return self.async_abort(reason="person_added")
                 
             except vol.Invalid:
@@ -444,7 +442,6 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                     self.event_name = user_input["name"]
                     return await self.async_step_event_notification_edit()
                 
-                await self.hass.config_entries.async_reload(self.config_entry.entry_id)
                 return self.async_abort(reason="event_added")
                 
             except vol.Invalid:
@@ -463,16 +460,9 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
             errors=errors
         )
 
-    def _get_sensor_type_label(self, sensor_type: str, language: str = "zh-Hans") -> str:
-        """获取传感器类型的本地化标签"""
-        return TRANSLATIONS.get(language, {}).get(sensor_type, sensor_type)
-    
     async def async_step_edit_birthday(self, user_input: Optional[Dict[str, Any]] = None) -> FlowResult:
         errors = {}
         current_idx = None
-        language = self.data.get("language", "zh-Hans")
-        if language == "auto":
-            language = "zh-Hans"
 
         for idx in range(1, MAX_BIRTHDAYS + 1):
             if (f"person{idx}_name" in self.data and 
@@ -483,29 +473,9 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
         if user_input is not None:
             try:
                 validate_date(user_input["birthday"])
-                enabled_sensors = user_input.get("enabled_sensors", [])
-                
-                # 禁用未选中的传感器
-                registry = entity_registry.async_get(self.hass)
-                for sensor_type in BIRTHDAY_SENSOR_TYPES:
-                    sensor_label = self._get_sensor_type_label(sensor_type, language)
-                    unique_id = f"birthday_{self.config_entry.entry_id}_{self.person_name.lower()}_{sensor_label}"
-                    if entity_id := registry.async_get_entity_id("sensor", DOMAIN, unique_id):
-                        if sensor_type in enabled_sensors:
-                            registry.async_update_entity(
-                                entity_id,
-                                disabled_by=None
-                            )
-                        else:
-                            registry.async_update_entity(
-                                entity_id,
-                                disabled_by=entity_registry.RegistryEntryDisabler.CONFIG_ENTRY
-                            )
-                
                 self._edit_person_data = {
                     "name": user_input["name"],
                     "birthday": user_input["birthday"],
-                    "enabled_sensors": enabled_sensors,
                     "notification_enabled": user_input.get(CONF_NOTIFICATION_ENABLED, False),
                     "ai_enabled": user_input.get(CONF_AI_ENABLED, False),
                     "current_idx": current_idx,
@@ -522,7 +492,6 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                 new_data = dict(self.data)
                 new_data[f"person{current_idx}_name"] = user_input["name"]
                 new_data[f"person{current_idx}_birthday"] = user_input["birthday"]
-                new_data[f"person{current_idx}_enabled_sensors"] = enabled_sensors
                 if f"person{current_idx}_notification_service" in new_data:
                     new_data.pop(f"person{current_idx}_notification_service")
                 if f"person{current_idx}_notification_message" in new_data:
@@ -540,42 +509,18 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                 errors["birthday"] = "invalid_date_format"
 
         current_birthday = ""
-        current_enabled_sensors = BIRTHDAY_SENSOR_TYPES.copy()  # 默认全部启用
         current_notification = False
         current_ai = False
         if current_idx:
             current_birthday = self.data[f"person{current_idx}_birthday"]
-            current_enabled_sensors = self.data.get(f"person{current_idx}_enabled_sensors", BIRTHDAY_SENSOR_TYPES.copy())
             current_notification = bool(self.data.get(f"person{current_idx}_notification_service"))
             current_ai = bool(self.data.get(f"person{current_idx}_ai_api_key"))
-            
-            # 如果有AI配置，确保AI运势在选项中
-            if current_ai and "ai_fortune" not in current_enabled_sensors:
-                current_enabled_sensors.append("ai_fortune")
-
-        # 创建传感器选项
-        sensor_options = []
-        for sensor_type in BIRTHDAY_SENSOR_TYPES:
-            if sensor_type == "ai_fortune" and not (current_ai or self.data.get(f"person{current_idx}_ai_api_key")):
-                continue  # 没有AI配置时不显示AI运势选项
-            sensor_options.append(
-                selector.SelectOptionDict(
-                    value=sensor_type,
-                    label=self._get_sensor_type_label(sensor_type, language)
-                )
-            )
 
         return self.async_show_form(
             step_id="edit_birthday",
             data_schema=vol.Schema({
                 vol.Required("name", default=self.person_name): str,
                 vol.Required("birthday", default=current_birthday): str,
-                vol.Required("enabled_sensors", default=current_enabled_sensors): selector.SelectSelector(
-                    selector.SelectSelectorConfig(
-                        options=sensor_options,
-                        multiple=True
-                    )
-                ),
                 vol.Optional(CONF_NOTIFICATION_ENABLED, default=current_notification): bool,
                 vol.Optional(CONF_AI_ENABLED, default=current_ai): bool,
             }),
@@ -618,7 +563,6 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
             
             new_data[f"person{current_idx}_name"] = self._edit_person_data["name"]
             new_data[f"person{current_idx}_birthday"] = self._edit_person_data["birthday"]
-            new_data[f"person{current_idx}_enabled_sensors"] = self._edit_person_data.get("enabled_sensors", BIRTHDAY_SENSOR_TYPES.copy())
             
             new_data[f"person{current_idx}_notification_service"] = user_input[CONF_NOTIFICATION_SERVICE]
             new_data[f"person{current_idx}_notification_message"] = user_input[CONF_NOTIFICATION_MESSAGE]
@@ -629,7 +573,6 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
             
             self._edit_person_data = None
             self._save_config(new_data)
-            await self.hass.config_entries.async_reload(self.config_entry.entry_id)
             
             return self.async_abort(
                 reason="person_updated",
@@ -682,7 +625,6 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
             
             new_data[f"person{current_idx}_name"] = self._edit_person_data["name"]
             new_data[f"person{current_idx}_birthday"] = self._edit_person_data["birthday"]
-            new_data[f"person{current_idx}_enabled_sensors"] = self._edit_person_data.get("enabled_sensors", BIRTHDAY_SENSOR_TYPES.copy())
             
             new_data[f"person{current_idx}_ai_api_url"] = DEFAULT_AI_API_URL
             new_data[f"person{current_idx}_ai_api_key"] = user_input[CONF_AI_API_KEY]
@@ -690,7 +632,6 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
             
             self._edit_person_data = None
             self._save_config(new_data)
-            await self.hass.config_entries.async_reload(self.config_entry.entry_id)
             
             return self.async_abort(
                 reason="person_updated",
@@ -777,7 +718,6 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                     temp_data[key] = new_data[key]
 
             self._save_config(temp_data)
-            await self.hass.config_entries.async_reload(self.config_entry.entry_id)
             return self.async_abort(
                 reason="person_deleted",
                 description_placeholders={"name": deleted_name}
@@ -805,7 +745,6 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
             return self.async_abort(reason="event_not_found")
             
         current_date = self.data[f"event{current_idx}_date"].split()[0] if " " in self.data[f"event{current_idx}_date"] else self.data[f"event{current_idx}_date"]
-        current_enabled = self.data.get(f"event{current_idx}_enabled", True)
         current_desc = self.data.get(f"event{current_idx}_desc", "")
         current_auto_remove = self.data.get(f"event{current_idx}_auto_remove", False)
         current_full_countdown = self.data.get(f"event{current_idx}_full_countdown", False)
@@ -814,22 +753,6 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
         if user_input is not None:
             try:
                 validate_date(user_input["date"], is_event=True)
-                enabled = user_input.get("enabled", True)
-                
-                # 禁用事件传感器
-                registry = entity_registry.async_get(self.hass)
-                unique_id = f"event_{self.config_entry.entry_id}_{self.event_name}"
-                if entity_id := registry.async_get_entity_id("sensor", DOMAIN, unique_id):
-                    if enabled:
-                        registry.async_update_entity(
-                            entity_id,
-                            disabled_by=None
-                        )
-                    else:
-                        registry.async_update_entity(
-                            entity_id,
-                            disabled_by=entity_registry.RegistryEntryDisabler.CONFIG_ENTRY
-                        )
                 
                 for idx in range(1, MAX_EVENTS + 1):
                     if (f"event{idx}_name" in self.data and 
@@ -842,7 +765,6 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                     self._edit_event_data = {
                         "name": user_input["name"],
                         "date": user_input["date"],
-                        "enabled": enabled,
                         "description": user_input.get("description", ""),
                         "auto_remove": user_input.get("auto_remove", False),
                         "full_countdown": user_input.get("full_countdown", False),
@@ -858,7 +780,6 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                     new_data = dict(self.data)
                     new_data[f"event{current_idx}_name"] = user_input["name"]
                     new_data[f"event{current_idx}_date"] = user_input["date"]
-                    new_data[f"event{current_idx}_enabled"] = enabled
                     new_data[f"event{current_idx}_desc"] = user_input.get("description", "")
                     new_data[f"event{current_idx}_auto_remove"] = user_input.get("auto_remove", False)
                     new_data[f"event{current_idx}_full_countdown"] = False
@@ -881,7 +802,6 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
             data_schema=vol.Schema({
                 vol.Required("name", default=self.event_name): str,
                 vol.Required("date", default=current_date): str,
-                vol.Required("enabled", default=current_enabled): bool,
                 vol.Optional("description", default=current_desc): str,
                 vol.Optional("auto_remove", default=current_auto_remove): bool,
                 vol.Optional("full_countdown", default=current_full_countdown): bool,
@@ -916,7 +836,6 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                 
                 self._edit_event_data = None
                 self._save_config(new_data)
-                await self.hass.config_entries.async_reload(self.config_entry.entry_id)
                 
                 return self.async_abort(
                     reason="event_updated",
@@ -1035,7 +954,6 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
             new_data = dict(self.data)
             current_idx = self._edit_event_data["current_idx"]
             new_data[f"event{current_idx}_name"] = self._edit_event_data["name"]
-            new_data[f"event{current_idx}_enabled"] = self._edit_event_data.get("enabled", True)
             
             if "time" in self._edit_event_data:
                 new_data[f"event{current_idx}_date"] = f"{self._edit_event_data['date']} {self._edit_event_data['time']}"
@@ -1051,7 +969,6 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
             
             self._edit_event_data = None
             self._save_config(new_data)
-            await self.hass.config_entries.async_reload(self.config_entry.entry_id)
             
             return self.async_abort(
                 reason="event_updated",
@@ -1137,7 +1054,6 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                     temp_data[CONF_EVENT_ENABLED] = False
 
                 self._save_config(temp_data)
-                await self.hass.config_entries.async_reload(self.config_entry.entry_id)
                 return self.async_abort(
                     reason="event_deleted",
                     description_placeholders={"name": deleted_name}
@@ -1196,7 +1112,6 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                 except Exception as e:
                     pass
                 
-                await self.hass.config_entries.async_reload(self.config_entry.entry_id)
                 return self.async_abort(reason="holidays_edited")
                 
             except Exception as e:

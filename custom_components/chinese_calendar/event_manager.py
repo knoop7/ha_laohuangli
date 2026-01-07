@@ -309,15 +309,9 @@ async def setup_event_sensors(hass: HomeAssistant, entry_id: str, config_data: d
     while True:
         name_key = f"event{event_count}_name"
         date_key = f"event{event_count}_date"
-        enabled_key = f"event{event_count}_enabled"
         
         if name_key not in config_data or date_key not in config_data:
             break
-            
-        enabled = config_data.get(enabled_key, True)
-        if not enabled:
-            event_count += 1
-            continue
             
         try:
             name = config_data.get(name_key)

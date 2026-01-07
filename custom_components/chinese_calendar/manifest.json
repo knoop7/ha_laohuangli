@@ -1,12 +1,12 @@
 {
   "domain": "chinese_calendar",
-  "codeowners": ["@knoop7"],
   "name": "\u4e2d\u570b\u8001\u9ec3\u66c6",
+  "version": "2026.01.07",
   "config_flow": true,
-  "dependencies": ["http", "lovelace"],
   "documentation": "https://github.com/knoop7/ha_laohuangli",
-  "iot_class": "local_polling",
   "issue_tracker": "https://github.com/knoop7/ha_laohuangli/issues",
-  "requirements": ["cnlunar", "zhconv"],
-  "version": "2025.08.30"
+  "requirements": ["cnlunar","zhconv"],
+  "dependencies": [],
+  "codeowners": ["@knoop7"],
+  "iot_class": "local_polling"
 }
