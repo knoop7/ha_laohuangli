@@ -1,19 +1,18 @@
 import asyncio
-import logging
 import weakref
 import time
 from typing import Dict, Set, Optional, List
-from datetime import datetime
 from homeassistant.core import HomeAssistant
-from homeassistant.util import yaml   # pyright: ignore[reportUnusedImport]
+from homeassistant.util import yaml
 from homeassistant.helpers import entity_registry
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.components.lovelace import DOMAIN
 from homeassistant.components.frontend import add_extra_js_url
-from homeassistant.components.http import StaticPathConfig,HomeAssistantView
+from homeassistant.components.http import StaticPathConfig, HomeAssistantView
 from aiohttp import web
+from datetime import datetime
 from .services import async_setup_date_service, SERVICE_DATE_CONTROL
 from .const import (
     DOMAIN, 
@@ -23,13 +22,6 @@ from .const import (
     MAX_BIRTHDAYS,
     MAX_EVENTS,
 )
-from .birthday_manager import setup_birthday_sensors
-from .event_manager import setup_event_sensors
-from .almanac_sensor import AlmanacSensor
-from .moon import setup_almanac_moon_sensor
-
-_LOGGER = logging.getLogger(__name__)
-
 
 class TaskManager:
     def __init__(self):
@@ -194,8 +186,7 @@ class RegistryManager:
                         entity_category=state['entity_category']
                     )
                         
-        except Exception as e:
-            _LOGGER.error("清理实体失败: %s", str(e))
+        except Exception:
             raise
 
 class AlmanacCoordinator:
@@ -224,19 +215,16 @@ class AlmanacCoordinator:
             await self.cleanup()
             self._sensors.clear()
             self._update_listeners.clear()
-        except Exception as e:
-            _LOGGER.error("关闭协调器时出错: %s", str(e))
+        except Exception:
+            pass
 
 async def setup_almanac_card(hass: HomeAssistant) -> bool:
     version = int(time.time())
-    almanac_card_path = '/almanac_card-local'
-    #new tips
-    #https://developers.home-assistant.io/blog/2024/06/18/async_register_static_paths?_highlight=async_register_static_path
+    card_path = '/almanac_card-local'
     await hass.http.async_register_static_paths([
-        StaticPathConfig(almanac_card_path, hass.config.path('custom_components/chinese_calendar/www'), False)
+        StaticPathConfig(card_path, hass.config.path(f'custom_components/{DOMAIN}/www'), False)
     ])
-    _LOGGER.debug(f"register_static_path: {almanac_card_path + ':custom_components/chinese_calendar/www'}")
-    add_extra_js_url(hass, almanac_card_path + f"/almanac-card.js?ver={version}")
+    add_extra_js_url(hass, f"{card_path}/almanac-card.js?ver={version}")
     return True
 
 async def async_setup(hass: HomeAssistant, config: dict) -> bool:
@@ -266,38 +254,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
         return True
     except Exception as e:
         raise ConfigEntryNotReady from e
-
-async def _setup_registry_manager(hass: HomeAssistant, entry: ConfigEntry) -> RegistryManager:
-    if registry_manager := hass.data[DOMAIN].get("registry_manager"):
-        await registry_manager.cleanup_orphaned_entities(entry)
-    else:
-        registry_manager = RegistryManager(hass)
-        hass.data[DOMAIN]["registry_manager"] = registry_manager
-    return registry_manager
-
-async def _setup_entities(hass: HomeAssistant, entry: ConfigEntry) -> List:
-    entities = []
-    
-    if almanac_result := await setup_almanac_sensors(hass, entry.entry_id, entry.data):  # pyright: ignore[reportUndefinedVariable]
-        entities.extend(almanac_result[0])
-        
-    setup_functions = [
-        setup_almanac_moon_sensor,
-        setup_birthday_sensors,
-        setup_event_sensors
-    ]
-    
-    async with asyncio.TaskGroup() as tg:
-        tasks = [
-            tg.create_task(setup_func(hass, entry.entry_id, entry.data))
-            for setup_func in setup_functions
-        ]
-        
-    for task in tasks:
-        if additional_entities := task.result():
-            entities.extend(additional_entities)
-            
-    return entities
 
 async def update_listener(hass: HomeAssistant, entry: ConfigEntry) -> None:
     try:
@@ -353,30 +309,36 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             
     return unload_ok
 
-async def export_almanac_data(hass:HomeAssistant,entry_id:str=None)->dict:
-    if DOMAIN not in hass.data or"almanac_sensors"not in hass.data[DOMAIN]:return{"error":"未找到老黄历数据"}
-    sensors=hass.data[DOMAIN]["almanac_sensors"]
+async def export_almanac_data(hass: HomeAssistant, entry_id: str = None) -> dict:
+    if DOMAIN not in hass.data or "almanac_sensors" not in hass.data[DOMAIN]:
+        return {"error": "未找到老黄历数据"}
+    sensors = hass.data[DOMAIN]["almanac_sensors"]
     if entry_id:
-        if entry_id not in sensors:return{"error":"未找到指定配置"}
-        sensor_list=sensors[entry_id]
+        if entry_id not in sensors:
+            return {"error": "未找到指定配置"}
+        sensor_list = sensors[entry_id]
     else:
-        all_sensors=[]
-        for s_list in sensors.values():all_sensors.extend(s_list)
-        sensor_list=all_sensors
-    result={"timestamp":datetime.now().isoformat(),"data":{}}
+        all_sensors = []
+        for s_list in sensors.values():
+            all_sensors.extend(s_list)
+        sensor_list = all_sensors
+    result = {"timestamp": datetime.now().isoformat(), "data": {}}
     for sensor in sensor_list:
-        if sensor._cleanup_called or not sensor._available:continue
-        key=sensor._type
-        value={"state":sensor._state,"attributes":sensor._attributes if sensor._attributes else{}}
-        if key not in result["data"]:result["data"][key]=value
+        if sensor._cleanup_called or not sensor._available:
+            continue
+        key = sensor._type
+        value = {"state": sensor._state, "attributes": sensor._attributes if sensor._attributes else {}}
+        if key not in result["data"]:
+            result["data"][key] = value
     return result
 
 class AlmanacAPIView(HomeAssistantView):
-    url="/api/chinese_calendar/data"
-    name="api:chinese_calendar:data"
-    requires_auth=False
-    async def get(self,request):
-        hass=request.app["hass"]
-        entry_id=request.query.get("entry_id")
-        data=await export_almanac_data(hass,entry_id)
+    url = "/api/chinese_calendar/data"
+    name = "api:chinese_calendar:data"
+    requires_auth = False
+    
+    async def get(self, request):
+        hass = request.app["hass"]
+        entry_id = request.query.get("entry_id")
+        data = await export_almanac_data(hass, entry_id)
         return web.json_response(data)
