@@ -238,6 +238,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
     try:
         if DOMAIN not in hass.data:
             hass.data[DOMAIN] = {}
+        
+        if "intents_registered" not in hass.data[DOMAIN]:
+            from .intent import async_setup_intents
+            await async_setup_intents(hass)
+            hass.data[DOMAIN]["intents_registered"] = True
             
         if "registry_manager" not in hass.data[DOMAIN]:
             registry_manager = RegistryManager(hass)

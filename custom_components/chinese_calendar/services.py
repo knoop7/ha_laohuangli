@@ -74,3 +74,45 @@ async def async_setup_date_service(hass: HomeAssistant) -> None:
         handle_date_control,
         schema=DATE_CONTROL_SCHEMA
     )
+
+  
+    async def handle_get_almanac(call: ServiceCall) -> dict:
+        data = {}
+        sensors = hass.data.get(DOMAIN, {}).get("almanac_sensors", {})
+        for ss in sensors.values():
+            for s in ss:
+                if s.state: data[s._type] = s.state
+        return data
+    
+    async def handle_get_events(call: ServiceCall) -> dict:
+        result = {"birthdays": [], "events": []}
+        for entry_data in [v for v in hass.data.get(DOMAIN, {}).values() if isinstance(v, dict) and "config" in v]:
+            config = entry_data.get("config", {})
+            for i in range(1, 6):
+                name, bday, lunar = config.get(f"person{i}_name"), config.get(f"person{i}_birthday"), config.get(f"person{i}_is_lunar", False)
+                if name and bday: result["birthdays"].append({"name": name, "date": bday, "lunar": lunar})
+            for i in range(1, 31):
+                name, edate, lunar = config.get(f"event{i}_name"), config.get(f"event{i}_date"), config.get(f"event{i}_is_lunar", False)
+                if name and edate: result["events"].append({"name": name, "date": edate, "lunar": lunar})
+            break
+        return result
+    
+    hass.services.async_register(DOMAIN, "get_almanac", handle_get_almanac, schema=vol.Schema({}), supports_response=True)
+    hass.services.async_register(DOMAIN, "get_events", handle_get_events, schema=vol.Schema({}), supports_response=True)
+    
+    async def handle_get_holidays(call: ServiceCall) -> dict:
+        import yaml, os
+        year = call.data.get("year")
+        yaml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'hworkdays.yaml')
+        def load_yaml():
+            with open(yaml_path, 'r', encoding='utf-8') as f:
+                return yaml.safe_load(f)
+        data = await hass.async_add_executor_job(load_yaml)
+        holidays = data.get("holidays", {})
+        customdays = data.get("customdays", {})
+        workdays = data.get("workdays", {})
+        current_year = datetime.now().year
+        data_year = int(list(holidays.keys())[0][:4]) if holidays else current_year
+        return {"holidays": holidays, "customdays": customdays, "workdays": workdays, "data_year": data_year, "current_year": current_year}
+    
+    hass.services.async_register(DOMAIN, "get_holidays", handle_get_holidays, schema=vol.Schema({}), supports_response=True)

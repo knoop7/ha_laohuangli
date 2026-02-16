@@ -29,6 +29,17 @@ class TextProcessor:
     def format_lucky_gods(data): return ' '.join(data) if isinstance(data,list) else ' '.join(f"{k}:{v}" for k,v in data.items()) if isinstance(data,dict) else str(data)
     @staticmethod
     def format_dict(data): return ' '.join(f"{k}{v}" for k,v in data.items()) if isinstance(data,dict) else str(data)
+def calc_level_name(good_count, bad_count):
+    r = good_count / max(bad_count, 1)
+    if r >= 3.0: return '上上：吉神云集，诸事皆宜，百无禁忌。'
+    if r >= 2.0: return '上：吉足胜凶，从宜不从忌。何患其之忧。'
+    if r >= 1.5: return '上次：吉足抵凶，遇德从宜不从忌，不遇从宜亦从忌。'
+    if r >= 1.0: return '中上：吉凶相当，遇德从宜，不遇慎行之。'
+    if r >= 0.8: return '中：吉不抵凶，遇德从宜不从忌，不遇从忌不从宜。'
+    if r >= 0.5: return '中次：凶胜于吉，遇德从宜亦从忌，不遇从忌不从宜。'
+    if r >= 0.3: return '下：凶又逢凶，遇德从忌不从宜，不遇诸事皆忌。'
+    return '下下：凶煞肆虐，诸事不宜，宜静守勿动之也。'
+
 class TimeHelper:
     SHICHEN=('子时','丑时','寅时','卯时','辰时','巳时','午时','未时','申时','酉时','戌时','亥时')
     MARKS=('初','一','二','三','四','五','六','七')
@@ -252,9 +263,8 @@ class AlmanacSensor(SensorEntity):
                     if(cached:=self._twelve_gods_cache.get(formatted_date))and datetime.now().timestamp()-cached[0]<86400:self._state=cached[1]
                     else:self._state=gods=self._text_processor.clean_text(' '.join(lunar_data.get_today12DayOfficer()));self._twelve_gods_cache[formatted_date]=(datetime.now().timestamp(),gods)
                     [self._twelve_gods_cache.pop(d,None)for d in[d for d in self._twelve_gods_cache if d!=formatted_date]];self._available=True;return self._state
-            lunar_holidays_str=self._text_processor.clean_text(''.join(lunar_data.get_legalHolidays()+lunar_data.get_otherHolidays()+lunar_data.get_otherLunarHolidays()))
-            if self._type=='今日节日':self._state=self._device.get_holiday(formatted_date,lunar_holidays_str);self._available=True;return self._state            
-            lunar_holidays_str=self._text_processor.clean_text(''.join(lunar_data.get_legalHolidays()+lunar_data.get_otherHolidays()+lunar_data.get_otherLunarHolidays()))
+            lunar_holidays_str=lunar_data.get_legalHolidays()+lunar_data.get_otherHolidays()+lunar_data.get_otherLunarHolidays()
+            if self._type=='今日节日':self._state=self._device.get_holiday(formatted_date,lunar_holidays_str);self._available=True;return self._state
             nine_numbers=self._text_processor.clean_text(self._text_processor.format_dict(lunar_data.get_the9FlyStar()))
             center_num = nine_numbers[5] if len(nine_numbers) == 9 else '5'  
             gods = {'1':'贪狼星','2':'巨门星','3':'禄存星','4':'文曲星','5':'廉贞星','6':'武曲星','7':'破军星','8':'左辅星','9':'右弼星'} 
@@ -320,7 +330,7 @@ class AlmanacSensor(SensorEntity):
                 '今日胎神': lunar_data.get_fetalGod(),
                 '今日吉神': self._text_processor.clean_text(' '.join(lunar_data.goodGodName)),
                 '今日凶煞': self._text_processor.clean_text(' '.join(lunar_data.badGodName)),
-                '宜忌等第': lunar_data.todayLevelName,
+                '宜忌等第': lunar_data.todayLevelName if lunar_data.todayLevelName and lunar_data.todayLevelName != '无' else calc_level_name(len(lunar_data.goodGodName), len(lunar_data.badGodName)),
                 '宜': self._text_processor.clean_text(' '.join(lunar_data.goodThing)) or "暂无",
                 '忌': self._text_processor.clean_text(' '.join(lunar_data.badThing)) or "暂无",
                 '时辰经络': f"{list(meridians)[TimeHelper.get_current_twohour(now.hour)]}",
